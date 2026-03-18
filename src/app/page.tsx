@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { MobileLayout, BottomNav } from "@/components/academy/MobileLayout";
 import { AcademyDashboard } from "@/components/academy/Dashboard";
 import { MissionsScreen } from "@/components/academy/MissionsScreen";
 import { EnrollmentScreen } from "@/components/academy/EnrollmentScreen";
 import { Mission1Screen } from "@/components/academy/missions/Mission1";
 import { Mission3Screen } from "@/components/academy/missions/Mission3";
+import { MissionPlaceholderScreen } from "@/components/academy/missions/MissionPlaceholder";
 import { MissionResultScreen } from "@/components/academy/MissionResult";
 import { DNAReportScreen } from "@/components/academy/DNAReport";
 import { ProfessorChat } from "@/components/academy/ProfessorChat";
@@ -24,13 +25,13 @@ type Screen =
   | "missions"
   | "learn"
   | "profile"
-  | "mission_1"
-  | "mission_3"
+  | "mission"
   | "mission_result"
   | "dna_report";
 
 export default function AcademyApp() {
   const [screen, setScreen] = useState<Screen>("enrollment");
+  const [activeMissionId, setActiveMissionId] = useState<number>(0);
   const [progress, setProgress] = useState<AcademyProgress>(INITIAL_PROGRESS);
   const [showProfessor, setShowProfessor] = useState(false);
   const [lastMissionResult, setLastMissionResult] = useState<{
@@ -44,6 +45,11 @@ export default function AcademyApp() {
   const handleEnroll = (name: string) => {
     setProgress((p) => ({ ...p, playerName: name }));
     setScreen("dashboard");
+  };
+
+  const handleStartMission = (id: number) => {
+    setActiveMissionId(id);
+    setScreen("mission");
   };
 
   const handleMissionComplete = (
@@ -71,8 +77,13 @@ export default function AcademyApp() {
     }));
 
     const debriefs: Record<number, string> = {
-      1: "You've completed your aptitude assessment. Understanding your risk tolerance is the foundation of every investment decision. Remember: there are no wrong answers — only self-knowledge.",
-      3: "You've survived a market crash. The lesson isn't about what the market did — it's about what YOU did. Emotional discipline is the most valuable investing skill you can develop.",
+      1: "You've completed your aptitude assessment. Understanding your risk tolerance is the foundation of every investment decision.",
+      2: "You've learned the power of diversification. Spreading risk across asset classes is the only free lunch in investing.",
+      3: "You've survived a market crash. Emotional discipline is the most valuable investing skill you can develop.",
+      4: "You've seen the power of compound growth. Time is your greatest advantage — start early, stay invested.",
+      5: "You now understand asset classes. Each serves a purpose — growth, stability, insurance, liquidity.",
+      6: "You've competed in the Arena. Comparing strategies reveals insights no textbook can teach.",
+      7: "You've graduated. Your Investment DNA reveals who you truly are as an investor.",
     };
 
     setLastMissionResult({
@@ -82,7 +93,13 @@ export default function AcademyApp() {
       xpEarned,
       debrief: debriefs[missionId] || "Well done, student. Every mission brings you closer to graduation.",
     });
-    setScreen("mission_result");
+
+    // Mission 7 goes straight to DNA report
+    if (missionId === 7) {
+      setScreen("dna_report");
+    } else {
+      setScreen("mission_result");
+    }
   };
 
   const activeTab =
@@ -98,106 +115,103 @@ export default function AcademyApp() {
 
   const showNav = ["dashboard", "missions", "learn", "profile"].includes(screen);
 
+  const renderMission = () => {
+    switch (activeMissionId) {
+      case 1:
+        return (
+          <Mission1Screen
+            onComplete={(score, riskProfile) =>
+              handleMissionComplete(1, score, { riskProfile })
+            }
+            onBack={() => setScreen("dashboard")}
+          />
+        );
+      case 3:
+        return (
+          <Mission3Screen
+            onComplete={(score, crashBehavior) =>
+              handleMissionComplete(3, score, { crashBehavior })
+            }
+            onBack={() => setScreen("dashboard")}
+          />
+        );
+      default:
+        return (
+          <MissionPlaceholderScreen
+            missionId={activeMissionId}
+            onComplete={(score) => handleMissionComplete(activeMissionId, score)}
+            onBack={() => setScreen("dashboard")}
+          />
+        );
+    }
+  };
+
   return (
     <MobileLayout>
-      <AnimatePresence mode="wait">
-        {screen === "enrollment" && (
-          <motion.div key="enrollment" className="flex-1 flex flex-col overflow-hidden"
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <EnrollmentScreen onEnroll={handleEnroll} />
-          </motion.div>
-        )}
+      {screen === "enrollment" && (
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <EnrollmentScreen onEnroll={handleEnroll} />
+        </div>
+      )}
 
-        {screen === "dashboard" && (
-          <motion.div key="dashboard" className="flex-1 flex flex-col overflow-hidden"
-            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-            <AcademyDashboard
-              progress={progress}
-              onStartMission={(id) => {
-                if (id === 1) setScreen("mission_1");
-                else if (id === 3) setScreen("mission_3");
-                else setScreen("missions");
-              }}
-            />
-          </motion.div>
-        )}
+      {screen === "dashboard" && (
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <AcademyDashboard
+            progress={progress}
+            onStartMission={handleStartMission}
+          />
+        </div>
+      )}
 
-        {screen === "missions" && (
-          <motion.div key="missions" className="flex-1 flex flex-col overflow-hidden"
-            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-            <MissionsScreen
-              progress={progress}
-              onStartMission={(id) => {
-                if (id === 1) setScreen("mission_1");
-                else if (id === 3) setScreen("mission_3");
-                else setScreen("missions");
-              }}
-              onBack={() => setScreen("dashboard")}
-            />
-          </motion.div>
-        )}
+      {screen === "missions" && (
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <MissionsScreen
+            progress={progress}
+            onStartMission={handleStartMission}
+            onBack={() => setScreen("dashboard")}
+          />
+        </div>
+      )}
 
-        {screen === "mission_1" && (
-          <motion.div key="m1" className="flex-1 flex flex-col overflow-hidden"
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <Mission1Screen
-              onComplete={(score, riskProfile) =>
-                handleMissionComplete(1, score, { riskProfile })
-              }
-              onBack={() => setScreen("dashboard")}
-            />
-          </motion.div>
-        )}
+      {screen === "mission" && (
+        <div className="flex-1 flex flex-col overflow-hidden">
+          {renderMission()}
+        </div>
+      )}
 
-        {screen === "mission_3" && (
-          <motion.div key="m3" className="flex-1 flex flex-col overflow-hidden"
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <Mission3Screen
-              onComplete={(score, crashBehavior) =>
-                handleMissionComplete(3, score, { crashBehavior })
-              }
-              onBack={() => setScreen("dashboard")}
-            />
-          </motion.div>
-        )}
+      {screen === "mission_result" && lastMissionResult && (
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <MissionResultScreen
+            {...lastMissionResult}
+            rankInfo={getCurrentRank(progress.xp)}
+            onContinue={() => setScreen("dashboard")}
+            onViewDNA={
+              progress.completedMissions.length >= 2
+                ? () => setScreen("dna_report")
+                : undefined
+            }
+          />
+        </div>
+      )}
 
-        {screen === "mission_result" && lastMissionResult && (
-          <motion.div key="result" className="flex-1 flex flex-col overflow-hidden"
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <MissionResultScreen
-              {...lastMissionResult}
-              rankInfo={getCurrentRank(progress.xp)}
-              onContinue={() => setScreen("dashboard")}
-              onViewDNA={
-                progress.completedMissions.length >= 2
-                  ? () => setScreen("dna_report")
-                  : undefined
-              }
-            />
-          </motion.div>
-        )}
+      {screen === "dna_report" && (
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <DNAReportScreen
+            progress={progress}
+            onBack={() => setScreen("dashboard")}
+          />
+        </div>
+      )}
 
-        {screen === "dna_report" && (
-          <motion.div key="dna" className="flex-1 flex flex-col overflow-hidden"
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <DNAReportScreen
-              progress={progress}
-              onBack={() => setScreen("dashboard")}
-            />
-          </motion.div>
-        )}
-
-        {(screen === "learn" || screen === "profile") && (
-          <motion.div key={screen} className="flex-1 flex flex-col items-center justify-center p-8 text-center"
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <span className="text-4xl mb-3">{screen === "learn" ? "📚" : "👤"}</span>
-            <h2 className="text-lg font-bold text-foreground mb-1">
-              {screen === "learn" ? "Learning Resources" : "Your Profile"}
-            </h2>
-            <p className="text-sm text-muted-foreground">Coming soon</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {(screen === "learn" || screen === "profile") && (
+        <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
+          <span className="text-4xl mb-3">{screen === "learn" ? "📚" : "👤"}</span>
+          <h2 className="text-lg font-bold text-foreground mb-1">
+            {screen === "learn" ? "Learning Resources" : "Your Profile"}
+          </h2>
+          <p className="text-sm text-muted-foreground">Coming soon</p>
+        </div>
+      )}
 
       {showNav && (
         <BottomNav
@@ -207,7 +221,6 @@ export default function AcademyApp() {
         />
       )}
 
-      {/* Professor Chat Overlay */}
       <AnimatePresence>
         {showProfessor && (
           <ProfessorChat
