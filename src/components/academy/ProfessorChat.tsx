@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { motion } from "framer-motion";
+
 import { X, Send, GraduationCap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Rank } from "@/lib/academy-state";
@@ -105,12 +105,8 @@ export function ProfessorChat({
   };
 
   return (
-    <motion.div
+    <div
       className="absolute inset-0 z-50 flex flex-col bg-[#F3F3F3] rounded-[50px] overflow-hidden"
-      initial={{ y: "100%" }}
-      animate={{ y: 0 }}
-      exit={{ y: "100%" }}
-      transition={{ type: "spring", damping: 25, stiffness: 200 }}
     >
       {/* Header */}
       <div className="bg-gradient-to-r from-[#1A2332] to-[#243044] px-5 pt-14 pb-4 flex items-center justify-between shrink-0">
@@ -134,14 +130,12 @@ export function ProfessorChat({
       {/* Messages */}
       <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
         {messages.map((msg) => (
-          <motion.div
+          <div
             key={msg.id}
             className={cn(
               "flex",
               msg.role === "student" ? "justify-end" : "justify-start"
             )}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
           >
             {msg.role === "professor" && (
               <div className="w-7 h-7 bg-[#FFC800] rounded-full flex items-center justify-center shrink-0 mr-2 mt-1">
@@ -158,7 +152,7 @@ export function ProfessorChat({
             >
               <p className="text-sm leading-relaxed">{msg.content}</p>
             </div>
-          </motion.div>
+          </div>
         ))}
 
         {isTyping && (
@@ -200,6 +194,6 @@ export function ProfessorChat({
           </button>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { GraduationCap, Sparkles, ChevronRight } from "lucide-react";
 
 export function EnrollmentScreen({ onEnroll }: { onEnroll: (name: string) => void }) {
@@ -14,48 +13,28 @@ export function EnrollmentScreen({ onEnroll }: { onEnroll: (name: string) => voi
         {/* Yellow gradient header area */}
         <div className="bg-gradient-to-b from-[#FFC800]/20 to-transparent pt-12 pb-4">
           <div className="flex justify-center">
-            <motion.div
-              className="w-24 h-24 bg-gradient-to-br from-[#FFC800] to-[#E6B400] rounded-3xl flex items-center justify-center shadow-[0_4px_12px_rgba(255,200,0,0.3)]"
-              initial={{ scale: 0, rotate: -180 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ type: "spring", stiffness: 100, delay: 0.2 }}
-            >
+            <div className="w-24 h-24 bg-gradient-to-br from-[#FFC800] to-[#E6B400] rounded-3xl flex items-center justify-center shadow-[0_4px_12px_rgba(255,200,0,0.3)]">
               <GraduationCap size={48} className="text-[#333333]" />
-            </motion.div>
+            </div>
           </div>
         </div>
 
         <div className="flex-1 flex flex-col items-center px-8 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="mb-4"
-          >
+          <div className="mb-4">
             <h1 className="text-3xl font-bold text-[#333333] mb-1 tracking-tight">
               Wealth Manager
             </h1>
             <h2 className="text-xl font-bold text-[#FFC800]">Academy</h2>
-          </motion.div>
+          </div>
 
-          <motion.p
-            className="text-[#767676] text-sm leading-relaxed mb-8 max-w-[280px]"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.7 }}
-          >
+          <p className="text-[#767676] text-sm leading-relaxed mb-8 max-w-[280px]">
             Master the art of investing through guided missions.
             Learn by doing. Graduate with your Investment DNA.
-          </motion.p>
+          </p>
 
-          {/* Feature badges in a row */}
-          <motion.div
-            className="flex items-center gap-2 mb-10 flex-wrap justify-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.9 }}
-          >
-            {["Risk Profiling", "Crash Survival", "DNA Report"].map(
+          {/* Feature badges */}
+          <div className="flex items-center gap-2 mb-10 flex-wrap justify-center">
+            {["🪞 Risk Profiling", "📉 Crash Survival", "🧬 DNA Report"].map(
               (item, i) => (
                 <div
                   key={i}
@@ -65,14 +44,9 @@ export function EnrollmentScreen({ onEnroll }: { onEnroll: (name: string) => voi
                 </div>
               )
             )}
-          </motion.div>
+          </div>
 
-          <motion.div
-            className="w-full space-y-3"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.1 }}
-          >
+          <div className="w-full space-y-3">
             <button
               onClick={() => setStep("name")}
               className="w-full py-3.5 rounded-xl font-bold text-[15px] transition-all active:scale-[0.98] bg-[#FFC800] text-[#333333] hover:bg-[#E6B400] shadow-sm flex items-center justify-center gap-2"
@@ -80,27 +54,19 @@ export function EnrollmentScreen({ onEnroll }: { onEnroll: (name: string) => voi
               <Sparkles size={18} />
               Enroll Now
             </button>
-          </motion.div>
+          </div>
         </div>
 
-        <motion.p
-          className="text-center text-[#767676] text-[10px] pb-6"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.3 }}
-        >
+        <p className="text-center text-[#767676] text-[10px] pb-6">
           Powered by PostFinance
-        </motion.p>
+        </p>
       </div>
     );
   }
 
   return (
     <div className="flex-1 flex flex-col bg-[#F3F3F3] px-8 pt-16">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-      >
+      <div>
         <div className="w-14 h-14 bg-gradient-to-br from-[#FFC800] to-[#E6B400] rounded-2xl flex items-center justify-center mb-8 shadow-sm">
           <GraduationCap size={28} className="text-[#333333]" />
         </div>
@@ -135,7 +101,7 @@ export function EnrollmentScreen({ onEnroll }: { onEnroll: (name: string) => voi
           Begin Your Journey
           <ChevronRight size={18} />
         </button>
-      </motion.div>
+      </div>
     </div>
   );
 }

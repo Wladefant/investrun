@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+
 import { Lock, CheckCircle2, Play, Clock } from "lucide-react";
 import { ScreenHeader } from "@/components/academy/MobileLayout";
 import { cn } from "@/lib/utils";
@@ -47,7 +47,7 @@ export function MissionsScreen({
           const iconBg = missionIconBgColors[mission.id] || "bg-gray-100";
 
           return (
-            <motion.button
+            <button
               key={mission.id}
               onClick={() => status !== "locked" && onStartMission(mission.id)}
               disabled={status === "locked"}
@@ -56,9 +56,6 @@ export function MissionsScreen({
                 status === "locked" && "opacity-50 grayscale",
                 status === "available" && "active:scale-[0.98]"
               )}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.05 * i }}
             >
               <div className="flex">
                 {/* Left indicator bar */}
@@ -115,7 +112,7 @@ export function MissionsScreen({
                   )}
                 </div>
               </div>
-            </motion.button>
+            </button>
           );
         })}
       </div>

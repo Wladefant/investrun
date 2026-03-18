@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+
 import {
   Sparkles,
   ChevronRight,
@@ -39,13 +39,11 @@ export function AcademyDashboard({
       <div className="bg-white px-4 py-4 pb-6 rounded-b-[30px] shadow-sm">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <motion.div
-              animate={{ rotate: [0, 10, -10, 0] }}
-              transition={{ repeat: Infinity, duration: 2, repeatDelay: 3 }}
+            <div
               className="w-12 h-12 bg-gradient-to-br from-yellow-100 to-amber-100 rounded-full flex items-center justify-center text-2xl shadow-sm"
             >
               {rank.icon}
-            </motion.div>
+            </div>
             <div>
               <div className="text-xs text-[#767676] font-bold uppercase tracking-wider">
                 {rank.label}
@@ -70,11 +68,9 @@ export function AcademyDashboard({
             )}
           </div>
           <div className="w-full h-2.5 bg-gray-200 rounded-full overflow-hidden">
-            <motion.div
+            <div
               className="h-full bg-gradient-to-r from-[#FFC800] to-[#E6B400] rounded-full"
-              initial={{ width: 0 }}
-              animate={{ width: `${xpInfo.percentage}%` }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
+              style={{ width: `${xpInfo.percentage}%` }}
             />
           </div>
         </div>
@@ -83,8 +79,7 @@ export function AcademyDashboard({
       <div className="p-4 space-y-4">
         {/* Quick stats grid - 3 columns like ing-app */}
         <div className="grid grid-cols-3 gap-3">
-          <motion.div
-            whileTap={{ scale: 0.95 }}
+          <div
             className="bg-white p-3 rounded-xl shadow-sm text-center"
           >
             <div className="text-2xl mb-1">
@@ -92,9 +87,8 @@ export function AcademyDashboard({
             </div>
             <div className="text-lg font-bold text-[#333333]">{rank.label}</div>
             <div className="text-[10px] text-[#767676]">Rank</div>
-          </motion.div>
-          <motion.div
-            whileTap={{ scale: 0.95 }}
+          </div>
+          <div
             className="bg-white p-3 rounded-xl shadow-sm text-center"
           >
             <div className="text-2xl mb-1">
@@ -102,9 +96,8 @@ export function AcademyDashboard({
             </div>
             <div className="text-lg font-bold text-[#333333]">{progress.xp}</div>
             <div className="text-[10px] text-[#767676]">XP</div>
-          </motion.div>
-          <motion.div
-            whileTap={{ scale: 0.95 }}
+          </div>
+          <div
             className="bg-white p-3 rounded-xl shadow-sm text-center"
           >
             <div className="text-2xl mb-1">
@@ -114,7 +107,7 @@ export function AcademyDashboard({
               {completedCount}/{MISSIONS.length}
             </div>
             <div className="text-[10px] text-[#767676]">Missions</div>
-          </motion.div>
+          </div>
         </div>
 
         {/* Next Mission CTA - gradient card like ing-app daily challenge */}
@@ -125,12 +118,9 @@ export function AcademyDashboard({
             );
             if (!nextMission) return null;
             return (
-              <motion.button
+              <button
                 onClick={() => onStartMission(nextMission.id)}
                 className="w-full bg-gradient-to-br from-[#FFC800] to-[#E6B400] p-4 rounded-2xl shadow-lg text-left active:scale-[0.98] transition-transform relative overflow-hidden"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
               >
                 <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-10 -mt-10" />
                 <div className="relative z-10">
@@ -154,7 +144,7 @@ export function AcademyDashboard({
                     <ChevronRight size={14} />
                   </div>
                 </div>
-              </motion.button>
+              </button>
             );
           })()}
 
@@ -175,7 +165,7 @@ export function AcademyDashboard({
               const score = progress.missionScores[mission.id];
 
               return (
-                <motion.button
+                <button
                   key={mission.id}
                   onClick={() =>
                     status !== "locked" && onStartMission(mission.id)
@@ -189,9 +179,6 @@ export function AcademyDashboard({
                         ? "bg-green-50 border border-green-100 shadow-sm"
                         : "bg-white border border-gray-100 shadow-sm hover:border-[#FFC800]/50 active:scale-[0.98]"
                   )}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.05 * i + 0.2 }}
                 >
                   {/* Icon with colored indicator */}
                   <div
@@ -239,7 +226,7 @@ export function AcademyDashboard({
                       <Play size={12} className="text-[#333333] ml-0.5" fill="currentColor" />
                     </div>
                   )}
-                </motion.button>
+                </button>
               );
             })}
           </div>

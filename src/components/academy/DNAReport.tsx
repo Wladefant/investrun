@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+
 import { ScreenHeader } from "@/components/academy/MobileLayout";
 import { Button } from "@/components/ui/button";
 import { Share2, GraduationCap } from "lucide-react";
@@ -92,11 +92,8 @@ export function DNAReportScreen({
       <div className="flex-1 overflow-y-auto bg-[#F3F3F3]">
         {/* DNA Card — intentionally dark for contrast */}
         <div className="mx-5 my-4">
-          <motion.div
+          <div
             className="bg-gradient-to-br from-[#1A2332] via-[#1F2B3D] to-[#243044] rounded-3xl p-6 relative overflow-hidden"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ type: "spring", stiffness: 80 }}
           >
             {/* Shimmer overlay */}
             <div className="absolute inset-0 shimmer rounded-3xl" />
@@ -113,24 +110,18 @@ export function DNAReportScreen({
             </div>
 
             {/* Personality */}
-            <motion.div
+            <div
               className="text-center mb-6 relative"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
             >
               <div className="text-5xl mb-3">{personality.icon}</div>
               <h2 className="text-white text-xl font-bold">{personality.name}</h2>
               <p className="text-[#FFC800] text-xs font-medium mt-1">{personality.tagline}</p>
               <p className="text-white/50 text-[10px] mt-1">{progress.playerName}</p>
-            </motion.div>
+            </div>
 
             {/* Radar chart */}
-            <motion.div
+            <div
               className="h-48 mb-4 relative"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
             >
               <ResponsiveContainer width="100%" height="100%">
                 <RadarChart data={radarData} cx="50%" cy="50%" outerRadius="65%">
@@ -148,14 +139,11 @@ export function DNAReportScreen({
                   />
                 </RadarChart>
               </ResponsiveContainer>
-            </motion.div>
+            </div>
 
             {/* Strengths */}
-            <motion.div
+            <div
               className="relative"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.7 }}
             >
               <p className="text-white/40 text-[10px] font-medium mb-2">STRENGTHS</p>
               <div className="flex flex-wrap gap-1.5 mb-4">
@@ -171,14 +159,11 @@ export function DNAReportScreen({
 
               <p className="text-white/40 text-[10px] font-medium mb-1">BLIND SPOT</p>
               <p className="text-white/60 text-xs">{personality.blindSpot}</p>
-            </motion.div>
+            </div>
 
             {/* Footer */}
-            <motion.div
+            <div
               className="flex items-center justify-between mt-6 pt-4 border-t border-white/10 relative"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.9 }}
             >
               <div>
                 <p className="text-white/40 text-[10px]">Missions completed</p>
@@ -192,8 +177,8 @@ export function DNAReportScreen({
                 <p className="text-white/30 text-[8px]">Powered by</p>
                 <p className="text-white/50 text-[10px] font-bold">PostFinance</p>
               </div>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         </div>
 
         {/* Actions */}
