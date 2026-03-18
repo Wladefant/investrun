@@ -2,9 +2,9 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Future You Simulator | PostFinance",
+  title: "Wealth Manager Academy | PostFinance",
   description:
-    "See your financial future. Simulate decades of investing in minutes. Learn behavioral finance by doing.",
+    "Master investing through guided missions. Learn by doing. Graduate with your Investment DNA.",
 };
 
 export const viewport: Viewport = {
@@ -12,7 +12,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-  themeColor: "#000000",
+  themeColor: "#FFC800",
 };
 
 export default function RootLayout({
@@ -22,7 +22,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-pf-black text-pf-white antialiased">
+      <head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="min-h-screen bg-background text-foreground antialiased">
         {children}
       </body>
     </html>

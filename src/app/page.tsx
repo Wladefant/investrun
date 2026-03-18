@@ -2,176 +2,222 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import IPhoneFrame from "@/components/IPhoneFrame";
-import Link from "next/link";
+import { MobileLayout, BottomNav } from "@/components/academy/MobileLayout";
+import { AcademyDashboard } from "@/components/academy/Dashboard";
+import { MissionsScreen } from "@/components/academy/MissionsScreen";
+import { EnrollmentScreen } from "@/components/academy/EnrollmentScreen";
+import { Mission1Screen } from "@/components/academy/missions/Mission1";
+import { Mission3Screen } from "@/components/academy/missions/Mission3";
+import { MissionResultScreen } from "@/components/academy/MissionResult";
+import { DNAReportScreen } from "@/components/academy/DNAReport";
+import { ProfessorChat } from "@/components/academy/ProfessorChat";
+import {
+  INITIAL_PROGRESS,
+  getCurrentRank,
+  type AcademyProgress,
+  type RiskArchetype,
+} from "@/lib/academy-state";
 
-export default function Home() {
-  const [entered, setEntered] = useState(false);
+type Screen =
+  | "enrollment"
+  | "dashboard"
+  | "missions"
+  | "learn"
+  | "profile"
+  | "mission_1"
+  | "mission_3"
+  | "mission_result"
+  | "dna_report";
+
+export default function AcademyApp() {
+  const [screen, setScreen] = useState<Screen>("enrollment");
+  const [progress, setProgress] = useState<AcademyProgress>(INITIAL_PROGRESS);
+  const [showProfessor, setShowProfessor] = useState(false);
+  const [lastMissionResult, setLastMissionResult] = useState<{
+    missionId: number;
+    grade: string;
+    score: number;
+    xpEarned: number;
+    debrief: string;
+  } | null>(null);
+
+  const handleEnroll = (name: string) => {
+    setProgress((p) => ({ ...p, playerName: name }));
+    setScreen("dashboard");
+  };
+
+  const handleMissionComplete = (
+    missionId: number,
+    score: number,
+    data?: Record<string, unknown>
+  ) => {
+    const grade =
+      score >= 90 ? "A" : score >= 80 ? "B" : score >= 70 ? "C" : score >= 60 ? "D" : "F";
+    const xpEarned = Math.round(score * 1.5) + (grade === "A" ? 30 : 0);
+
+    setProgress((p) => ({
+      ...p,
+      xp: p.xp + xpEarned,
+      currentRank: getCurrentRank(p.xp + xpEarned).id,
+      completedMissions: [...new Set([...p.completedMissions, missionId])],
+      missionScores: {
+        ...p.missionScores,
+        [missionId]: { grade, score, xpEarned },
+      },
+      ...(data?.riskProfile ? { riskProfile: data.riskProfile as RiskArchetype } : {}),
+      ...(data?.crashBehavior
+        ? { crashBehavior: data.crashBehavior as AcademyProgress["crashBehavior"] }
+        : {}),
+    }));
+
+    const debriefs: Record<number, string> = {
+      1: "You've completed your aptitude assessment. Understanding your risk tolerance is the foundation of every investment decision. Remember: there are no wrong answers — only self-knowledge.",
+      3: "You've survived a market crash. The lesson isn't about what the market did — it's about what YOU did. Emotional discipline is the most valuable investing skill you can develop.",
+    };
+
+    setLastMissionResult({
+      missionId,
+      grade,
+      score,
+      xpEarned,
+      debrief: debriefs[missionId] || "Well done, student. Every mission brings you closer to graduation.",
+    });
+    setScreen("mission_result");
+  };
+
+  const activeTab =
+    screen === "dashboard"
+      ? "dashboard"
+      : screen === "missions"
+        ? "missions"
+        : screen === "learn"
+          ? "learn"
+          : screen === "profile"
+            ? "profile"
+            : "dashboard";
+
+  const showNav = ["dashboard", "missions", "learn", "profile"].includes(screen);
 
   return (
-    <IPhoneFrame>
+    <MobileLayout>
       <AnimatePresence mode="wait">
-        {!entered ? (
-          <SplashScreen onEnter={() => setEntered(true)} key="splash" />
-        ) : (
-          <ModeSelection key="modes" />
+        {screen === "enrollment" && (
+          <motion.div key="enrollment" className="flex-1 flex flex-col overflow-hidden"
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <EnrollmentScreen onEnroll={handleEnroll} />
+          </motion.div>
+        )}
+
+        {screen === "dashboard" && (
+          <motion.div key="dashboard" className="flex-1 flex flex-col overflow-hidden"
+            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
+            <AcademyDashboard
+              progress={progress}
+              onStartMission={(id) => {
+                if (id === 1) setScreen("mission_1");
+                else if (id === 3) setScreen("mission_3");
+                else setScreen("missions");
+              }}
+            />
+          </motion.div>
+        )}
+
+        {screen === "missions" && (
+          <motion.div key="missions" className="flex-1 flex flex-col overflow-hidden"
+            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
+            <MissionsScreen
+              progress={progress}
+              onStartMission={(id) => {
+                if (id === 1) setScreen("mission_1");
+                else if (id === 3) setScreen("mission_3");
+                else setScreen("missions");
+              }}
+              onBack={() => setScreen("dashboard")}
+            />
+          </motion.div>
+        )}
+
+        {screen === "mission_1" && (
+          <motion.div key="m1" className="flex-1 flex flex-col overflow-hidden"
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <Mission1Screen
+              onComplete={(score, riskProfile) =>
+                handleMissionComplete(1, score, { riskProfile })
+              }
+              onBack={() => setScreen("dashboard")}
+            />
+          </motion.div>
+        )}
+
+        {screen === "mission_3" && (
+          <motion.div key="m3" className="flex-1 flex flex-col overflow-hidden"
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <Mission3Screen
+              onComplete={(score, crashBehavior) =>
+                handleMissionComplete(3, score, { crashBehavior })
+              }
+              onBack={() => setScreen("dashboard")}
+            />
+          </motion.div>
+        )}
+
+        {screen === "mission_result" && lastMissionResult && (
+          <motion.div key="result" className="flex-1 flex flex-col overflow-hidden"
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <MissionResultScreen
+              {...lastMissionResult}
+              rankInfo={getCurrentRank(progress.xp)}
+              onContinue={() => setScreen("dashboard")}
+              onViewDNA={
+                progress.completedMissions.length >= 2
+                  ? () => setScreen("dna_report")
+                  : undefined
+              }
+            />
+          </motion.div>
+        )}
+
+        {screen === "dna_report" && (
+          <motion.div key="dna" className="flex-1 flex flex-col overflow-hidden"
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <DNAReportScreen
+              progress={progress}
+              onBack={() => setScreen("dashboard")}
+            />
+          </motion.div>
+        )}
+
+        {(screen === "learn" || screen === "profile") && (
+          <motion.div key={screen} className="flex-1 flex flex-col items-center justify-center p-8 text-center"
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <span className="text-4xl mb-3">{screen === "learn" ? "📚" : "👤"}</span>
+            <h2 className="text-lg font-bold text-foreground mb-1">
+              {screen === "learn" ? "Learning Resources" : "Your Profile"}
+            </h2>
+            <p className="text-sm text-muted-foreground">Coming soon</p>
+          </motion.div>
         )}
       </AnimatePresence>
-    </IPhoneFrame>
-  );
-}
 
-function SplashScreen({ onEnter }: { onEnter: () => void }) {
-  return (
-    <motion.div
-      className="flex flex-col items-center justify-center h-full px-8 text-center"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.5 }}
-    >
-      {/* Logo glow */}
-      <motion.div
-        className="w-20 h-20 rounded-full bg-pf-yellow mb-8"
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ delay: 0.3, duration: 0.6, type: "spring" }}
-        style={{ boxShadow: "0 0 60px rgba(255, 200, 0, 0.4)" }}
-      />
+      {showNav && (
+        <BottomNav
+          activeTab={activeTab}
+          onNavigate={(tab) => setScreen(tab as Screen)}
+          onProfessorClick={() => setShowProfessor(true)}
+        />
+      )}
 
-      <motion.h1
-        className="text-3xl font-extrabold tracking-tight mb-2"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6 }}
-      >
-        FUTURE YOU
-      </motion.h1>
-      <motion.h2
-        className="text-lg font-bold text-pf-yellow mb-6"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.8 }}
-      >
-        SIMULATOR
-      </motion.h2>
-
-      <motion.p
-        className="text-pf-gray-300 text-sm leading-relaxed mb-10 max-w-[280px]"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.0 }}
-      >
-        See what investing does to your life. Simulate decades in minutes.
-        Learn by doing — not by reading.
-      </motion.p>
-
-      <motion.button
-        onClick={onEnter}
-        className="bg-pf-yellow text-pf-black font-bold text-lg px-10 py-4 rounded-2xl active:scale-95 transition-transform"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.2 }}
-        whileTap={{ scale: 0.95 }}
-      >
-        START YOUR FUTURE
-      </motion.button>
-
-      <motion.p
-        className="text-pf-gray-500 text-xs mt-6"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
-      >
-        Powered by PostFinance
-      </motion.p>
-    </motion.div>
-  );
-}
-
-function ModeSelection() {
-  const modes = [
-    {
-      title: "MY FUTURE",
-      subtitle: "See what investing does for you",
-      description: "Pick a goal. Set your budget. Watch your future unfold.",
-      href: "/estimate",
-      icon: "✨",
-      color: "from-pf-yellow/20 to-transparent",
-      primary: true,
-    },
-    {
-      title: "SIMULATE",
-      subtitle: "20 years in 5 minutes",
-      description: "Build a portfolio. Survive crashes. Learn by doing.",
-      href: "/simulate",
-      icon: "📈",
-      color: "from-pf-green/10 to-transparent",
-      primary: false,
-    },
-    {
-      title: "COMPETE",
-      subtitle: "Challenge friends & AI rivals",
-      description: "Same market. Same conditions. Who invests best?",
-      href: "/compete",
-      icon: "⚔️",
-      color: "from-pf-red/10 to-transparent",
-      primary: false,
-    },
-  ];
-
-  return (
-    <motion.div
-      className="flex flex-col h-full px-6 py-4"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.4 }}
-    >
-      <h1 className="text-xl font-extrabold mb-1">Choose Your Mode</h1>
-      <p className="text-pf-gray-500 text-sm mb-6">
-        Start with My Future — it only takes 30 seconds.
-      </p>
-
-      <div className="flex flex-col gap-4 flex-1">
-        {modes.map((mode, i) => (
-          <Link href={mode.href} key={mode.title}>
-            <motion.div
-              className={`relative rounded-2xl p-5 border transition-all active:scale-[0.98] ${
-                mode.primary
-                  ? "border-pf-yellow bg-gradient-to-br " + mode.color
-                  : "border-pf-gray-800 bg-gradient-to-br " + mode.color
-              }`}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.1 * i }}
-            >
-              <div className="flex items-start gap-4">
-                <span className="text-3xl">{mode.icon}</span>
-                <div className="flex-1">
-                  <h2
-                    className={`font-bold text-base ${
-                      mode.primary ? "text-pf-yellow" : "text-pf-white"
-                    }`}
-                  >
-                    {mode.title}
-                  </h2>
-                  <p className="text-pf-gray-300 text-sm mt-0.5">
-                    {mode.subtitle}
-                  </p>
-                  <p className="text-pf-gray-500 text-xs mt-2">
-                    {mode.description}
-                  </p>
-                </div>
-                <span className="text-pf-gray-500 text-lg">→</span>
-              </div>
-            </motion.div>
-          </Link>
-        ))}
-      </div>
-
-      <p className="text-center text-pf-gray-700 text-[10px] mt-4">
-        PostFinance · Future You Simulator
-      </p>
-    </motion.div>
+      {/* Professor Chat Overlay */}
+      <AnimatePresence>
+        {showProfessor && (
+          <ProfessorChat
+            isOpen={showProfessor}
+            onClose={() => setShowProfessor(false)}
+            playerName={progress.playerName}
+            rank={getCurrentRank(progress.xp)}
+          />
+        )}
+      </AnimatePresence>
+    </MobileLayout>
   );
 }
