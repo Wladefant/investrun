@@ -159,7 +159,13 @@ These are presented as scenarios, not predictions. The AI Mentor adds: *"These a
    | 2020 | COVID pandemic | "Global pandemic. Fastest crash in market history — 30% in 3 weeks. But here's what nobody expected: the fastest recovery too." |
    | 2022 | Inflation & rate hikes | "Inflation at 40-year highs. Central banks hiking rates. For the first time in decades, bonds AND stocks are falling together." |
 
-   **Between major events**: the chart moves, your portfolio grows or shrinks, but no interruptions. No daily news noise. The player sees the long arc — years of boring growth punctuated by dramatic moments. This itself teaches: **investing is mostly waiting.**
+   **Between major events**: Lightweight AI "story beats" appear every 15-25 seconds as subtle narrator lines and mini-headline strips. These add immersion without interrupting gameplay:
+   - "2010: Markets are recovering. Confidence is returning. Everyone feels smart again."
+   - "2013: Five years since the crash. Markets just passed their pre-crisis highs."
+   - "2017: Volatility near historic lows. Optimism everywhere. Sound familiar?"
+   - "2019: The longest bull run in history. Nobody remembers what a crash feels like."
+
+   These story beats DO NOT trigger decision points — the chart keeps moving. They provide narrative texture between the 5-6 major events that pause the game. The player sees the long arc — years of growth with atmospheric narration, punctuated by dramatic decision moments. This teaches: **investing is mostly waiting, but the story of waiting matters.**
 
 4. **Decision Points** — At each major event, the player can:
    - **Hold** — do nothing (often the right move)
@@ -217,6 +223,23 @@ These are presented as scenarios, not predictions. The AI Mentor adds: *"These a
 ### 3.3 Competitive Mode
 
 **Purpose**: Social engagement, retention, and event activation.
+
+**AI Rival Mode** (optional layer in Competitive or standalone):
+
+Three AI opponents compete alongside human players, each with a deterministic strategy and a generated personality voice:
+
+| Rival | Strategy | Personality | Example Line |
+|-------|----------|-------------|-------------|
+| **Bull** 🐂 | 90% equities, buys every dip, never sells | Cocky, aggressive, celebrates gains | *"Stocks only go up! ...oh. Well, they'll come back. BUYING MORE!"* |
+| **Bear** 🐻 | 40% bonds, 20% gold, sells equities at first sign of trouble | Cautious, smug when crashes hit | *"My bonds are doing just fine. How's your all-equity portfolio?"* |
+| **Fox** 🦊 | Balanced allocation, rebalances quarterly, follows momentum | Calm, strategic, slightly superior | *"Diversification isn't exciting. It's just correct."* |
+
+Each AI rival has:
+- A **deterministic strategy** (fast, fair, reproducible for async challenges)
+- A **personality voice** (GPT-5.2 generates 1-2 sentence commentary at each major event)
+- A **post-game debrief** comparing their behavior vs yours: *"Bull made 15% more than you in bull markets but lost 40% in the crash. Fox beat everyone on risk-adjusted returns. Your panic-sell put you behind Bear."*
+
+This gives users a "boss fight" feeling, makes every match feel alive, and is extremely demo-friendly — judges see the bots react in character during crashes.
 
 **Synchronous (Event Mode):**
 

@@ -1,0 +1,109 @@
+[
+  {
+    "date": "2007-10-01",
+    "title": "Pre-Crisis Peak",
+    "description": "Markets at all-time highs. Everyone feels invincible. The word 'subprime' hasn't entered everyday vocabulary yet.",
+    "severity": "info",
+    "lesson": "euphoria_warning",
+    "storyBeat": false
+  },
+  {
+    "date": "2008-09-15",
+    "title": "Global Financial Crisis",
+    "description": "Lehman Brothers collapses. Markets crash 40%. The biggest financial crisis since the Great Depression.",
+    "severity": "critical",
+    "lesson": "staying_invested",
+    "mentorLine": "Lehman Brothers just collapsed. Markets are down 40%. This is the moment 92% of investors make their worst mistake. What do you do?",
+    "storyBeat": false
+  },
+  {
+    "date": "2009-03-09",
+    "title": "The Bottom",
+    "description": "Markets hit rock bottom. Nobody knows it yet. The bravest investors are buying.",
+    "severity": "info",
+    "lesson": "buying_fear",
+    "storyBeat": true,
+    "beatLine": "March 2009. The absolute bottom. Nobody knows it yet, but this is the greatest buying opportunity of a generation."
+  },
+  {
+    "date": "2010-06-01",
+    "title": "Recovery Begins",
+    "description": "Markets have recovered 60% from the bottom. The crisis feels like a distant memory.",
+    "severity": "info",
+    "lesson": "patience_pays",
+    "storyBeat": true,
+    "beatLine": "2010: Recovery is real. If you held through 2008, you're already seeing gains. Patience is paying off."
+  },
+  {
+    "date": "2011-08-01",
+    "title": "European Debt Crisis",
+    "description": "Greece might go bankrupt. European markets shaking. Your bonds are holding steady — that's diversification working.",
+    "severity": "major",
+    "lesson": "diversification",
+    "mentorLine": "Greece might go bankrupt. European markets are shaking. Your bonds are holding steady — that's diversification working.",
+    "storyBeat": false
+  },
+  {
+    "date": "2013-01-01",
+    "title": "Bull Run Begins",
+    "description": "Markets pass their pre-crisis highs for the first time in 5 years.",
+    "severity": "info",
+    "lesson": "long_term",
+    "storyBeat": true,
+    "beatLine": "2013: Five years since the crash. Markets just passed their pre-crisis highs. Those who held are finally whole again."
+  },
+  {
+    "date": "2015-01-15",
+    "title": "Swiss Franc Shock",
+    "description": "The Swiss National Bank removes the EUR/CHF floor. The franc surges 30% in minutes. Swiss exporters in shock.",
+    "severity": "major",
+    "lesson": "currency_risk",
+    "mentorLine": "The Swiss franc just surged 30% in minutes. Swiss exporters are in shock. If you hold foreign assets, you just took a hit.",
+    "storyBeat": false
+  },
+  {
+    "date": "2017-01-01",
+    "title": "Low Volatility Era",
+    "description": "Volatility near historic lows. Optimism everywhere.",
+    "severity": "info",
+    "lesson": "complacency",
+    "storyBeat": true,
+    "beatLine": "2017: Volatility near historic lows. Optimism everywhere. Sound familiar?"
+  },
+  {
+    "date": "2019-06-01",
+    "title": "Longest Bull Run",
+    "description": "The longest bull run in history. Nobody remembers what a crash feels like.",
+    "severity": "info",
+    "lesson": "cycle_awareness",
+    "storyBeat": true,
+    "beatLine": "2019: The longest bull run in history. Nobody remembers what a crash feels like."
+  },
+  {
+    "date": "2020-03-11",
+    "title": "COVID-19 Pandemic",
+    "description": "Global pandemic. Fastest crash in market history — 30% in 3 weeks. But the fastest recovery too.",
+    "severity": "critical",
+    "lesson": "crash_recovery",
+    "mentorLine": "Global pandemic declared. Fastest crash in market history — 30% in 3 weeks. But here's what nobody expected: the fastest recovery too.",
+    "storyBeat": false
+  },
+  {
+    "date": "2021-06-01",
+    "title": "Post-COVID Boom",
+    "description": "Markets at new all-time highs. Free money era. Everyone's an investor.",
+    "severity": "info",
+    "lesson": "euphoria_warning",
+    "storyBeat": true,
+    "beatLine": "2021: Markets at new all-time highs. Interest rates at zero. Your neighbor is trading meme stocks. Everything's going up."
+  },
+  {
+    "date": "2022-06-01",
+    "title": "Inflation & Rate Shock",
+    "description": "Inflation at 40-year highs. Central banks hiking rates. Bonds AND stocks falling together for the first time in decades.",
+    "severity": "major",
+    "lesson": "rate_risk",
+    "mentorLine": "Inflation at 40-year highs. Central banks hiking rates. For the first time in decades, bonds AND stocks are falling together.",
+    "storyBeat": false
+  }
+]
