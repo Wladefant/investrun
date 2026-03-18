@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import { X, Send, GraduationCap, Loader2 } from "lucide-react";
+import { X, Send, GraduationCap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Rank } from "@/lib/academy-state";
 
@@ -106,7 +106,7 @@ export function ProfessorChat({
 
   return (
     <motion.div
-      className="absolute inset-0 z-50 flex flex-col bg-background rounded-[50px] overflow-hidden"
+      className="absolute inset-0 z-50 flex flex-col bg-[#F3F3F3] rounded-[50px] overflow-hidden"
       initial={{ y: "100%" }}
       animate={{ y: 0 }}
       exit={{ y: "100%" }}
@@ -115,17 +115,17 @@ export function ProfessorChat({
       {/* Header */}
       <div className="bg-gradient-to-r from-[#1A2332] to-[#243044] px-5 pt-14 pb-4 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-gradient-to-br from-[#FFC800] to-[#E6B400] rounded-full flex items-center justify-center">
+          <div className="w-10 h-10 bg-[#FFC800] rounded-full flex items-center justify-center">
             <GraduationCap size={20} className="text-[#1A2332]" />
           </div>
           <div>
             <p className="text-white text-sm font-bold">Professor Fortuna</p>
-            <p className="text-gray-400 text-[10px]">Investment Coach · AI</p>
+            <p className="text-gray-400 text-[10px]">Investment Coach</p>
           </div>
         </div>
         <button
           onClick={onClose}
-          className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-colors"
+          className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-colors active:scale-[0.98]"
         >
           <X size={16} />
         </button>
@@ -144,16 +144,16 @@ export function ProfessorChat({
             animate={{ opacity: 1, y: 0 }}
           >
             {msg.role === "professor" && (
-              <div className="w-7 h-7 bg-gradient-to-br from-[#FFC800] to-[#E6B400] rounded-full flex items-center justify-center shrink-0 mr-2 mt-1">
+              <div className="w-7 h-7 bg-[#FFC800] rounded-full flex items-center justify-center shrink-0 mr-2 mt-1">
                 <GraduationCap size={12} className="text-[#1A2332]" />
               </div>
             )}
             <div
               className={cn(
-                "max-w-[80%] rounded-2xl px-4 py-3",
+                "max-w-[80%] px-4 py-3",
                 msg.role === "student"
-                  ? "bg-[#FFC800] text-[#1A2332] rounded-br-md"
-                  : "bg-white border border-border shadow-sm rounded-bl-md"
+                  ? "bg-[#FFC800] text-[#333333] rounded-2xl rounded-br-sm"
+                  : "bg-white shadow-sm border border-gray-100 rounded-2xl rounded-bl-sm"
               )}
             >
               <p className="text-sm leading-relaxed">{msg.content}</p>
@@ -163,13 +163,16 @@ export function ProfessorChat({
 
         {isTyping && (
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-gradient-to-br from-[#FFC800] to-[#E6B400] rounded-full flex items-center justify-center shrink-0">
+            <div className="w-7 h-7 bg-[#FFC800] rounded-full flex items-center justify-center shrink-0">
               <GraduationCap size={12} className="text-[#1A2332]" />
             </div>
-            <div className="bg-white border border-border rounded-2xl rounded-bl-md px-4 py-3 shadow-sm">
+            <div className="bg-white border border-gray-100 rounded-2xl rounded-bl-sm px-4 py-3 shadow-sm">
               <div className="flex items-center gap-1.5">
-                <Loader2 size={14} className="animate-spin text-[#FFC800]" />
-                <span className="text-xs text-muted-foreground">Professor is thinking...</span>
+                <div className="flex gap-1">
+                  <span className="w-1.5 h-1.5 bg-[#767676] rounded-full animate-bounce [animation-delay:0ms]" />
+                  <span className="w-1.5 h-1.5 bg-[#767676] rounded-full animate-bounce [animation-delay:150ms]" />
+                  <span className="w-1.5 h-1.5 bg-[#767676] rounded-full animate-bounce [animation-delay:300ms]" />
+                </div>
               </div>
             </div>
           </div>
@@ -178,7 +181,7 @@ export function ProfessorChat({
       </div>
 
       {/* Input */}
-      <div className="px-4 pb-8 pt-3 bg-background border-t border-border shrink-0">
+      <div className="px-4 pb-8 pt-3 bg-white border-t border-gray-100 shrink-0">
         <div className="flex items-center gap-2">
           <input
             type="text"
@@ -186,12 +189,12 @@ export function ProfessorChat({
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && sendMessage()}
             placeholder="Ask Professor Fortuna..."
-            className="flex-1 bg-muted rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#FFC800] transition-all"
+            className="flex-1 bg-[#F3F3F3] rounded-xl px-4 py-3 text-sm text-[#333333] outline-none focus:ring-2 focus:ring-[#FFC800] transition-all placeholder:text-[#767676]"
           />
           <button
             onClick={sendMessage}
             disabled={!input.trim() || isTyping}
-            className="w-11 h-11 bg-gradient-to-br from-[#FFC800] to-[#E6B400] rounded-xl flex items-center justify-center text-[#1A2332] disabled:opacity-40 active:scale-95 transition-all"
+            className="w-11 h-11 bg-[#FFC800] rounded-xl flex items-center justify-center text-[#333333] disabled:opacity-40 active:scale-[0.98] transition-all"
           >
             <Send size={16} />
           </button>

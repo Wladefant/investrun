@@ -165,6 +165,15 @@ For ANY web research, documentation lookup, or web search:
 - **NEVER use `gh` CLI** (bash commands like `gh pr create`, `gh issue view`, `gh issue list`) — use MCP instead
 - The GitHub MCP is faster, more reliable, and doesn't consume shell tokens
 
+## Windows / Next.js Gotchas (CRITICAL)
+- **`.next` directory lock issue**: On Windows, when `next dev` crashes or gets killed, `.next/trace` stays locked by an orphan process. Every subsequent `next build` or `next dev` fails with `EPERM: operation not permitted`.
+  - **Fix**: Always run `powershell -Command "Get-Process node -ErrorAction SilentlyContinue | Stop-Process -Force; Start-Sleep 2; Remove-Item -Recurse -Force '.next' -ErrorAction SilentlyContinue"` before building.
+  - Or use `npm run clean` (already configured in package.json).
+  - `npm run build` already runs `clean` first.
+  - Next.js telemetry is disabled globally to reduce trace file writes.
+- **Never run two `next build` or `next dev` commands simultaneously** — they will fight over the `.next` directory.
+- **`ing-app/` must be excluded from tsconfig** — it's a reference Vite app, not part of the Next.js build. `"exclude": ["node_modules", "ing-app"]` in tsconfig.json.
+
 ## Browser Automation
 - **Prefer `mcp__claude-in-chrome__*` tools** over Playwright for all browser tasks
 - Only use Playwright if Claude in Chrome is unavailable or the task specifically requires it

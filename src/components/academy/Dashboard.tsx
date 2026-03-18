@@ -1,7 +1,15 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Sparkles, ChevronRight, Lock, CheckCircle2, Play } from "lucide-react";
+import {
+  Sparkles,
+  ChevronRight,
+  Lock,
+  CheckCircle2,
+  Play,
+  Trophy,
+  Target,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   type AcademyProgress,
@@ -26,36 +34,44 @@ export function AcademyDashboard({
   const remaining = MISSIONS.length - completedCount;
 
   return (
-    <div className="flex-1 overflow-y-auto">
-      {/* Header with rank */}
-      <div className="bg-gradient-to-br from-[#1A2332] via-[#1F2B3D] to-[#243044] px-5 pt-2 pb-6 rounded-b-[28px]">
+    <div className="flex-1 overflow-y-auto bg-[#F3F3F3]">
+      {/* Header section - white with rounded bottom like ing-app */}
+      <div className="bg-white px-4 py-4 pb-6 rounded-b-[30px] shadow-sm">
         <div className="flex items-center justify-between mb-4">
-          <div>
-            <p className="text-gray-400 text-xs">Welcome back,</p>
-            <h1 className="text-white text-xl font-bold">{progress.playerName}</h1>
+          <div className="flex items-center gap-3">
+            <motion.div
+              animate={{ rotate: [0, 10, -10, 0] }}
+              transition={{ repeat: Infinity, duration: 2, repeatDelay: 3 }}
+              className="w-12 h-12 bg-gradient-to-br from-yellow-100 to-amber-100 rounded-full flex items-center justify-center text-2xl shadow-sm"
+            >
+              {rank.icon}
+            </motion.div>
+            <div>
+              <div className="text-xs text-[#767676] font-bold uppercase tracking-wider">
+                {rank.label}
+              </div>
+              <div className="font-bold text-[#333333]">{progress.playerName}</div>
+            </div>
           </div>
-          <div className="bg-white/10 px-3 py-1.5 rounded-full flex items-center gap-2">
-            <span className="text-lg">{rank.icon}</span>
-            <span className="text-white text-xs font-bold">{rank.label}</span>
+          <div className="flex items-center gap-2 bg-yellow-50 px-3 py-1.5 rounded-full border border-yellow-100">
+            <Sparkles size={16} className="text-[#FFC800]" />
+            <span className="font-bold text-amber-600 text-sm">{progress.xp} XP</span>
           </div>
         </div>
 
-        {/* XP Progress */}
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-2">
-              <Sparkles size={14} className="text-[#FFC800]" />
-              <span className="text-white text-sm font-bold">{progress.xp} XP</span>
-            </div>
+        {/* XP Progress bar */}
+        <div className="bg-gray-100 rounded-xl p-3">
+          <div className="flex items-center justify-between mb-1.5">
+            <span className="text-xs font-bold text-[#333333]">Progress</span>
             {nextRank && (
-              <span className="text-gray-400 text-xs">
+              <span className="text-xs text-[#767676]">
                 {xpInfo.required - xpInfo.current} XP to {nextRank.label}
               </span>
             )}
           </div>
-          <div className="w-full h-2.5 bg-white/10 rounded-full overflow-hidden">
+          <div className="w-full h-2.5 bg-gray-200 rounded-full overflow-hidden">
             <motion.div
-              className="h-full bg-gradient-to-r from-[#FFC800] to-[#FFD633] rounded-full relative"
+              className="h-full bg-gradient-to-r from-[#FFC800] to-[#E6B400] rounded-full"
               initial={{ width: 0 }}
               animate={{ width: `${xpInfo.percentage}%` }}
               transition={{ duration: 0.8, ease: "easeOut" }}
@@ -64,89 +80,92 @@ export function AcademyDashboard({
         </div>
       </div>
 
-      <div className="px-5 py-5 space-y-4">
-        {/* Progress card */}
-        <motion.div
-          className="bg-white rounded-2xl p-4 shadow-sm border border-border"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-        >
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-[#FFC800]/20 to-[#FFC800]/5 rounded-xl flex items-center justify-center">
-              <span className="text-2xl">🎯</span>
-            </div>
-            <div className="flex-1">
-              <p className="text-sm font-bold text-foreground">
-                {remaining > 0
-                  ? `${remaining} mission${remaining !== 1 ? "s" : ""} to graduation!`
-                  : "Ready to graduate! 🎓"}
-              </p>
-              <p className="text-xs text-muted-foreground">
-                {completedCount} of {MISSIONS.length} completed
-              </p>
-            </div>
-            <div className="flex gap-1">
-              {MISSIONS.map((_, i) => (
-                <div
-                  key={i}
-                  className={cn(
-                    "w-2 h-2 rounded-full",
-                    progress.completedMissions.includes(i + 1)
-                      ? "bg-[#FFC800]"
-                      : "bg-gray-200"
-                  )}
-                />
-              ))}
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Next Mission CTA */}
-        {remaining > 0 && (
+      <div className="p-4 space-y-4">
+        {/* Quick stats grid - 3 columns like ing-app */}
+        <div className="grid grid-cols-3 gap-3">
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
+            whileTap={{ scale: 0.95 }}
+            className="bg-white p-3 rounded-xl shadow-sm text-center"
           >
-            {(() => {
-              const nextMission = MISSIONS.find(
-                (m) => !progress.completedMissions.includes(m.id)
-              );
-              if (!nextMission) return null;
-              return (
-                <button
-                  onClick={() => onStartMission(nextMission.id)}
-                  className={cn(
-                    "w-full bg-gradient-to-r rounded-2xl p-5 text-left active:scale-[0.98] transition-transform shadow-sm",
-                    nextMission.color
-                  )}
-                >
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-white/80 text-xs font-medium mb-1">
-                        NEXT MISSION
-                      </p>
-                      <p className="text-white text-lg font-bold">
-                        {nextMission.icon} {nextMission.title}
-                      </p>
-                      <p className="text-white/80 text-xs mt-1">
-                        {nextMission.description}
-                      </p>
-                    </div>
-                    <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center shrink-0 ml-3">
-                      <Play size={20} className="text-white ml-0.5" fill="white" />
-                    </div>
-                  </div>
-                </button>
-              );
-            })()}
+            <div className="text-2xl mb-1">
+              <Trophy size={22} className="text-[#FFC800] mx-auto" />
+            </div>
+            <div className="text-lg font-bold text-[#333333]">{rank.label}</div>
+            <div className="text-[10px] text-[#767676]">Rank</div>
           </motion.div>
-        )}
+          <motion.div
+            whileTap={{ scale: 0.95 }}
+            className="bg-white p-3 rounded-xl shadow-sm text-center"
+          >
+            <div className="text-2xl mb-1">
+              <Sparkles size={22} className="text-[#FFC800] mx-auto" />
+            </div>
+            <div className="text-lg font-bold text-[#333333]">{progress.xp}</div>
+            <div className="text-[10px] text-[#767676]">XP</div>
+          </motion.div>
+          <motion.div
+            whileTap={{ scale: 0.95 }}
+            className="bg-white p-3 rounded-xl shadow-sm text-center"
+          >
+            <div className="text-2xl mb-1">
+              <Target size={22} className="text-[#FFC800] mx-auto" />
+            </div>
+            <div className="text-lg font-bold text-[#333333]">
+              {completedCount}/{MISSIONS.length}
+            </div>
+            <div className="text-[10px] text-[#767676]">Missions</div>
+          </motion.div>
+        </div>
 
-        {/* Mission list */}
+        {/* Next Mission CTA - gradient card like ing-app daily challenge */}
+        {remaining > 0 &&
+          (() => {
+            const nextMission = MISSIONS.find(
+              (m) => !progress.completedMissions.includes(m.id)
+            );
+            if (!nextMission) return null;
+            return (
+              <motion.button
+                onClick={() => onStartMission(nextMission.id)}
+                className="w-full bg-gradient-to-br from-[#FFC800] to-[#E6B400] p-4 rounded-2xl shadow-lg text-left active:scale-[0.98] transition-transform relative overflow-hidden"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+              >
+                <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-10 -mt-10" />
+                <div className="relative z-10">
+                  <div className="flex justify-between items-start mb-3">
+                    <div className="flex items-center gap-2 font-bold text-[#333333]">
+                      <Target size={20} />
+                      <span>Next Mission</span>
+                    </div>
+                    <span className="text-xs font-bold bg-white/30 text-[#333333] px-2 py-1 rounded-md">
+                      +{50 + nextMission.id * 20} XP
+                    </span>
+                  </div>
+                  <p className="text-[15px] font-bold text-[#333333] mb-1">
+                    {nextMission.icon} {nextMission.title}
+                  </p>
+                  <p className="text-sm text-[#333333]/70 mb-2">
+                    {nextMission.description}
+                  </p>
+                  <div className="flex items-center gap-1 text-xs font-bold text-[#333333]">
+                    <span>Start now</span>
+                    <ChevronRight size={14} />
+                  </div>
+                </div>
+              </motion.button>
+            );
+          })()}
+
+        {/* Mission list - white cards with colored left indicators */}
         <div>
-          <h2 className="text-sm font-bold text-foreground mb-3">All Missions</h2>
+          <div className="flex justify-between items-center mb-3">
+            <h2 className="text-sm font-bold text-[#333333]">All Missions</h2>
+            <span className="text-xs text-[#767676]">
+              {completedCount} of {MISSIONS.length} completed
+            </span>
+          </div>
           <div className="space-y-2.5">
             {MISSIONS.map((mission, i) => {
               const status = getMissionStatus(
@@ -163,25 +182,26 @@ export function AcademyDashboard({
                   }
                   disabled={status === "locked"}
                   className={cn(
-                    "w-full bg-white rounded-xl p-3.5 flex items-center gap-3 text-left transition-all border",
+                    "w-full rounded-xl p-3.5 flex items-center gap-3 text-left transition-all",
                     status === "locked"
-                      ? "opacity-50 grayscale border-border"
+                      ? "bg-gray-50 opacity-60 grayscale border border-gray-100"
                       : status === "completed"
-                        ? "border-[#FFC800]/30 shadow-sm"
-                        : "border-border shadow-sm hover:border-[#FFC800]/50 active:scale-[0.98]"
+                        ? "bg-green-50 border border-green-100 shadow-sm"
+                        : "bg-white border border-gray-100 shadow-sm hover:border-[#FFC800]/50 active:scale-[0.98]"
                   )}
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.05 * i + 0.3 }}
+                  transition={{ delay: 0.05 * i + 0.2 }}
                 >
+                  {/* Icon with colored indicator */}
                   <div
                     className={cn(
-                      "w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-lg",
+                      "w-10 h-10 rounded-full flex items-center justify-center shrink-0 text-lg",
                       status === "completed"
-                        ? "bg-[#FFC800]/10"
+                        ? "bg-green-100"
                         : status === "locked"
                           ? "bg-gray-100"
-                          : "bg-gradient-to-br " + mission.color + " text-white"
+                          : "bg-yellow-50"
                     )}
                   >
                     {status === "locked" ? (
@@ -189,7 +209,7 @@ export function AcademyDashboard({
                     ) : status === "completed" ? (
                       <CheckCircle2
                         size={20}
-                        className="text-[#FFC800]"
+                        className="text-green-500"
                         fill="currentColor"
                       />
                     ) : (
@@ -198,24 +218,26 @@ export function AcademyDashboard({
                   </div>
 
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-bold text-foreground truncate">
+                    <p className="text-sm font-bold text-[#333333] truncate">
                       {mission.title}
                     </p>
-                    <p className="text-[11px] text-muted-foreground">
+                    <p className="text-[11px] text-[#767676]">
                       {mission.subtitle} · {mission.duration}
                     </p>
                   </div>
 
                   {score && (
-                    <div className="bg-[#FFC800]/10 px-2 py-1 rounded-lg">
-                      <span className="text-xs font-bold text-[#FFC800]">
+                    <div className="bg-green-100 px-2 py-1 rounded-lg">
+                      <span className="text-xs font-bold text-green-600">
                         {score.grade}
                       </span>
                     </div>
                   )}
 
                   {status === "available" && (
-                    <ChevronRight size={16} className="text-gray-400 shrink-0" />
+                    <div className="w-8 h-8 bg-[#FFC800] rounded-full flex items-center justify-center shrink-0">
+                      <Play size={12} className="text-[#333333] ml-0.5" fill="currentColor" />
+                    </div>
                   )}
                 </motion.button>
               );

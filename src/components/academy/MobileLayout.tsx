@@ -11,21 +11,20 @@ interface LayoutProps {
 
 export function MobileLayout({ children, className }: LayoutProps) {
   return (
-    <div className="min-h-screen w-full flex justify-center items-center p-4 font-sans bg-[#E8E6E1]">
+    <div className="min-h-screen w-full flex justify-center items-center p-4 font-sans bg-white">
       <div
         className={cn(
-          "w-full max-w-[393px] h-[852px] bg-background shadow-2xl overflow-hidden relative flex flex-col rounded-[50px] border-[6px] border-[#1A2332]",
+          "w-full max-w-[375px] h-[812px] bg-[#F3F3F3] shadow-2xl overflow-hidden relative flex flex-col rounded-[30px] border-8 border-[#FFC800]",
           className
         )}
       >
-        {/* Status Bar */}
-        <div className="h-12 bg-background flex justify-between items-center px-8 text-xs font-semibold text-foreground shrink-0 z-50">
+        {/* Status Bar Mockup */}
+        <div className="h-8 bg-[#F3F3F3] flex justify-between items-center px-6 text-xs font-medium text-gray-500 shrink-0 z-50">
           <span>09:41</span>
-          <div className="absolute top-3 left-1/2 -translate-x-1/2 w-[120px] h-[34px] bg-[#1A2332] rounded-full" />
-          <div className="flex gap-1.5 items-center">
-            <div className="w-4 h-2.5 rounded-sm border border-foreground/40 relative">
-              <div className="absolute inset-[1px] right-[2px] bg-foreground/60 rounded-[1px]" />
-            </div>
+          <div className="flex gap-1.5">
+            <div className="w-4 h-4 rounded-full bg-gray-300/50" />
+            <div className="w-4 h-4 rounded-full bg-gray-300/50" />
+            <div className="w-6 h-3 rounded-sm bg-gray-400/50" />
           </div>
         </div>
 
@@ -53,21 +52,12 @@ export function ScreenHeader({
 }) {
   const isDark = variant === "dark";
   return (
-    <div
-      className={cn(
-        "h-14 px-5 flex items-center justify-between shrink-0",
-        isDark ? "bg-[#1A2332]" : "bg-background",
-        className
-      )}
-    >
-      <div className="flex items-center gap-3">
+    <div className={cn("h-14 px-4 flex items-center justify-between shrink-0", isDark ? "bg-[#333333]" : "bg-[#F3F3F3]", className)}>
+      <div className="flex items-center gap-4">
         {onBack && (
           <button
             onClick={onBack}
-            className={cn(
-              "transition-colors",
-              isDark ? "text-[#FFC800]" : "text-[#FFC800]"
-            )}
+            className={cn("text-[#FFC800]", isDark && "text-[#FFC800]")}
             title="Back"
           >
             <svg
@@ -76,7 +66,7 @@ export function ScreenHeader({
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="2.5"
+              strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
             >
@@ -85,18 +75,37 @@ export function ScreenHeader({
           </button>
         )}
         {title && (
-          <h1
-            className={cn(
-              "text-lg font-bold",
-              isDark ? "text-white" : "text-foreground"
-            )}
-          >
+          <h1 className={cn("text-lg font-bold", isDark ? "text-white" : "text-[#333333]")}>
             {title}
           </h1>
         )}
       </div>
       {rightAction}
     </div>
+  );
+}
+
+export function PFButton({
+  children,
+  variant = "primary",
+  className,
+  ...props
+}: React.ButtonHTMLAttributes<HTMLButtonElement> & {
+  variant?: "primary" | "secondary" | "outline";
+}) {
+  return (
+    <button
+      className={cn(
+        "w-full py-3.5 rounded-xl font-bold text-[15px] transition-all active:scale-[0.98]",
+        variant === "primary" && "bg-[#FFC800] text-[#333333] hover:bg-[#E6B400] shadow-sm",
+        variant === "secondary" && "bg-[#33307E] text-white hover:bg-[#282668] shadow-sm",
+        variant === "outline" && "bg-transparent border-2 border-[#FFC800] text-[#FFC800]",
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </button>
   );
 }
 
@@ -110,15 +119,15 @@ export function BottomNav({
   onProfessorClick?: () => void;
 }) {
   return (
-    <div className="h-20 bg-white border-t border-border flex justify-around items-end pb-2 text-[10px] font-medium text-muted-foreground shrink-0 z-20 relative">
+    <div className="h-20 bg-white border-t border-gray-200 flex justify-around items-end pb-2 text-[10px] font-medium text-gray-500 shrink-0 z-20 relative">
       <NavItem
-        icon={<Home size={22} />}
+        icon={<Home size={24} />}
         label="Home"
         active={activeTab === "dashboard"}
         onClick={() => onNavigate("dashboard")}
       />
       <NavItem
-        icon={<Target size={22} />}
+        icon={<Target size={24} />}
         label="Missions"
         active={activeTab === "missions"}
         onClick={() => onNavigate("missions")}
@@ -128,22 +137,22 @@ export function BottomNav({
       <div className="relative -top-6">
         <button
           onClick={onProfessorClick}
-          className="w-16 h-16 bg-white rounded-full flex items-center justify-center pf-glow-sm border-4 border-background active:scale-95 transition-transform"
+          className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-[0_4px_12px_rgba(255,200,0,0.3)] border-4 border-[#F3F3F3] active:scale-95 transition-transform"
         >
-          <div className="w-12 h-12 bg-gradient-to-br from-[#FFC800] to-[#E6B400] rounded-full flex items-center justify-center">
-            <GraduationCap size={24} className="text-[#1A2332]" />
+          <div className="w-12 h-12 bg-[#FFC800] rounded-full flex items-center justify-center">
+            <GraduationCap size={24} className="text-[#333333]" />
           </div>
         </button>
       </div>
 
       <NavItem
-        icon={<BookOpen size={22} />}
+        icon={<BookOpen size={24} />}
         label="Learn"
         active={activeTab === "learn"}
         onClick={() => onNavigate("learn")}
       />
       <NavItem
-        icon={<User size={22} />}
+        icon={<User size={24} />}
         label="Profile"
         active={activeTab === "profile"}
         onClick={() => onNavigate("profile")}
@@ -167,7 +176,7 @@ function NavItem({
     <button
       onClick={onClick}
       className={cn(
-        "flex flex-col items-center gap-1 w-1/5 py-2 transition-colors",
+        "flex flex-col items-center gap-1 w-1/5 py-2",
         active ? "text-[#FFC800]" : "text-gray-400 hover:text-gray-600"
       )}
     >

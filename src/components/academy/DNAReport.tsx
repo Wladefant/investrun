@@ -89,8 +89,8 @@ export function DNAReportScreen({
   return (
     <>
       <ScreenHeader title="Investment DNA" onBack={onBack} />
-      <div className="flex-1 overflow-y-auto">
-        {/* DNA Card */}
+      <div className="flex-1 overflow-y-auto bg-[#F3F3F3]">
+        {/* DNA Card — intentionally dark for contrast */}
         <div className="mx-5 my-4">
           <motion.div
             className="bg-gradient-to-br from-[#1A2332] via-[#1F2B3D] to-[#243044] rounded-3xl p-6 relative overflow-hidden"
@@ -202,7 +202,7 @@ export function DNAReportScreen({
             <Share2 size={16} />
             Share Your DNA
           </Button>
-          <Button variant="ghost" size="lg" className="w-full" onClick={onBack}>
+          <Button variant="ghost" size="lg" className="w-full text-[#767676]" onClick={onBack}>
             Back to Academy
           </Button>
         </div>

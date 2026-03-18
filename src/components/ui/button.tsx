@@ -4,21 +4,26 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl font-bold text-[15px] transition-all active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl font-bold text-[15px] transition-all active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FFC800]/50 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        default: "bg-[#FFC800] text-[#1A2332] hover:bg-[#E6B400] shadow-sm pf-glow-sm",
-        secondary: "bg-[#1A2332] text-white hover:bg-[#243044] shadow-sm",
-        outline: "border-2 border-[#FFC800] bg-transparent text-[#FFC800] hover:bg-[#FFC800]/10",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        link: "text-primary underline-offset-4 hover:underline",
+        default:
+          "bg-[#FFC800] text-[#333333] hover:bg-[#E6B400] shadow-sm",
+        secondary:
+          "bg-[#33307E] text-white hover:bg-[#282668] shadow-sm",
+        outline:
+          "bg-transparent border-2 border-[#FFC800] text-[#FFC800] hover:bg-[#FFC800]/10",
+        ghost:
+          "hover:bg-accent hover:text-accent-foreground",
+        destructive:
+          "bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-sm",
+        link: "text-[#FFC800] underline-offset-4 hover:underline",
       },
       size: {
-        default: "h-12 px-6 py-3",
+        default: "w-full py-3.5",
         sm: "h-9 rounded-lg px-3 text-xs",
-        lg: "h-14 rounded-xl px-8 text-base",
+        lg: "w-full py-4 text-base",
         icon: "h-10 w-10 rounded-full",
       },
     },

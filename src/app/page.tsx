@@ -16,6 +16,7 @@ import { MissionPlaceholderScreen } from "@/components/academy/missions/MissionP
 import { MissionResultScreen } from "@/components/academy/MissionResult";
 import { DNAReportScreen } from "@/components/academy/DNAReport";
 import { ProfessorChat } from "@/components/academy/ProfessorChat";
+import { FutureEstimationScreen } from "@/components/academy/FutureEstimation";
 import {
   INITIAL_PROGRESS,
   getCurrentRank,
@@ -243,13 +244,26 @@ export default function AcademyApp() {
         </div>
       )}
 
-      {(screen === "learn" || screen === "profile") && (
-        <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
-          <span className="text-4xl mb-3">{screen === "learn" ? "📚" : "👤"}</span>
-          <h2 className="text-lg font-bold text-foreground mb-1">
-            {screen === "learn" ? "Learning Resources" : "Your Profile"}
-          </h2>
-          <p className="text-sm text-muted-foreground">Coming soon</p>
+      {screen === "learn" && (
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <FutureEstimationScreen onBack={() => setScreen("dashboard")} />
+        </div>
+      )}
+
+      {screen === "profile" && (
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
+            <span className="text-4xl mb-3">👤</span>
+            <h2 className="text-lg font-bold text-[#333333] mb-1">
+              {progress.playerName}
+            </h2>
+            <p className="text-sm text-[#767676] mb-4">
+              {getCurrentRank(progress.xp).icon} {getCurrentRank(progress.xp).label} · {progress.xp} XP
+            </p>
+            <p className="text-xs text-[#767676]">
+              {progress.completedMissions.length} of 7 missions completed
+            </p>
+          </div>
         </div>
       )}
 
