@@ -7,7 +7,11 @@ import { AcademyDashboard } from "@/components/academy/Dashboard";
 import { MissionsScreen } from "@/components/academy/MissionsScreen";
 import { EnrollmentScreen } from "@/components/academy/EnrollmentScreen";
 import { Mission1Screen } from "@/components/academy/missions/Mission1";
+import { Mission2Screen } from "@/components/academy/missions/Mission2";
 import { Mission3Screen } from "@/components/academy/missions/Mission3";
+import { Mission4Screen } from "@/components/academy/missions/Mission4";
+import { Mission5Screen } from "@/components/academy/missions/Mission5";
+import { Mission6Screen } from "@/components/academy/missions/Mission6";
 import { MissionPlaceholderScreen } from "@/components/academy/missions/MissionPlaceholder";
 import { MissionResultScreen } from "@/components/academy/MissionResult";
 import { DNAReportScreen } from "@/components/academy/DNAReport";
@@ -126,11 +130,47 @@ export default function AcademyApp() {
             onBack={() => setScreen("dashboard")}
           />
         );
+      case 2:
+        return (
+          <Mission2Screen
+            onComplete={(score, data) =>
+              handleMissionComplete(2, score, data)
+            }
+            onBack={() => setScreen("dashboard")}
+          />
+        );
       case 3:
         return (
           <Mission3Screen
             onComplete={(score, crashBehavior) =>
               handleMissionComplete(3, score, { crashBehavior })
+            }
+            onBack={() => setScreen("dashboard")}
+          />
+        );
+      case 4:
+        return (
+          <Mission4Screen
+            onComplete={(score, data) =>
+              handleMissionComplete(4, score, data)
+            }
+            onBack={() => setScreen("dashboard")}
+          />
+        );
+      case 5:
+        return (
+          <Mission5Screen
+            onComplete={(score, data) =>
+              handleMissionComplete(5, score, data)
+            }
+            onBack={() => setScreen("dashboard")}
+          />
+        );
+      case 6:
+        return (
+          <Mission6Screen
+            onComplete={(score, data) =>
+              handleMissionComplete(6, score, data)
             }
             onBack={() => setScreen("dashboard")}
           />
