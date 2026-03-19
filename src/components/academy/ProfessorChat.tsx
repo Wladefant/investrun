@@ -106,17 +106,17 @@ export function ProfessorChat({
 
   return (
     <div
-      className="absolute inset-0 z-50 flex flex-col bg-[#F3F3F3] rounded-[50px] overflow-hidden"
+      className="absolute inset-0 z-50 flex flex-col bg-background rounded-[50px] overflow-hidden"
     >
       {/* Header */}
-      <div className="bg-gradient-to-r from-[#1A2332] to-[#243044] px-5 pt-14 pb-4 flex items-center justify-between shrink-0">
+      <div className="bg-gradient-to-r from-popover to-[#243044] px-5 pt-14 pb-4 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-[#FFC800] rounded-full flex items-center justify-center">
-            <GraduationCap size={20} className="text-[#1A2332]" />
+          <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+            <GraduationCap size={20} className="text-primary-foreground" />
           </div>
           <div>
             <p className="text-white text-sm font-bold">Professor Fortuna</p>
-            <p className="text-gray-400 text-[10px]">Investment Coach</p>
+            <p className="text-muted-foreground text-[10px]">Investment Coach</p>
           </div>
         </div>
         <button
@@ -138,15 +138,15 @@ export function ProfessorChat({
             )}
           >
             {msg.role === "professor" && (
-              <div className="w-7 h-7 bg-[#FFC800] rounded-full flex items-center justify-center shrink-0 mr-2 mt-1">
-                <GraduationCap size={12} className="text-[#1A2332]" />
+              <div className="w-7 h-7 bg-primary rounded-full flex items-center justify-center shrink-0 mr-2 mt-1">
+                <GraduationCap size={12} className="text-primary-foreground" />
               </div>
             )}
             <div
               className={cn(
                 "max-w-[80%] px-4 py-3",
                 msg.role === "student"
-                  ? "bg-[#FFC800] text-[#333333] rounded-2xl rounded-br-sm"
+                  ? "bg-primary text-foreground rounded-2xl rounded-br-sm"
                   : "bg-card shadow-sm border border-border rounded-2xl rounded-bl-sm"
               )}
             >
@@ -157,15 +157,15 @@ export function ProfessorChat({
 
         {isTyping && (
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-[#FFC800] rounded-full flex items-center justify-center shrink-0">
-              <GraduationCap size={12} className="text-[#1A2332]" />
+            <div className="w-7 h-7 bg-primary rounded-full flex items-center justify-center shrink-0">
+              <GraduationCap size={12} className="text-primary-foreground" />
             </div>
             <div className="bg-card border border-border rounded-2xl rounded-bl-sm px-4 py-3 shadow-sm">
               <div className="flex items-center gap-1.5">
                 <div className="flex gap-1">
-                  <span className="w-1.5 h-1.5 bg-[#767676] rounded-full animate-bounce [animation-delay:0ms]" />
-                  <span className="w-1.5 h-1.5 bg-[#767676] rounded-full animate-bounce [animation-delay:150ms]" />
-                  <span className="w-1.5 h-1.5 bg-[#767676] rounded-full animate-bounce [animation-delay:300ms]" />
+                  <span className="w-1.5 h-1.5 bg-muted-foreground rounded-full animate-bounce [animation-delay:0ms]" />
+                  <span className="w-1.5 h-1.5 bg-muted-foreground rounded-full animate-bounce [animation-delay:150ms]" />
+                  <span className="w-1.5 h-1.5 bg-muted-foreground rounded-full animate-bounce [animation-delay:300ms]" />
                 </div>
               </div>
             </div>
@@ -183,12 +183,12 @@ export function ProfessorChat({
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && sendMessage()}
             placeholder="Ask Professor Fortuna..."
-            className="flex-1 bg-[#F3F3F3] rounded-xl px-4 py-3 text-sm text-[#333333] outline-none focus:ring-2 focus:ring-[#FFC800] transition-all placeholder:text-[#767676]"
+            className="flex-1 bg-background rounded-xl px-4 py-3 text-sm text-foreground outline-none focus:ring-2 focus:ring-primary transition-all placeholder:text-muted-foreground"
           />
           <button
             onClick={sendMessage}
             disabled={!input.trim() || isTyping}
-            className="w-11 h-11 bg-[#FFC800] rounded-xl flex items-center justify-center text-[#333333] disabled:opacity-40 active:scale-[0.98] transition-all"
+            className="w-11 h-11 bg-primary rounded-xl flex items-center justify-center text-foreground disabled:opacity-40 active:scale-[0.98] transition-all"
           >
             <Send size={16} />
           </button>

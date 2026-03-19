@@ -2,7 +2,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* PostFinance Academy — Light Theme (default) */
+/* Light mode - clean PostFinance */
 :root {
   --background: oklch(0.96 0.005 80);
   --foreground: oklch(0.25 0.01 260);
@@ -25,17 +25,16 @@
   --ring: oklch(0.82 0.17 85);
   --chart-1: oklch(0.82 0.17 85);
   --chart-2: oklch(0.35 0.12 290);
-  --chart-3: oklch(0.7 0.18 160);
+  --chart-3: oklch(0.75 0.18 160);
   --chart-4: oklch(0.7 0.15 220);
   --chart-5: oklch(0.65 0.15 30);
   --radius: 0.75rem;
-
-  --success: oklch(0.7 0.18 160);
+  --success: oklch(0.75 0.18 160);
   --warning: oklch(0.82 0.17 85);
   --glow: oklch(0.82 0.17 85 / 0.2);
 }
 
-/* PostFinance Academy — Premium Dark Theme (matches vercel app depth) */
+/* Dark mode - EXACT copy from vercel-future-you */
 .dark {
   --background: oklch(0.11 0.01 260);
   --foreground: oklch(0.98 0 0);
@@ -43,28 +42,27 @@
   --card-foreground: oklch(0.98 0 0);
   --popover: oklch(0.13 0.01 260);
   --popover-foreground: oklch(0.98 0 0);
-  --primary: oklch(0.82 0.17 85);
-  --primary-foreground: oklch(0.15 0.02 260);
+  --primary: oklch(0.75 0.18 160);
+  --primary-foreground: oklch(0.11 0.01 260);
   --secondary: oklch(0.22 0.015 260);
   --secondary-foreground: oklch(0.98 0 0);
   --muted: oklch(0.22 0.015 260);
   --muted-foreground: oklch(0.65 0 0);
-  --accent: oklch(0.82 0.17 85);
-  --accent-foreground: oklch(0.15 0.02 260);
+  --accent: oklch(0.75 0.18 160);
+  --accent-foreground: oklch(0.11 0.01 260);
   --destructive: oklch(0.65 0.2 25);
   --destructive-foreground: oklch(0.98 0 0);
   --border: oklch(0.25 0.015 260);
   --input: oklch(0.18 0.01 260);
-  --ring: oklch(0.82 0.17 85);
-  --chart-1: oklch(0.82 0.17 85);
+  --ring: oklch(0.75 0.18 160);
+  --chart-1: oklch(0.75 0.18 160);
   --chart-2: oklch(0.7 0.15 220);
-  --chart-3: oklch(0.7 0.18 160);
+  --chart-3: oklch(0.75 0.15 85);
   --chart-4: oklch(0.7 0.2 330);
   --chart-5: oklch(0.65 0.15 30);
-
-  --success: oklch(0.7 0.18 160);
-  --warning: oklch(0.82 0.17 85);
-  --glow: oklch(0.82 0.17 85 / 0.3);
+  --success: oklch(0.75 0.18 160);
+  --warning: oklch(0.8 0.15 85);
+  --glow: oklch(0.75 0.18 160 / 0.3);
 }
 
 @theme inline {
@@ -113,12 +111,12 @@
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
-/* PostFinance glow */
+/* Glow effect */
 .pf-glow {
-  box-shadow: 0 0 20px oklch(0.82 0.17 85 / 0.3), 0 0 60px oklch(0.82 0.17 85 / 0.1);
+  box-shadow: 0 0 20px var(--glow), 0 0 60px oklch(from var(--primary) l c h / 0.1);
 }
 .pf-glow-sm {
-  box-shadow: 0 4px 12px oklch(0.82 0.17 85 / 0.25);
+  box-shadow: 0 4px 12px var(--glow);
 }
 
 /* Shimmer */
@@ -127,7 +125,7 @@
   100% { background-position: 200% 0; }
 }
 .shimmer {
-  background: linear-gradient(90deg, transparent 0%, oklch(0.82 0.17 85 / 0.15) 50%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, oklch(from var(--primary) l c h / 0.15) 50%, transparent 100%);
   background-size: 200% 100%;
   animation: shimmer 3s infinite;
 }

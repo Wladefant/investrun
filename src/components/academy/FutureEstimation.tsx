@@ -50,7 +50,7 @@ export function FutureEstimationScreen({
   }
 
   return (
-    <div className="flex-1 flex flex-col bg-[#F3F3F3] overflow-hidden">
+    <div className="flex-1 flex flex-col bg-background overflow-hidden">
       <ScreenHeader
         title="My Future"
         onBack={phase === "goal" ? onBack : () => {
@@ -112,7 +112,7 @@ function GoalSelection({
 }) {
   return (
     <div className="pt-4 space-y-3">
-      <h2 className="text-xl font-bold text-[#333333] mb-4">
+      <h2 className="text-xl font-bold text-foreground mb-4">
         What&apos;s your dream?
       </h2>
 
@@ -124,17 +124,18 @@ function GoalSelection({
         >
           <span className="text-foregroundxl">{goal.icon}</span>
           <div className="flex-1 min-w-0">
-            <p className="font-semibold text-[#333333]">{goal.label}</p>
-            <p className="text-sm text-[#767676]">
+            <p className="font-semibold text-foreground">{goal.label}</p>
+            <p className="text-sm text-muted-foreground">
               CHF {goal.amount.toLocaleString("de-CH")}
             </p>
           </div>
           <svg
+            className="text-muted-foreground"
             width="20"
             height="20"
             viewBox="0 0 24 24"
             fill="none"
-            stroke="#767676"
+            stroke="currentColor"
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -146,10 +147,10 @@ function GoalSelection({
 
       {/* Custom amount */}
       <div className="bg-card p-4 rounded-xl shadow-sm border border-border space-y-3">
-        <p className="font-semibold text-[#333333]">Or enter your own amount</p>
+        <p className="font-semibold text-foreground">Or enter your own amount</p>
         <div className="flex gap-2">
           <div className="flex-1 relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#767676] text-sm">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">
               CHF
             </span>
             <input
@@ -157,7 +158,7 @@ function GoalSelection({
               value={customAmount}
               onChange={(e) => onCustomAmountChange(e.target.value)}
               placeholder="0"
-              className="w-full h-11 pl-12 pr-3 rounded-lg border border-border text-[#333333] text-sm focus:outline-none focus:border-[#FFC800] focus:ring-1 focus:ring-[#FFC800]"
+              className="w-full h-11 pl-12 pr-3 rounded-lg border border-border text-foreground text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
             />
           </div>
           <Button
@@ -192,18 +193,18 @@ function InvestmentPicker({
   return (
     <div className="pt-4 space-y-6">
       <div className="text-center space-y-1">
-        <p className="text-sm text-[#767676]">
+        <p className="text-sm text-muted-foreground">
           Goal: {goal.icon} {goal.label}
         </p>
-        <p className="text-sm text-[#767676]">
+        <p className="text-sm text-muted-foreground">
           CHF {goal.amount.toLocaleString("de-CH")}
         </p>
       </div>
 
       {/* Big number */}
       <div className="bg-card rounded-2xl shadow-sm p-6 text-center space-y-1">
-        <p className="text-sm text-[#767676]">Monthly investment</p>
-        <p className="text-primaryxl font-bold text-[#333333]">
+        <p className="text-sm text-muted-foreground">Monthly investment</p>
+        <p className="text-primaryxl font-bold text-foreground">
           CHF {monthly.toLocaleString("de-CH")}
         </p>
       </div>
@@ -217,12 +218,12 @@ function InvestmentPicker({
           step={50}
           value={monthly}
           onChange={(e) => onMonthlyChange(Number(e.target.value))}
-          className="w-full accent-[#FFC800] h-2 rounded-full appearance-none cursor-pointer"
+          className="w-full accent-primary h-2 rounded-full appearance-none cursor-pointer"
           style={{
             background: `linear-gradient(to right, #FFC800 ${((monthly - 50) / (2000 - 50)) * 100}%, #E5E7EB ${((monthly - 50) / (2000 - 50)) * 100}%)`,
           }}
         />
-        <div className="flex justify-between text-xs text-[#767676]">
+        <div className="flex justify-between text-xs text-muted-foreground">
           <span>CHF 50</span>
           <span>CHF 2,000</span>
         </div>
@@ -237,8 +238,8 @@ function InvestmentPicker({
             className={cn(
               "px-4 py-2 rounded-full text-sm font-medium transition-colors",
               monthly === amount
-                ? "bg-[#FFC800] text-[#333333]"
-                : "bg-card border border-border text-[#333333] hover:border-[#FFC800]"
+                ? "bg-primary text-foreground"
+                : "bg-card border border-border text-foreground hover:border-primary"
             )}
           >
             {amount}
@@ -287,10 +288,10 @@ function RevealPhase({
   }, [animated, onAnimated]);
 
   const barColors = [
-    "bg-gray-400",       // Just Saving
-    "bg-[#FFC800]/50",   // Cautious
-    "bg-[#FFC800]/80",   // Balanced
-    "bg-[#FFC800]",      // Growth
+    "bg-muted-foreground",       // Just Saving
+    "bg-primary/50",   // Cautious
+    "bg-primary/80",   // Balanced
+    "bg-primary",      // Growth
   ];
 
   const barLabels = [
@@ -302,7 +303,7 @@ function RevealPhase({
 
   return (
     <div className="pt-4 space-y-5">
-      <h2 className="text-xl font-bold text-[#333333]">
+      <h2 className="text-xl font-bold text-foreground">
         Time to reach your goal
       </h2>
 
@@ -314,14 +315,14 @@ function RevealPhase({
           return (
             <div key={i} className="space-y-1.5">
               <div className="flex justify-between text-sm">
-                <span className="text-[#333333] font-medium">
+                <span className="text-foreground font-medium">
                   {barLabels[i]}
                 </span>
-                <span className="text-[#767676]">
+                <span className="text-muted-foreground">
                   {displayYears} yr{displayYears !== 1 ? "s" : ""}
                 </span>
               </div>
-              <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
+              <div className="h-3 bg-border rounded-full overflow-hidden">
                 <div
                   className={cn(
                     "h-full rounded-full transition-all duration-1000 ease-out",
@@ -338,11 +339,11 @@ function RevealPhase({
       </div>
 
       {/* Punchline */}
-      <div className="bg-[#FFC800]/10 border border-[#FFC800]/30 rounded-2xl p-5 text-center space-y-2">
-        <p className="text-primary-foregroundxl font-bold text-[#333333]">
+      <div className="bg-primary/10 border border-primary/30 rounded-2xl p-5 text-center space-y-2">
+        <p className="text-primary-foregroundxl font-bold text-foreground">
           {Math.round(bestSaved * 10) / 10} years
         </p>
-        <p className="text-sm text-[#767676]">
+        <p className="text-sm text-muted-foreground">
           Investing buys you back from waiting. That&apos;s time you could spend
           living your dream instead of just saving for it.
         </p>
@@ -363,18 +364,18 @@ function CtaPhase({ onBack }: { onBack: () => void }) {
       <div className="text-5xl">📈</div>
 
       <div className="space-y-3">
-        <h2 className="text-xl font-bold text-[#333333]">
+        <h2 className="text-xl font-bold text-foreground">
           But markets don&apos;t go in straight lines
         </h2>
-        <p className="text-sm text-[#767676] leading-relaxed">
+        <p className="text-sm text-muted-foreground leading-relaxed">
           Real returns bounce around. Some years you&apos;re up 20%, others
           you&apos;re down 15%. Want to see what really happens to your money
           over time?
         </p>
       </div>
 
-      <div className="bg-[#FFC800]/10 border border-[#FFC800]/30 rounded-2xl p-5 space-y-2">
-        <p className="text-sm font-medium text-[#333333]">
+      <div className="bg-primary/10 border border-primary/30 rounded-2xl p-5 space-y-2">
+        <p className="text-sm font-medium text-foreground">
           Continue your academy missions to learn how to handle market
           volatility, diversify your portfolio, and build real investing skills.
         </p>

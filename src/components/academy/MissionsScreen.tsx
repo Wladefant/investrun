@@ -8,8 +8,8 @@ import { type AcademyProgress, MISSIONS, getMissionStatus } from "@/lib/academy-
 
 /* Color map for the left indicator bar per mission */
 const missionBarColors: Record<number, string> = {
-  1: "bg-[#FFC800]",
-  2: "bg-[#33307E]",
+  1: "bg-primary",
+  2: "bg-secondary",
   3: "bg-emerald-500",
   4: "bg-blue-500",
   5: "bg-orange-500",
@@ -18,8 +18,8 @@ const missionBarColors: Record<number, string> = {
 };
 
 const missionIconBgColors: Record<number, string> = {
-  1: "bg-[#FFC800]/15",
-  2: "bg-[#33307E]/15",
+  1: "bg-primary/15",
+  2: "bg-secondary/15",
   3: "bg-emerald-500/15",
   4: "bg-blue-500/15",
   5: "bg-orange-500/15",
@@ -39,12 +39,12 @@ export function MissionsScreen({
   return (
     <>
       <ScreenHeader title="Missions" onBack={onBack} />
-      <div className="flex-1 overflow-y-auto px-5 py-4 space-y-3 bg-[#F3F3F3]">
+      <div className="flex-1 overflow-y-auto px-5 py-4 space-y-3 bg-background">
         {MISSIONS.map((mission, i) => {
           const status = getMissionStatus(mission.id, progress.completedMissions);
           const score = progress.missionScores[mission.id];
-          const barColor = missionBarColors[mission.id] || "bg-gray-400";
-          const iconBg = missionIconBgColors[mission.id] || "bg-gray-100";
+          const barColor = missionBarColors[mission.id] || "bg-muted-foreground";
+          const iconBg = missionIconBgColors[mission.id] || "bg-muted";
 
           return (
             <button
@@ -62,7 +62,7 @@ export function MissionsScreen({
                 <div
                   className={cn(
                     "w-1 shrink-0 rounded-l-2xl",
-                    status === "completed" ? "bg-emerald-500" : status === "locked" ? "bg-gray-300" : barColor
+                    status === "completed" ? "bg-emerald-500" : status === "locked" ? "bg-border" : barColor
                   )}
                 />
 
@@ -74,12 +74,12 @@ export function MissionsScreen({
                       status === "completed"
                         ? "bg-emerald-50"
                         : status === "locked"
-                          ? "bg-gray-100"
+                          ? "bg-muted"
                           : iconBg
                     )}
                   >
                     {status === "locked" ? (
-                      <Lock size={16} className="text-gray-400" />
+                      <Lock size={16} className="text-muted-foreground" />
                     ) : status === "completed" ? (
                       <CheckCircle2 size={20} className="text-emerald-500" />
                     ) : (
@@ -89,15 +89,15 @@ export function MissionsScreen({
 
                   {/* Text content */}
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-bold text-[#333333]">{mission.title}</p>
-                    <p className="text-xs text-[#767676] mb-0.5">{mission.subtitle}</p>
+                    <p className="text-sm font-bold text-foreground">{mission.title}</p>
+                    <p className="text-xs text-muted-foreground mb-0.5">{mission.subtitle}</p>
 
                     <div className="flex items-center gap-3 mt-1.5">
-                      <span className="text-[10px] text-[#767676] flex items-center gap-1">
+                      <span className="text-[10px] text-muted-foreground flex items-center gap-1">
                         <Clock size={10} /> {mission.duration}
                       </span>
                       {score && (
-                        <span className="text-[10px] font-bold text-[#FFC800] bg-[#FFC800]/10 px-2 py-0.5 rounded-full">
+                        <span className="text-[10px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
                           {score.grade} · {score.xpEarned} XP
                         </span>
                       )}
@@ -106,8 +106,8 @@ export function MissionsScreen({
 
                   {/* Play button for available missions */}
                   {status === "available" && (
-                    <div className="w-9 h-9 bg-[#FFC800] rounded-full flex items-center justify-center shrink-0">
-                      <Play size={14} className="text-[#333333] ml-0.5" fill="currentColor" />
+                    <div className="w-9 h-9 bg-primary rounded-full flex items-center justify-center shrink-0">
+                      <Play size={14} className="text-foreground ml-0.5" fill="currentColor" />
                     </div>
                   )}
                 </div>

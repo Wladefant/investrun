@@ -89,7 +89,7 @@ export function DNAReportScreen({
   return (
     <>
       <ScreenHeader title="Investment DNA" onBack={onBack} />
-      <div className="flex-1 overflow-y-auto bg-[#F3F3F3]">
+      <div className="flex-1 overflow-y-auto bg-background">
         {/* DNA Card — intentionally dark for contrast */}
         <div className="mx-5 my-4">
           <div
@@ -101,8 +101,8 @@ export function DNAReportScreen({
             {/* Academy crest */}
             <div className="flex items-center justify-between mb-6 relative">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-[#FFC800] rounded-lg flex items-center justify-center">
-                  <GraduationCap size={16} className="text-[#1A2332]" />
+                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                  <GraduationCap size={16} className="text-primary-foreground" />
                 </div>
                 <span className="text-white/60 text-[10px] font-medium">WEALTH MANAGER ACADEMY</span>
               </div>
@@ -115,7 +115,7 @@ export function DNAReportScreen({
             >
               <div className="text-5xl mb-3">{personality.icon}</div>
               <h2 className="text-white text-xl font-bold">{personality.name}</h2>
-              <p className="text-[#FFC800] text-xs font-medium mt-1">{personality.tagline}</p>
+              <p className="text-primary text-xs font-medium mt-1">{personality.tagline}</p>
               <p className="text-white/50 text-[10px] mt-1">{progress.playerName}</p>
             </div>
 
@@ -150,7 +150,7 @@ export function DNAReportScreen({
                 {personality.strengths.map((s) => (
                   <span
                     key={s}
-                    className="bg-[#FFC800]/15 text-[#FFC800] text-[10px] font-medium px-2.5 py-1 rounded-full"
+                    className="bg-primary/15 text-primary text-[10px] font-medium px-2.5 py-1 rounded-full"
                   >
                     {s}
                   </span>
@@ -171,7 +171,7 @@ export function DNAReportScreen({
               </div>
               <div>
                 <p className="text-white/40 text-[10px]">Total XP</p>
-                <p className="text-[#FFC800] font-bold text-sm">{progress.xp}</p>
+                <p className="text-primary font-bold text-sm">{progress.xp}</p>
               </div>
               <div className="text-right">
                 <p className="text-white/30 text-[8px]">Powered by</p>
@@ -187,7 +187,7 @@ export function DNAReportScreen({
             <Share2 size={16} />
             Share Your DNA
           </Button>
-          <Button variant="ghost" size="lg" className="w-full text-[#767676]" onClick={onBack}>
+          <Button variant="ghost" size="lg" className="w-full text-muted-foreground" onClick={onBack}>
             Back to Academy
           </Button>
         </div>

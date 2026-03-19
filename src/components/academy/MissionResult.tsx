@@ -25,7 +25,7 @@ export function MissionResultScreen({
   onViewDNA?: () => void;
 }) {
   const gradeColors: Record<string, string> = {
-    A: "border-[#FFC800]",
+    A: "border-primary",
     B: "border-emerald-400",
     C: "border-blue-400",
     D: "border-orange-400",
@@ -33,7 +33,7 @@ export function MissionResultScreen({
   };
 
   const gradeTextColors: Record<string, string> = {
-    A: "text-[#FFC800]",
+    A: "text-primary",
     B: "text-emerald-500",
     C: "text-blue-500",
     D: "text-orange-500",
@@ -41,11 +41,11 @@ export function MissionResultScreen({
   };
 
   return (
-    <div className="flex-1 flex flex-col px-5 py-6 overflow-y-auto bg-[#F3F3F3]">
+    <div className="flex-1 flex flex-col px-5 py-6 overflow-y-auto bg-background">
       {/* Grade reveal */}
       <div className="text-center mb-6">
         <p
-          className="text-[#767676] text-xs font-medium tracking-wide mb-4"
+          className="text-muted-foreground text-xs font-medium tracking-wide mb-4"
         >
           MISSION {missionId} COMPLETE
         </p>
@@ -59,7 +59,7 @@ export function MissionResultScreen({
         </div>
 
         <p
-          className="text-primary-foregroundxl font-bold text-[#333333]"
+          className="text-primary-foregroundxl font-bold text-foreground"
         >
           Score: {score}/100
         </p>
@@ -67,14 +67,14 @@ export function MissionResultScreen({
 
       {/* XP earned */}
       <div
-        className="bg-card rounded-2xl shadow-sm border border-border p-4 flex items-center gap-3 mb-3 border-l-4 border-l-[#FFC800]"
+        className="bg-card rounded-2xl shadow-sm border border-border p-4 flex items-center gap-3 mb-3 border-l-4 border-l-primary"
       >
-        <div className="w-11 h-11 bg-[#FFC800]/10 rounded-xl flex items-center justify-center">
-          <Sparkles size={20} className="text-[#FFC800]" />
+        <div className="w-11 h-11 bg-primary/10 rounded-xl flex items-center justify-center">
+          <Sparkles size={20} className="text-primary" />
         </div>
         <div>
-          <p className="text-lg font-bold text-[#333333]">+{xpEarned} XP</p>
-          <p className="text-xs text-[#767676]">Experience earned</p>
+          <p className="text-lg font-bold text-foreground">+{xpEarned} XP</p>
+          <p className="text-xs text-muted-foreground">Experience earned</p>
         </div>
       </div>
 
@@ -82,23 +82,23 @@ export function MissionResultScreen({
       <div
         className="bg-card rounded-2xl shadow-sm border border-border p-4 flex items-center gap-3 mb-3"
       >
-        <div className="w-11 h-11 bg-[#33307E]/10 rounded-xl flex items-center justify-center">
-          <Award size={20} className="text-[#33307E]" />
+        <div className="w-11 h-11 bg-secondary/10 rounded-xl flex items-center justify-center">
+          <Award size={20} className="text-secondary" />
         </div>
         <div>
-          <p className="text-sm font-bold text-[#333333]">
+          <p className="text-sm font-bold text-foreground">
             Rank: {rankInfo.icon} {rankInfo.label}
           </p>
-          <p className="text-xs text-[#767676]">Keep going to rank up</p>
+          <p className="text-xs text-muted-foreground">Keep going to rank up</p>
         </div>
       </div>
 
       {/* Professor debrief */}
       <div
-        className="bg-card rounded-2xl shadow-sm border border-border p-5 mb-6 border-l-4 border-l-[#FFC800]/40"
+        className="bg-card rounded-2xl shadow-sm border border-border p-5 mb-6 border-l-4 border-l-primary/40"
       >
-        <p className="text-sm text-[#333333] leading-relaxed">
-          <span className="font-bold text-[#33307E]">Professor Fortuna:</span> {debrief}
+        <p className="text-sm text-foreground leading-relaxed">
+          <span className="font-bold text-secondary">Professor Fortuna:</span> {debrief}
         </p>
       </div>
 

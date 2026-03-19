@@ -291,7 +291,7 @@ export function HistoricSimulatorScreen({
     return (
       <>
         <ScreenHeader title="Historic Simulator" onBack={onBack} />
-        <div className="flex-1 overflow-y-auto px-5 py-4 bg-[#F3F3F3]">
+        <div className="flex-1 overflow-y-auto px-5 py-4 bg-background">
           {loadError && (
             <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-4 text-sm text-red-700">
               {loadError}
@@ -300,14 +300,14 @@ export function HistoricSimulatorScreen({
 
           {!weeklyData && !loadError && (
             <div className="flex items-center justify-center py-16">
-              <div className="animate-spin w-8 h-8 border-3 border-[#FFC800] border-t-transparent rounded-full" />
+              <div className="animate-spin w-8 h-8 border-3 border-primary border-t-transparent rounded-full" />
             </div>
           )}
 
           {weeklyData && (
             <>
               {/* Pick Your Strategy */}
-              <h2 className="text-sm font-bold text-[#333333] mb-3">
+              <h2 className="text-sm font-bold text-foreground mb-3">
                 Choose Your Strategy
               </h2>
               <div className="space-y-3 mb-4">
@@ -324,7 +324,7 @@ export function HistoricSimulatorScreen({
                     icon: "⚖️",
                     label: "Balanced",
                     desc: "Growth with guardrails",
-                    color: "border-[#FFC800]",
+                    color: "border-primary",
                   },
                   {
                     id: "growth" as RiskProfile,
@@ -346,46 +346,46 @@ export function HistoricSimulatorScreen({
                           setShowCustomize(false);
                         }}
                         className={cn(
-                          "w-full bg-white rounded-2xl shadow-sm p-4 text-left transition-all active:scale-[0.98] border-2",
-                          isSelected ? strategy.color : "border-gray-100"
+                          "w-full bg-card rounded-2xl shadow-sm p-4 text-left transition-all active:scale-[0.98] border-2",
+                          isSelected ? strategy.color : "border-border"
                         )}
                       >
                         <div className="flex items-center gap-3 mb-2">
                           <span className="text-2xl">{strategy.icon}</span>
                           <div className="flex-1">
-                            <p className="font-bold text-[#333333] text-sm">{strategy.label}</p>
-                            <p className="text-[10px] text-[#767676]">{strategy.desc}</p>
+                            <p className="font-bold text-foreground text-sm">{strategy.label}</p>
+                            <p className="text-[10px] text-muted-foreground">{strategy.desc}</p>
                           </div>
                           {isSelected && (
                             <div className="flex items-center gap-2">
                               <button
                                 onClick={(e) => { e.stopPropagation(); setShowCustomize(!showCustomize); }}
-                                className="text-[10px] font-bold text-[#FFC800] bg-[#FFC800]/10 px-2.5 py-1 rounded-full hover:bg-[#FFC800]/20 transition-colors"
+                                className="text-[10px] font-bold text-primary bg-primary/10 px-2.5 py-1 rounded-full hover:bg-primary/20 transition-colors"
                               >
                                 {showCustomize ? "Done" : "Edit ✎"}
                               </button>
-                              <div className="w-5 h-5 bg-[#FFC800] rounded-full flex items-center justify-center">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#333" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                              <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center">
+                                <svg className="text-foreground" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                               </div>
                             </div>
                           )}
                         </div>
                         {/* Visual allocation bar */}
                         <div className="flex h-2 rounded-full overflow-hidden">
-                          <div className="bg-[#FFC800]" style={{ width: `${stocks}%` }} />
+                          <div className="bg-primary" style={{ width: `${stocks}%` }} />
                           <div className="bg-blue-400" style={{ width: `${a.bonds}%` }} />
                           <div className="bg-amber-400" style={{ width: `${a.gold}%` }} />
-                          <div className="bg-gray-300" style={{ width: `${a.cash}%` }} />
+                          <div className="bg-muted-foreground" style={{ width: `${a.cash}%` }} />
                         </div>
-                        <p className="text-[9px] text-[#767676] mt-1.5">
+                        <p className="text-[9px] text-muted-foreground mt-1.5">
                           {stocks}% Stocks · {a.bonds}% Bonds · {a.gold}% Gold · {a.cash}% Cash
                         </p>
                       </button>
 
                       {/* Inline customization when Edit is tapped */}
                       {isSelected && showCustomize && (
-                        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 mt-2 space-y-3">
-                          <p className="text-[10px] font-bold text-[#767676] uppercase tracking-wider">Fine-tune your allocation</p>
+                        <div className="bg-card rounded-2xl shadow-sm border border-border p-4 mt-2 space-y-3">
+                          <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Fine-tune your allocation</p>
                           {([
                             { key: "swiss_stocks" as keyof Allocation, icon: "🇨🇭", label: "Swiss Stocks" },
                             { key: "us_stocks" as keyof Allocation, icon: "🇺🇸", label: "US Stocks" },
@@ -396,8 +396,8 @@ export function HistoricSimulatorScreen({
                           ]).map(({ key, icon, label }) => (
                             <div key={key}>
                               <div className="flex items-center justify-between mb-1">
-                                <span className="text-xs text-[#333333]">{icon} {label}</span>
-                                <span className="text-xs font-bold text-[#333333]">{allocation[key]}%</span>
+                                <span className="text-xs text-foreground">{icon} {label}</span>
+                                <span className="text-xs font-bold text-foreground">{allocation[key]}%</span>
                               </div>
                               <input
                                 type="range"
@@ -429,16 +429,16 @@ export function HistoricSimulatorScreen({
 
               {/* Legend */}
               <div className="flex items-center gap-3 mb-4 px-1">
-                <span className="flex items-center gap-1 text-[9px] text-[#767676]"><span className="w-2 h-2 rounded-full bg-[#FFC800]"/>Stocks</span>
-                <span className="flex items-center gap-1 text-[9px] text-[#767676]"><span className="w-2 h-2 rounded-full bg-blue-400"/>Bonds</span>
-                <span className="flex items-center gap-1 text-[9px] text-[#767676]"><span className="w-2 h-2 rounded-full bg-amber-400"/>Gold</span>
-                <span className="flex items-center gap-1 text-[9px] text-[#767676]"><span className="w-2 h-2 rounded-full bg-gray-300"/>Cash</span>
+                <span className="flex items-center gap-1 text-[9px] text-muted-foreground"><span className="w-2 h-2 rounded-full bg-primary"/>Stocks</span>
+                <span className="flex items-center gap-1 text-[9px] text-muted-foreground"><span className="w-2 h-2 rounded-full bg-blue-400"/>Bonds</span>
+                <span className="flex items-center gap-1 text-[9px] text-muted-foreground"><span className="w-2 h-2 rounded-full bg-amber-400"/>Gold</span>
+                <span className="flex items-center gap-1 text-[9px] text-muted-foreground"><span className="w-2 h-2 rounded-full bg-muted-foreground"/>Cash</span>
               </div>
 
               {/* Professor note */}
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 mb-4">
-                <p className="text-xs text-[#767676] leading-relaxed">
-                  <span className="font-bold text-[#FFC800]">Professor Fortuna:</span>{" "}
+              <div className="bg-card rounded-2xl shadow-sm border border-border p-4 mb-4">
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  <span className="font-bold text-primary">Professor Fortuna:</span>{" "}
                   You&apos;ll invest CHF 100,000 and travel through 20 years of real market history. Crashes will hit. The question is: can you keep your nerve?
                 </p>
               </div>
@@ -490,7 +490,7 @@ export function HistoricSimulatorScreen({
             <span className="text-gray-500 text-[10px] uppercase tracking-wider">
               Portfolio
             </span>
-            <div className="text-[#FFC800] text-xl font-bold tabular-nums">
+            <div className="text-primary text-xl font-bold tabular-nums">
               CHF{" "}
               {(currentTick?.portfolioValue ?? 100_000).toLocaleString("de-CH")}
             </div>
@@ -512,7 +512,7 @@ export function HistoricSimulatorScreen({
         <div className="px-5 py-2">
           <div className="h-1 bg-gray-800 rounded-full overflow-hidden">
             <div
-              className="h-full bg-[#FFC800] transition-all duration-150"
+              className="h-full bg-primary transition-all duration-150"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -526,7 +526,7 @@ export function HistoricSimulatorScreen({
         {/* Legend */}
         <div className="px-5 py-2 flex gap-4 text-[10px]">
           <span className="flex items-center gap-1">
-            <span className="w-3 h-0.5 bg-[#FFC800] inline-block" /> Your
+            <span className="w-3 h-0.5 bg-primary inline-block" /> Your
             Portfolio
           </span>
           <span className="flex items-center gap-1 text-gray-500">
@@ -595,7 +595,7 @@ export function HistoricSimulatorScreen({
                   {pausedEvent.mentorLine || pausedEvent.description}
                 </p>
                 <div className="flex items-center gap-3">
-                  <span className="text-[#FFC800] text-lg font-bold tabular-nums">
+                  <span className="text-primary text-lg font-bold tabular-nums">
                     CHF{" "}
                     {(currentTick?.portfolioValue ?? 0).toLocaleString("de-CH")}
                   </span>
@@ -629,9 +629,9 @@ export function HistoricSimulatorScreen({
                       type: "buy_more" as const,
                       icon: "📈",
                       label: "Buy More — Into the dip",
-                      border: "border-[#FFC800]/50",
-                      text: "text-[#FFC800]",
-                      bg: "bg-[#FFC800]/10",
+                      border: "border-primary/50",
+                      text: "text-primary",
+                      bg: "bg-primary/10",
                     },
                     {
                       type: "rebalance" as const,
@@ -694,28 +694,28 @@ export function HistoricSimulatorScreen({
     return (
       <>
         <ScreenHeader title="Results" onBack={onBack} />
-        <div className="flex-1 overflow-y-auto px-5 py-4 bg-[#F3F3F3]">
+        <div className="flex-1 overflow-y-auto px-5 py-4 bg-background">
           {/* Score Header */}
           <div className="text-center mb-6">
-            <div className="w-20 h-20 rounded-3xl bg-[#FFC800] flex items-center justify-center mx-auto mb-3">
-              <span className="text-3xl font-black text-[#333333]">
+            <div className="w-20 h-20 rounded-3xl bg-primary flex items-center justify-center mx-auto mb-3">
+              <span className="text-3xl font-black text-foreground">
                 {scoreResult.total}
               </span>
             </div>
-            <h2 className="text-xl font-bold text-[#333333]">
+            <h2 className="text-xl font-bold text-foreground">
               Behavioral Score
             </h2>
-            <p className="text-xs text-[#767676] mt-1">out of 100</p>
+            <p className="text-xs text-muted-foreground mt-1">out of 100</p>
           </div>
 
           {/* Final portfolio stats */}
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 mb-4">
+          <div className="bg-card rounded-2xl shadow-sm border border-border p-4 mb-4">
             <div className="flex justify-between items-center">
               <div>
-                <span className="text-[10px] text-[#767676] uppercase tracking-wider">
+                <span className="text-[10px] text-muted-foreground uppercase tracking-wider">
                   Final Portfolio
                 </span>
-                <div className="text-lg font-bold text-[#333333]">
+                <div className="text-lg font-bold text-foreground">
                   CHF{" "}
                   {allTicks[allTicks.length - 1]?.portfolioValue.toLocaleString(
                     "de-CH"
@@ -723,7 +723,7 @@ export function HistoricSimulatorScreen({
                 </div>
               </div>
               <div className="text-right">
-                <span className="text-[10px] text-[#767676] uppercase tracking-wider">
+                <span className="text-[10px] text-muted-foreground uppercase tracking-wider">
                   Return
                 </span>
                 <div
@@ -748,17 +748,17 @@ export function HistoricSimulatorScreen({
             {dimensionList.map((dim) => (
               <div
                 key={dim.label}
-                className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4"
+                className="bg-card rounded-2xl shadow-sm border border-border p-4"
               >
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-sm font-bold text-[#333333]">
+                  <span className="text-sm font-bold text-foreground">
                     {dim.label}
                   </span>
-                  <span className="text-[#FFC800] text-sm tracking-wider">
+                  <span className="text-primary text-sm tracking-wider">
                     {renderStars(dim.stars)}
                   </span>
                 </div>
-                <p className="text-xs text-[#767676] leading-relaxed">
+                <p className="text-xs text-muted-foreground leading-relaxed">
                   {dim.explanation}
                 </p>
               </div>

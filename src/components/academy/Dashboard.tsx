@@ -34,42 +34,42 @@ export function AcademyDashboard({
   const remaining = MISSIONS.length - completedCount;
 
   return (
-    <div className="flex-1 overflow-y-auto bg-[#F3F3F3]">
+    <div className="flex-1 overflow-y-auto bg-background">
       {/* Header section - white with rounded bottom like ing-app */}
       <div className="bg-card px-4 py-4 pb-6 rounded-b-[30px] shadow-sm">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <div
-              className="w-12 h-12 bg-gradient-to-br from-yellow-100 to-amber-100 rounded-full flex items-center justify-center text-primary-foregroundxl shadow-sm"
+              className="w-12 h-12 bg-gradient-to-br from-primary/15 to-amber-100 rounded-full flex items-center justify-center text-primary-foregroundxl shadow-sm"
             >
               {rank.icon}
             </div>
             <div>
-              <div className="text-xs text-[#767676] font-bold uppercase tracking-wider">
+              <div className="text-xs text-muted-foreground font-bold uppercase tracking-wider">
                 {rank.label}
               </div>
-              <div className="font-bold text-[#333333]">{progress.playerName}</div>
+              <div className="font-bold text-foreground">{progress.playerName}</div>
             </div>
           </div>
-          <div className="flex items-center gap-2 bg-yellow-50 px-3 py-1.5 rounded-full border border-yellow-100">
-            <Sparkles size={16} className="text-[#FFC800]" />
-            <span className="font-bold text-amber-600 text-sm">{progress.xp} XP</span>
+          <div className="flex items-center gap-2 bg-primary/10 px-3 py-1.5 rounded-full border border-primary/20">
+            <Sparkles size={16} className="text-primary" />
+            <span className="font-bold text-primary text-sm">{progress.xp} XP</span>
           </div>
         </div>
 
         {/* XP Progress bar */}
-        <div className="bg-gray-100 rounded-xl p-3">
+        <div className="bg-muted rounded-xl p-3">
           <div className="flex items-center justify-between mb-1.5">
-            <span className="text-xs font-bold text-[#333333]">Progress</span>
+            <span className="text-xs font-bold text-foreground">Progress</span>
             {nextRank && (
-              <span className="text-xs text-[#767676]">
+              <span className="text-xs text-muted-foreground">
                 {xpInfo.required - xpInfo.current} XP to {nextRank.label}
               </span>
             )}
           </div>
-          <div className="w-full h-2.5 bg-gray-200 rounded-full overflow-hidden">
+          <div className="w-full h-2.5 bg-border rounded-full overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-[#FFC800] to-[#E6B400] rounded-full"
+              className="h-full bg-gradient-to-r from-primary to-primary/90 rounded-full"
               style={{ width: `${xpInfo.percentage}%` }}
             />
           </div>
@@ -83,30 +83,30 @@ export function AcademyDashboard({
             className="bg-card p-3 rounded-xl shadow-sm text-center"
           >
             <div className="text-primary-foregroundxl mb-1">
-              <Trophy size={22} className="text-[#FFC800] mx-auto" />
+              <Trophy size={22} className="text-primary mx-auto" />
             </div>
-            <div className="text-lg font-bold text-[#333333]">{rank.label}</div>
-            <div className="text-[10px] text-[#767676]">Rank</div>
+            <div className="text-lg font-bold text-foreground">{rank.label}</div>
+            <div className="text-[10px] text-muted-foreground">Rank</div>
           </div>
           <div
             className="bg-card p-3 rounded-xl shadow-sm text-center"
           >
             <div className="text-primary-foregroundxl mb-1">
-              <Sparkles size={22} className="text-[#FFC800] mx-auto" />
+              <Sparkles size={22} className="text-primary mx-auto" />
             </div>
-            <div className="text-lg font-bold text-[#333333]">{progress.xp}</div>
-            <div className="text-[10px] text-[#767676]">XP</div>
+            <div className="text-lg font-bold text-foreground">{progress.xp}</div>
+            <div className="text-[10px] text-muted-foreground">XP</div>
           </div>
           <div
             className="bg-card p-3 rounded-xl shadow-sm text-center"
           >
             <div className="text-primary-foregroundxl mb-1">
-              <Target size={22} className="text-[#FFC800] mx-auto" />
+              <Target size={22} className="text-primary mx-auto" />
             </div>
-            <div className="text-lg font-bold text-[#333333]">
+            <div className="text-lg font-bold text-foreground">
               {completedCount}/{MISSIONS.length}
             </div>
-            <div className="text-[10px] text-[#767676]">Missions</div>
+            <div className="text-[10px] text-muted-foreground">Missions</div>
           </div>
         </div>
 
@@ -120,26 +120,26 @@ export function AcademyDashboard({
             return (
               <button
                 onClick={() => onStartMission(nextMission.id)}
-                className="w-full bg-gradient-to-br from-[#FFC800] to-[#E6B400] p-4 rounded-2xl shadow-lg text-left active:scale-[0.98] transition-transform relative overflow-hidden"
+                className="w-full bg-gradient-to-br from-primary to-primary/90 p-4 rounded-2xl shadow-lg text-left active:scale-[0.98] transition-transform relative overflow-hidden"
               >
                 <div className="absolute top-0 right-0 w-32 h-32 bg-card/10 rounded-full -mr-10 -mt-10" />
                 <div className="relative z-10">
                   <div className="flex justify-between items-start mb-3">
-                    <div className="flex items-center gap-2 font-bold text-[#333333]">
+                    <div className="flex items-center gap-2 font-bold text-foreground">
                       <Target size={20} />
                       <span>Next Mission</span>
                     </div>
-                    <span className="text-xs font-bold bg-card/30 text-[#333333] px-2 py-1 rounded-md">
+                    <span className="text-xs font-bold bg-card/30 text-foreground px-2 py-1 rounded-md">
                       +{50 + nextMission.id * 20} XP
                     </span>
                   </div>
-                  <p className="text-[15px] font-bold text-[#333333] mb-1">
+                  <p className="text-[15px] font-bold text-foreground mb-1">
                     {nextMission.icon} {nextMission.title}
                   </p>
-                  <p className="text-sm text-[#333333]/70 mb-2">
+                  <p className="text-sm text-foreground/70 mb-2">
                     {nextMission.description}
                   </p>
-                  <div className="flex items-center gap-1 text-xs font-bold text-[#333333]">
+                  <div className="flex items-center gap-1 text-xs font-bold text-foreground">
                     <span>Start now</span>
                     <ChevronRight size={14} />
                   </div>
@@ -151,8 +151,8 @@ export function AcademyDashboard({
         {/* Mission list - white cards with colored left indicators */}
         <div>
           <div className="flex justify-between items-center mb-3">
-            <h2 className="text-sm font-bold text-[#333333]">All Missions</h2>
-            <span className="text-xs text-[#767676]">
+            <h2 className="text-sm font-bold text-foreground">All Missions</h2>
+            <span className="text-xs text-muted-foreground">
               {completedCount} of {MISSIONS.length} completed
             </span>
           </div>
@@ -174,10 +174,10 @@ export function AcademyDashboard({
                   className={cn(
                     "w-full rounded-xl p-3.5 flex items-center gap-3 text-left transition-all",
                     status === "locked"
-                      ? "bg-gray-50 opacity-60 grayscale border border-border"
+                      ? "bg-muted/50 opacity-60 grayscale border border-border"
                       : status === "completed"
                         ? "bg-green-50 border border-green-100 shadow-sm"
-                        : "bg-card border border-border shadow-sm hover:border-[#FFC800]/50 active:scale-[0.98]"
+                        : "bg-card border border-border shadow-sm hover:border-primary/50 active:scale-[0.98]"
                   )}
                 >
                   {/* Icon with colored indicator */}
@@ -187,12 +187,12 @@ export function AcademyDashboard({
                       status === "completed"
                         ? "bg-green-100"
                         : status === "locked"
-                          ? "bg-gray-100"
-                          : "bg-yellow-50"
+                          ? "bg-muted"
+                          : "bg-primary/10"
                     )}
                   >
                     {status === "locked" ? (
-                      <Lock size={16} className="text-gray-400" />
+                      <Lock size={16} className="text-muted-foreground" />
                     ) : status === "completed" ? (
                       <CheckCircle2
                         size={20}
@@ -205,10 +205,10 @@ export function AcademyDashboard({
                   </div>
 
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-bold text-[#333333] truncate">
+                    <p className="text-sm font-bold text-foreground truncate">
                       {mission.title}
                     </p>
-                    <p className="text-[11px] text-[#767676]">
+                    <p className="text-[11px] text-muted-foreground">
                       {mission.subtitle} · {mission.duration}
                     </p>
                   </div>
@@ -222,8 +222,8 @@ export function AcademyDashboard({
                   )}
 
                   {status === "available" && (
-                    <div className="w-8 h-8 bg-[#FFC800] rounded-full flex items-center justify-center shrink-0">
-                      <Play size={12} className="text-[#333333] ml-0.5" fill="currentColor" />
+                    <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center shrink-0">
+                      <Play size={12} className="text-foreground ml-0.5" fill="currentColor" />
                     </div>
                   )}
                 </button>
