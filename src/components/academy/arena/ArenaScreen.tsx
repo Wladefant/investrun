@@ -7,6 +7,7 @@ import type { ArenaPhase } from '@/lib/arena-store';
 import { ArenaLobby } from './ArenaLobby';
 import { ArenaMatchSetup } from './ArenaMatchSetup';
 import { ArenaMatch } from './ArenaMatch';
+import { ArenaRoundReveal } from './ArenaRoundReveal';
 import { OPPONENTS } from '@/lib/arena-opponents';
 
 interface ArenaScreenProps {
@@ -71,7 +72,9 @@ export function ArenaScreen({
             opponentName={opponentName}
           />
         )}
-        {phase === 'reveal' && <PhasePlaceholder key="reveal" phase="reveal" />}
+        {phase === 'reveal' && (
+          <ArenaRoundReveal key="reveal" opponentName={opponentName} />
+        )}
         {phase === 'results' && <PhasePlaceholder key="results" phase="results" />}
       </AnimatePresence>
     </div>
