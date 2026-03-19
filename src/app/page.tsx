@@ -24,6 +24,7 @@ import { FutureEstimationScreen } from "@/components/academy/FutureEstimation";
 import { FutureEngineScreen } from "@/components/academy/FutureEngineScreen";
 import { HistoricSimulatorScreen } from "@/components/academy/HistoricSimulator";
 import { SoloScreen } from "@/components/academy/SoloScreen";
+import { TimeMachineScreen } from "@/components/academy/TimeMachineScreen";
 import {
   INITIAL_PROGRESS,
   getCurrentRank,
@@ -43,7 +44,8 @@ type Screen =
   | "mission_result"
   | "dna_report"
   | "simulator"
-  | "future";
+  | "future"
+  | "time_machine";
 
 export default function AcademyApp() {
   const [screen, setScreen] = useState<Screen>("enrollment");
@@ -222,6 +224,7 @@ export default function AcademyApp() {
             progress={progress}
             onStartMission={handleStartMission}
             onProfileClick={() => setScreen("profile")}
+            onTimeMachine={() => setScreen("time_machine")}
           />
         </div>
       )}
@@ -274,6 +277,12 @@ export default function AcademyApp() {
             progress={progress}
             onBack={() => setScreen("dashboard")}
           />
+        </div>
+      )}
+
+      {screen === "time_machine" && (
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <TimeMachineScreen onBack={() => setScreen("dashboard")} />
         </div>
       )}
 

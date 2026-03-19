@@ -9,6 +9,7 @@ import {
   Play,
   Trophy,
   Target,
+  Clock,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -24,10 +25,12 @@ export function AcademyDashboard({
   progress,
   onStartMission,
   onProfileClick,
+  onTimeMachine,
 }: {
   progress: AcademyProgress;
   onStartMission: (id: number) => void;
   onProfileClick?: () => void;
+  onTimeMachine?: () => void;
 }) {
   const rank = getCurrentRank(progress.xp);
   const nextRank = getNextRank(progress.xp);
@@ -122,6 +125,40 @@ export function AcademyDashboard({
             <div className="text-[10px] text-muted-foreground">Missions</div>
           </div>
         </div>
+
+        {/* Time Machine CTA */}
+        {onTimeMachine && (
+          <button
+            onClick={onTimeMachine}
+            className="w-full bg-gradient-to-br from-[#1a1a2e] via-[#16213e] to-[#0f3460] p-4 rounded-2xl shadow-lg text-left active:scale-[0.98] transition-transform relative overflow-hidden border border-[#FFC800]/20"
+          >
+            <div className="absolute top-0 right-0 w-40 h-40 bg-[#FFC800]/5 rounded-full -mr-12 -mt-12" />
+            <div className="absolute bottom-0 left-0 w-24 h-24 bg-[#FFC800]/5 rounded-full -ml-8 -mb-8" />
+            <div className="relative z-10">
+              <div className="flex justify-between items-start mb-2">
+                <div className="flex items-center gap-2">
+                  <div className="w-9 h-9 bg-[#FFC800]/15 rounded-xl flex items-center justify-center">
+                    <Clock size={18} className="text-[#FFC800]" />
+                  </div>
+                  <div>
+                    <p className="text-[13px] font-bold text-white">Time Machine</p>
+                    <p className="text-[10px] text-white/40">Travel through financial history</p>
+                  </div>
+                </div>
+                <span className="text-[9px] font-bold bg-[#FFC800] text-black px-2 py-0.5 rounded-full uppercase tracking-wider">
+                  New
+                </span>
+              </div>
+              <p className="text-[11px] text-white/50 mb-2.5">
+                Survive the 2008 crash, COVID panic, and more. Learn by living through real crises.
+              </p>
+              <div className="flex items-center gap-1 text-xs font-bold text-[#FFC800]">
+                <span>Enter the Time Machine</span>
+                <ChevronRight size={14} />
+              </div>
+            </div>
+          </button>
+        )}
 
         {/* Next Mission CTA - gradient card like ing-app daily challenge */}
         {remaining > 0 &&
