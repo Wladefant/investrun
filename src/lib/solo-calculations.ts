@@ -17,15 +17,17 @@ export function simulateMarketReturns(
     'bonds': 0.03,
     'gold': 0.04,
     'cash': 0.01,
+    'cryptocurrency': 0.20,
+    'real-estate': 0.07,
   };
 
   const eventMultipliers: Record<typeof eventType, Record<AssetClass, number>> = {
-    normal:    { 'tech-stocks': 1,    'blue-chip': 1,    'emerging-markets': 1,    'bonds': 1,    'gold': 1,    'cash': 1 },
-    bull:      { 'tech-stocks': 3.5,  'blue-chip': 2.2,  'emerging-markets': 2.8,  'bonds': 0.8,  'gold': 0.5,  'cash': 1 },
-    crash:     { 'tech-stocks': -4,   'blue-chip': -2.5, 'emerging-markets': -3.5, 'bonds': 0.5,  'gold': 1.5,  'cash': 1 },
-    recovery:  { 'tech-stocks': 2.5,  'blue-chip': 1.8,  'emerging-markets': 2.2,  'bonds': 0.6,  'gold': 0.3,  'cash': 1 },
-    inflation: { 'tech-stocks': 0,    'blue-chip': 0.3,  'emerging-markets': 0.5,  'bonds': -1,   'gold': 2,    'cash': 0.5 },
-    sideways:  { 'tech-stocks': 0.2,  'blue-chip': 0.4,  'emerging-markets': 0.3,  'bonds': 0.8,  'gold': 0.6,  'cash': 1 },
+    normal:    { 'tech-stocks': 1,    'blue-chip': 1,    'emerging-markets': 1,    'bonds': 1,    'gold': 1,    'cash': 1,   'cryptocurrency': 1,    'real-estate': 1 },
+    bull:      { 'tech-stocks': 3.5,  'blue-chip': 2.2,  'emerging-markets': 2.8,  'bonds': 0.8,  'gold': 0.5,  'cash': 1,   'cryptocurrency': 5,    'real-estate': 1.8 },
+    crash:     { 'tech-stocks': -4,   'blue-chip': -2.5, 'emerging-markets': -3.5, 'bonds': 0.5,  'gold': 1.5,  'cash': 1,   'cryptocurrency': -6,   'real-estate': -2 },
+    recovery:  { 'tech-stocks': 2.5,  'blue-chip': 1.8,  'emerging-markets': 2.2,  'bonds': 0.6,  'gold': 0.3,  'cash': 1,   'cryptocurrency': 3.5,  'real-estate': 1.5 },
+    inflation: { 'tech-stocks': 0,    'blue-chip': 0.3,  'emerging-markets': 0.5,  'bonds': -1,   'gold': 2,    'cash': 0.5, 'cryptocurrency': 1.2,  'real-estate': 1.5 },
+    sideways:  { 'tech-stocks': 0.2,  'blue-chip': 0.4,  'emerging-markets': 0.3,  'bonds': 0.8,  'gold': 0.6,  'cash': 1,   'cryptocurrency': 0.3,  'real-estate': 0.7 },
   };
 
   const baseReturn = baseReturns[assetClass];
@@ -55,8 +57,10 @@ export function calculateRiskScore(allocations: Allocation[]): number {
     'bonds': 20,
     'gold': 40,
     'blue-chip': 55,
+    'real-estate': 60,
     'emerging-markets': 75,
     'tech-stocks': 85,
+    'cryptocurrency': 95,
   };
 
   const totalWeight = allocations.reduce((sum, a) => {

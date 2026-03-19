@@ -50,6 +50,8 @@ export const MARKET_SCENARIOS: MarketScenario[] = [
       'bonds': { baseReturn: 0.03, volatility: 0.06, crashSensitivity: -0.3, inflationSensitivity: -0.5 },
       'gold': { baseReturn: 0.04, volatility: 0.15, crashSensitivity: -0.4, inflationSensitivity: 0.6 },
       'cash': { baseReturn: 0.01, volatility: 0.01, crashSensitivity: 0, inflationSensitivity: -0.8 },
+      'cryptocurrency': { baseReturn: 0.18, volatility: 0.65, crashSensitivity: 1.3, inflationSensitivity: 0.2 },
+      'real-estate': { baseReturn: 0.06, volatility: 0.15, crashSensitivity: 0.5, inflationSensitivity: 0.3 },
     },
   },
   {
@@ -72,6 +74,8 @@ export const MARKET_SCENARIOS: MarketScenario[] = [
       'bonds': { baseReturn: 0.01, volatility: 0.10, crashSensitivity: -0.2, inflationSensitivity: -0.7 },
       'gold': { baseReturn: 0.08, volatility: 0.18, crashSensitivity: -0.5, inflationSensitivity: 0.8 },
       'cash': { baseReturn: 0.02, volatility: 0.02, crashSensitivity: 0, inflationSensitivity: -0.9 },
+      'cryptocurrency': { baseReturn: 0.12, volatility: 0.55, crashSensitivity: 0.9, inflationSensitivity: 0.4 },
+      'real-estate': { baseReturn: 0.05, volatility: 0.12, crashSensitivity: 0.4, inflationSensitivity: 0.6 },
     },
   },
   {
@@ -94,6 +98,8 @@ export const MARKET_SCENARIOS: MarketScenario[] = [
       'bonds': { baseReturn: 0.04, volatility: 0.05, crashSensitivity: -0.2, inflationSensitivity: -0.4 },
       'gold': { baseReturn: 0.03, volatility: 0.12, crashSensitivity: -0.3, inflationSensitivity: 0.5 },
       'cash': { baseReturn: 0.02, volatility: 0.01, crashSensitivity: 0, inflationSensitivity: -0.6 },
+      'cryptocurrency': { baseReturn: 0.22, volatility: 0.50, crashSensitivity: 0.8, inflationSensitivity: 0.2 },
+      'real-estate': { baseReturn: 0.08, volatility: 0.10, crashSensitivity: 0.3, inflationSensitivity: 0.4 },
     },
   },
   {
@@ -116,6 +122,8 @@ export const MARKET_SCENARIOS: MarketScenario[] = [
       'bonds': { baseReturn: 0.03, volatility: 0.07, crashSensitivity: -0.3, inflationSensitivity: -0.5 },
       'gold': { baseReturn: 0.05, volatility: 0.16, crashSensitivity: -0.5, inflationSensitivity: 0.6 },
       'cash': { baseReturn: 0.01, volatility: 0.01, crashSensitivity: 0, inflationSensitivity: -0.7 },
+      'cryptocurrency': { baseReturn: 0.14, volatility: 0.60, crashSensitivity: 1.2, inflationSensitivity: 0.3 },
+      'real-estate': { baseReturn: 0.05, volatility: 0.18, crashSensitivity: 0.6, inflationSensitivity: 0.4 },
     },
   },
   {
@@ -138,6 +146,8 @@ export const MARKET_SCENARIOS: MarketScenario[] = [
       'bonds': { baseReturn: 0.03, volatility: 0.05, crashSensitivity: -0.2, inflationSensitivity: -0.4 },
       'gold': { baseReturn: 0.02, volatility: 0.12, crashSensitivity: -0.3, inflationSensitivity: 0.5 },
       'cash': { baseReturn: 0.02, volatility: 0.01, crashSensitivity: 0, inflationSensitivity: -0.6 },
+      'cryptocurrency': { baseReturn: 0.25, volatility: 0.55, crashSensitivity: 0.8, inflationSensitivity: 0.2 },
+      'real-estate': { baseReturn: 0.09, volatility: 0.14, crashSensitivity: 0.4, inflationSensitivity: 0.3 },
     },
   },
   {
@@ -160,6 +170,8 @@ export const MARKET_SCENARIOS: MarketScenario[] = [
       'bonds': { baseReturn: 0.03, volatility: 0.07, crashSensitivity: -0.3, inflationSensitivity: -0.5 },
       'gold': { baseReturn: 0.04, volatility: 0.15, crashSensitivity: -0.4, inflationSensitivity: 0.5 },
       'cash': { baseReturn: 0.01, volatility: 0.01, crashSensitivity: 0, inflationSensitivity: -0.7 },
+      'cryptocurrency': { baseReturn: 0.20, volatility: 0.58, crashSensitivity: 1.1, inflationSensitivity: 0.3 },
+      'real-estate': { baseReturn: 0.07, volatility: 0.16, crashSensitivity: 0.5, inflationSensitivity: 0.4 },
     },
   },
   {
@@ -182,6 +194,8 @@ export const MARKET_SCENARIOS: MarketScenario[] = [
       'bonds': { baseReturn: 0.03, volatility: 0.06, crashSensitivity: -0.2, inflationSensitivity: -0.4 },
       'gold': { baseReturn: 0.03, volatility: 0.12, crashSensitivity: -0.3, inflationSensitivity: 0.5 },
       'cash': { baseReturn: 0.02, volatility: 0.01, crashSensitivity: 0, inflationSensitivity: -0.6 },
+      'cryptocurrency': { baseReturn: 0.16, volatility: 0.52, crashSensitivity: 0.7, inflationSensitivity: 0.3 },
+      'real-estate': { baseReturn: 0.06, volatility: 0.12, crashSensitivity: 0.4, inflationSensitivity: 0.4 },
     },
   },
 ];

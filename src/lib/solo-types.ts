@@ -4,7 +4,9 @@ export type AssetClass =
   | 'emerging-markets'
   | 'bonds'
   | 'gold'
-  | 'cash';
+  | 'cash'
+  | 'cryptocurrency'
+  | 'real-estate';
 
 export const ASSET_CLASSES: Record<AssetClass, { name: string; color: string; risk: number }> = {
   'tech-stocks': { name: 'Tech Stocks', color: '#ec4899', risk: 4 },
@@ -13,7 +15,18 @@ export const ASSET_CLASSES: Record<AssetClass, { name: string; color: string; ri
   'bonds': { name: 'Bonds', color: '#8b5cf6', risk: 1 },
   'gold': { name: 'Gold', color: '#f59e0b', risk: 2 },
   'cash': { name: 'Cash', color: '#6b7280', risk: 0 },
+  'cryptocurrency': { name: 'Cryptocurrency', color: '#f7931a', risk: 5 },
+  'real-estate': { name: 'Real Estate', color: '#06b6d4', risk: 3 },
 };
+
+export const BASE_ASSETS: AssetClass[] = [
+  'tech-stocks', 'blue-chip', 'emerging-markets', 'bonds', 'gold', 'cash',
+];
+
+export const ALTERNATIVE_ASSETS: { asset: AssetClass; icon: string; teaser: string }[] = [
+  { asset: 'cryptocurrency', icon: '₿', teaser: 'Volatile digital assets with explosive upside' },
+  { asset: 'real-estate', icon: '🏠', teaser: 'Property & REITs — steady income, inflation hedge' },
+];
 
 export interface Allocation {
   assetClass: AssetClass;
@@ -40,6 +53,7 @@ export interface EventOption {
   description: string;
   effect: Partial<Record<AssetClass, number>> | null;
   sentiment: 'good' | 'bad' | 'neutral';
+  requiresAsset?: AssetClass;
 }
 
 export interface SimulationState {
