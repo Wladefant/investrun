@@ -103,20 +103,13 @@ export function HistoricSimulatorScreen({
     setAllocation({ ...DEFAULT_ALLOCATIONS[profile] });
   };
 
-  // -----------------------------------------------------------------------
-  // Allocation slider handler (keeps total ≤ 100)
-  // -----------------------------------------------------------------------
-  const handleSliderChange = (key: keyof Allocation, value: number) => {
-    setAllocation((prev) => ({ ...prev, [key]: value }));
-  };
-
-  const allocTotal = Object.values(allocation).reduce((a, b) => a + b, 0);
+  // (Allocation is set by preset selection — no manual slider needed)
 
   // -----------------------------------------------------------------------
   // Start simulation
   // -----------------------------------------------------------------------
   const startSimulation = () => {
-    if (!weeklyData || allocTotal !== 100) return;
+    if (!weeklyData) return;
 
     const events = marketEventsData as MarketEvent[];
     const ticks = buildSimulation(weeklyData, events, allocation, 100_000);
@@ -312,101 +305,98 @@ export function HistoricSimulatorScreen({
 
           {weeklyData && (
             <>
-              {/* Risk Profile Selector */}
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 mb-4">
-                <h2 className="text-sm font-bold text-[#333333] mb-3">
-                  Risk Profile
-                </h2>
-                <div className="flex gap-2">
-                  {(["cautious", "balanced", "growth"] as RiskProfile[]).map(
-                    (profile) => (
-                      <button
-                        key={profile}
-                        onClick={() => handleProfileChange(profile)}
-                        className={cn(
-                          "flex-1 py-2.5 rounded-xl text-xs font-bold transition-all border-2",
-                          riskProfile === profile
-                            ? "bg-[#FFC800] text-[#333333] border-[#FFC800]"
-                            : "bg-gray-50 text-[#767676] border-gray-200 hover:border-[#FFC800]/50"
-                        )}
-                      >
-                        {profile.charAt(0).toUpperCase() + profile.slice(1)}
-                      </button>
-                    )
-                  )}
-                </div>
-              </div>
-
-              {/* Portfolio Builder */}
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 mb-4">
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-sm font-bold text-[#333333]">
-                    Portfolio Allocation
-                  </h2>
-                  <span
+              {/* Pick Your Strategy */}
+              <h2 className="text-sm font-bold text-[#333333] mb-3">
+                Choose Your Strategy
+              </h2>
+              <div className="space-y-3 mb-4">
+                {([
+                  {
+                    id: "cautious" as RiskProfile,
+                    icon: "🛡️",
+                    label: "Cautious",
+                    desc: "Protect first, grow second",
+                    color: "border-blue-400",
+                    breakdown: "25% Stocks · 40% Bonds · 20% Gold · 15% Cash",
+                  },
+                  {
+                    id: "balanced" as RiskProfile,
+                    icon: "⚖️",
+                    label: "Balanced",
+                    desc: "Growth with guardrails",
+                    color: "border-[#FFC800]",
+                    breakdown: "50% Stocks · 25% Bonds · 15% Gold · 10% Cash",
+                  },
+                  {
+                    id: "growth" as RiskProfile,
+                    icon: "🚀",
+                    label: "Growth",
+                    desc: "Maximum returns, bumpier ride",
+                    color: "border-emerald-400",
+                    breakdown: "70% Stocks · 15% Bonds · 10% Gold · 5% Cash",
+                  },
+                ]).map((strategy) => (
+                  <button
+                    key={strategy.id}
+                    onClick={() => handleProfileChange(strategy.id)}
                     className={cn(
-                      "text-xs font-bold",
-                      allocTotal === 100 ? "text-green-600" : "text-red-500"
+                      "w-full bg-white rounded-2xl shadow-sm p-4 text-left transition-all active:scale-[0.98] border-2",
+                      riskProfile === strategy.id
+                        ? strategy.color + " bg-white"
+                        : "border-gray-100"
                     )}
                   >
-                    {allocTotal}% / 100%
-                  </span>
-                </div>
-
-                <div className="space-y-4">
-                  {(Object.keys(ASSET_LABELS) as (keyof Allocation)[]).map(
-                    (key) => (
-                      <div key={key}>
-                        <div className="flex items-center justify-between mb-1">
-                          <span className="text-xs text-[#333333]">
-                            {ASSET_ICONS[key]} {ASSET_LABELS[key]}
-                          </span>
-                          <span className="text-xs font-bold text-[#333333]">
-                            {allocation[key]}%
-                          </span>
-                        </div>
-                        <input
-                          type="range"
-                          min={0}
-                          max={100}
-                          value={allocation[key]}
-                          onChange={(e) =>
-                            handleSliderChange(
-                              key,
-                              parseInt(e.target.value, 10)
-                            )
-                          }
-                          className="w-full h-2 rounded-full appearance-none cursor-pointer"
-                          style={{
-                            background: `linear-gradient(to right, #FFC800 0%, #FFC800 ${allocation[key]}%, #e5e7eb ${allocation[key]}%, #e5e7eb 100%)`,
-                          }}
-                        />
+                    <div className="flex items-center gap-3 mb-2">
+                      <span className="text-2xl">{strategy.icon}</span>
+                      <div>
+                        <p className="font-bold text-[#333333] text-sm">{strategy.label}</p>
+                        <p className="text-[10px] text-[#767676]">{strategy.desc}</p>
                       </div>
-                    )
-                  )}
-                </div>
+                      {riskProfile === strategy.id && (
+                        <div className="ml-auto w-5 h-5 bg-[#FFC800] rounded-full flex items-center justify-center">
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#333" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                      )}
+                    </div>
+                    {/* Visual allocation bar */}
+                    <div className="flex h-2 rounded-full overflow-hidden">
+                      {(() => {
+                        const a = DEFAULT_ALLOCATIONS[strategy.id];
+                        const stocks = a.swiss_stocks + a.us_stocks + a.eu_stocks;
+                        return (
+                          <>
+                            <div className="bg-[#FFC800]" style={{ width: `${stocks}%` }} />
+                            <div className="bg-blue-400" style={{ width: `${a.bonds}%` }} />
+                            <div className="bg-amber-400" style={{ width: `${a.gold}%` }} />
+                            <div className="bg-gray-300" style={{ width: `${a.cash}%` }} />
+                          </>
+                        );
+                      })()}
+                    </div>
+                    <p className="text-[9px] text-[#767676] mt-1.5">{strategy.breakdown}</p>
+                  </button>
+                ))}
               </div>
 
-              {/* Info Card */}
+              {/* Legend */}
+              <div className="flex items-center gap-3 mb-4 px-1">
+                <span className="flex items-center gap-1 text-[9px] text-[#767676]"><span className="w-2 h-2 rounded-full bg-[#FFC800]"/>Stocks</span>
+                <span className="flex items-center gap-1 text-[9px] text-[#767676]"><span className="w-2 h-2 rounded-full bg-blue-400"/>Bonds</span>
+                <span className="flex items-center gap-1 text-[9px] text-[#767676]"><span className="w-2 h-2 rounded-full bg-amber-400"/>Gold</span>
+                <span className="flex items-center gap-1 text-[9px] text-[#767676]"><span className="w-2 h-2 rounded-full bg-gray-300"/>Cash</span>
+              </div>
+
+              {/* Professor note */}
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 mb-4">
                 <p className="text-xs text-[#767676] leading-relaxed">
-                  <span className="font-bold text-[#FFC800]">
-                    Professor Fortuna:
-                  </span>{" "}
-                  You&apos;ll invest CHF 100,000 and live through 20 years of
-                  real market data. Crises will hit. The question is: can you
-                  keep your nerve?
+                  <span className="font-bold text-[#FFC800]">Professor Fortuna:</span>{" "}
+                  You&apos;ll invest CHF 100,000 and travel through 20 years of real market history. Crashes will hit. The question is: can you keep your nerve?
                 </p>
               </div>
 
-              {/* Start Button */}
-              <Button
-                onClick={startSimulation}
-                disabled={allocTotal !== 100}
-                variant="secondary"
-                size="lg"
-              >
-                Start Simulation
+              {/* Start Button — always enabled since allocation is always valid */}
+              <Button onClick={startSimulation} variant="secondary" size="lg">
+                Start Simulation →
               </Button>
             </>
           )}
