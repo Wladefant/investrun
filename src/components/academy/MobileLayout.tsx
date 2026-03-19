@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Home, TrendingUp, GraduationCap, Gamepad2, Swords, Sun, Moon } from "lucide-react";
 import { useTheme } from "@/lib/theme";
@@ -10,9 +10,56 @@ interface LayoutProps {
   className?: string;
 }
 
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => {
+      // Detect mobile: touch support + narrow viewport, or userAgent
+      const hasTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+      const isNarrow = window.innerWidth <= 500;
+      setIsMobile(hasTouch && isNarrow);
+    };
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+  return isMobile;
+}
+
 export function MobileLayout({ children, className }: LayoutProps) {
   const { theme, toggle } = useTheme();
+  const isMobile = useIsMobile();
 
+  if (isMobile) {
+    // On real phones: no frame, full viewport, fixed to screen
+    return (
+      <div
+        className={cn(
+          "w-full bg-background overflow-hidden relative flex flex-col",
+          className
+        )}
+        style={{ height: "100dvh" }}
+      >
+        {/* Slim status bar with just theme toggle */}
+        <div className="h-6 bg-background flex justify-end items-center px-4 shrink-0 z-50">
+          <button
+            onClick={toggle}
+            className="w-6 h-6 rounded-full flex items-center justify-center text-muted-foreground hover:text-primary transition-colors active:scale-90"
+            title={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
+          >
+            {theme === "light" ? <Moon size={12} /> : <Sun size={12} />}
+          </button>
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 flex flex-col relative overflow-hidden">
+          {children}
+        </div>
+      </div>
+    );
+  }
+
+  // On desktop: iPhone frame
   return (
     <div className="min-h-screen w-full flex justify-center items-center p-4 font-sans bg-muted">
       <div

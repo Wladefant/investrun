@@ -529,7 +529,7 @@ export function ProfessorChat({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-black/40 z-40 rounded-[50px]"
+            className="absolute inset-0 bg-black/40 z-40"
           />
 
           {/* Chat Panel */}
