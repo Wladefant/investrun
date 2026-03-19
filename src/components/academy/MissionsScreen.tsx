@@ -52,7 +52,7 @@ export function MissionsScreen({
               onClick={() => status !== "locked" && onStartMission(mission.id)}
               disabled={status === "locked"}
               className={cn(
-                "w-full bg-white rounded-2xl shadow-sm border border-gray-100 text-left transition-all overflow-hidden",
+                "w-full bg-card rounded-2xl shadow-sm border border-border text-left transition-all overflow-hidden",
                 status === "locked" && "opacity-50 grayscale",
                 status === "available" && "active:scale-[0.98]"
               )}

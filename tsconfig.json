@@ -19,5 +19,5 @@
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules", "ing-app"]
+  "exclude": ["node_modules", "ing-app", "vercel-future-you"]
 }

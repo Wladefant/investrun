@@ -51,7 +51,7 @@ export function MissionResultScreen({
         </p>
 
         <div
-          className={`w-28 h-28 bg-white rounded-2xl shadow-sm border-2 ${gradeColors[grade] || gradeColors.C} flex items-center justify-center mx-auto mb-4`}
+          className={`w-28 h-28 bg-card rounded-2xl shadow-sm border-2 ${gradeColors[grade] || gradeColors.C} flex items-center justify-center mx-auto mb-4`}
         >
           <span className={`text-5xl font-black ${gradeTextColors[grade] || gradeTextColors.C}`}>
             {grade}
@@ -59,7 +59,7 @@ export function MissionResultScreen({
         </div>
 
         <p
-          className="text-2xl font-bold text-[#333333]"
+          className="text-primary-foregroundxl font-bold text-[#333333]"
         >
           Score: {score}/100
         </p>
@@ -67,7 +67,7 @@ export function MissionResultScreen({
 
       {/* XP earned */}
       <div
-        className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 flex items-center gap-3 mb-3 border-l-4 border-l-[#FFC800]"
+        className="bg-card rounded-2xl shadow-sm border border-border p-4 flex items-center gap-3 mb-3 border-l-4 border-l-[#FFC800]"
       >
         <div className="w-11 h-11 bg-[#FFC800]/10 rounded-xl flex items-center justify-center">
           <Sparkles size={20} className="text-[#FFC800]" />
@@ -80,7 +80,7 @@ export function MissionResultScreen({
 
       {/* Rank */}
       <div
-        className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 flex items-center gap-3 mb-3"
+        className="bg-card rounded-2xl shadow-sm border border-border p-4 flex items-center gap-3 mb-3"
       >
         <div className="w-11 h-11 bg-[#33307E]/10 rounded-xl flex items-center justify-center">
           <Award size={20} className="text-[#33307E]" />
@@ -95,7 +95,7 @@ export function MissionResultScreen({
 
       {/* Professor debrief */}
       <div
-        className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 mb-6 border-l-4 border-l-[#FFC800]/40"
+        className="bg-card rounded-2xl shadow-sm border border-border p-5 mb-6 border-l-4 border-l-[#FFC800]/40"
       >
         <p className="text-sm text-[#333333] leading-relaxed">
           <span className="font-bold text-[#33307E]">Professor Fortuna:</span> {debrief}

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { ThemeProvider } from "@/lib/theme";
 
 export const metadata: Metadata = {
   title: "Wealth Manager Academy | PostFinance",
@@ -29,7 +30,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen bg-background text-foreground antialiased">
-        {children}
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );

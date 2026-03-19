@@ -35,7 +35,8 @@ type Screen =
   | "mission"
   | "mission_result"
   | "dna_report"
-  | "simulator";
+  | "simulator"
+  | "future";
 
 export default function AcademyApp() {
   const [screen, setScreen] = useState<Screen>("enrollment");
@@ -256,6 +257,12 @@ export default function AcademyApp() {
       {screen === "simulator" && (
         <div className="flex-1 flex flex-col overflow-hidden">
           <HistoricSimulatorScreen onBack={() => setScreen("dashboard")} />
+        </div>
+      )}
+
+      {screen === "future" && (
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <FutureEstimationScreen onBack={() => setScreen("solo")} />
         </div>
       )}
 
