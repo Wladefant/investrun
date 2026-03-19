@@ -168,9 +168,9 @@ export function getXpProgress(xp: number): { current: number; required: number; 
   };
 }
 
-export function isMissionUnlocked(missionId: number, completedMissions: number[]): boolean {
-  if (missionId === 1) return true;
-  return completedMissions.includes(missionId - 1);
+export function isMissionUnlocked(_missionId: number, _completedMissions: number[]): boolean {
+  // All missions are unlocked — players can explore in any order
+  return true;
 }
 
 export function getMissionStatus(
@@ -178,6 +178,5 @@ export function getMissionStatus(
   completedMissions: number[]
 ): "locked" | "available" | "completed" {
   if (completedMissions.includes(missionId)) return "completed";
-  if (isMissionUnlocked(missionId, completedMissions)) return "available";
-  return "locked";
+  return "available";
 }
