@@ -7,12 +7,12 @@ import { MARKET_SCENARIOS } from '@/data/arena-scenarios';
 interface QueueEntry {
   playerName: string;
   joinedAt: number;
-  roomId?: string;
-  role?: 'host' | 'guest';
-  matched: boolean;
+  roomId: string;
+  role: 'host' | 'guest';
 }
 
-// The queue — survives Next.js HMR in dev mode
+// The queue — only contains UNMATCHED waiting hosts.
+// Once paired, both entries are removed immediately.
 const globalForQueue = globalThis as typeof globalThis & {
   __arenaMatchQueue?: Map<string, QueueEntry>;
 };
@@ -21,7 +21,7 @@ if (!globalForQueue.__arenaMatchQueue) {
 }
 const queue = globalForQueue.__arenaMatchQueue;
 
-// Clean up old entries (>2 min)
+// Clean up entries older than 2 minutes (stale hosts who left)
 function cleanup() {
   const now = Date.now();
   for (const [token, entry] of queue) {
@@ -37,8 +37,8 @@ function generateToken(): string {
 
 /**
  * Enter the matchmaking queue.
- * If someone is already waiting, pair them immediately.
- * Otherwise, create a room and wait.
+ * If an unmatched host is waiting, pair with them immediately.
+ * Otherwise, become a host and wait.
  */
 export function enterQueue(playerName: string): {
   token: string;
@@ -48,21 +48,30 @@ export function enterQueue(playerName: string): {
 } {
   cleanup();
 
-  // Look for an unmatched host waiting in the queue
-  let waitingHost: { token: string; entry: QueueEntry } | null = null;
+  // Find the first unmatched waiting host
+  let waitingHostToken: string | null = null;
+  let waitingHostEntry: QueueEntry | null = null;
   for (const [token, entry] of queue) {
-    if (!entry.matched && entry.role === 'host' && entry.roomId) {
-      waitingHost = { token, entry };
-      break;
+    if (entry.role === 'host') {
+      // Verify the room still exists and is waiting
+      const room = getRoom(entry.roomId);
+      if (room && room.status === 'waiting') {
+        waitingHostToken = token;
+        waitingHostEntry = entry;
+        break;
+      } else {
+        // Stale entry — room gone or already used. Remove it.
+        queue.delete(token);
+      }
     }
   }
 
-  if (waitingHost) {
-    // Join the waiting host's room
-    const room = joinRoom(waitingHost.entry.roomId!, playerName);
+  if (waitingHostToken && waitingHostEntry) {
+    // Pair with the waiting host
+    const room = joinRoom(waitingHostEntry.roomId, playerName);
     if (room) {
-      // Mark host as matched
-      waitingHost.entry.matched = true;
+      // Remove the host from the queue — they're matched now
+      queue.delete(waitingHostToken);
 
       // Auto-setup the room with a random scenario
       const scenario = MARKET_SCENARIOS[Math.floor(Math.random() * MARKET_SCENARIOS.length)];
@@ -73,7 +82,6 @@ export function enterQueue(playerName: string): {
         severity: e.severity,
         assetImpacts: e.assetImpacts as Record<string, number>,
       }));
-      // Pad to 8 rounds if needed
       while (rounds.length < 8) {
         rounds.push({
           title: 'Sideways Market',
@@ -83,38 +91,28 @@ export function enterQueue(playerName: string): {
           assetImpacts: { 'global-equity': 0.01, bonds: 0.005, gold: 0, cash: 0.001, bitcoin: -0.02, 'tech-growth': 0.015 },
         });
       }
-      setupRoom(waitingHost.entry.roomId!, scenario.id, 20, rounds);
+      setupRoom(waitingHostEntry.roomId, scenario.id, 20, rounds);
 
+      // Guest doesn't need to be in the queue — they're matched
       const guestToken = generateToken();
-      const guestEntry: QueueEntry = {
-        playerName,
-        joinedAt: Date.now(),
-        roomId: waitingHost.entry.roomId!,
-        role: 'guest',
-        matched: true,
-      };
-      queue.set(guestToken, guestEntry);
-
       return {
         token: guestToken,
-        roomId: waitingHost.entry.roomId!,
+        roomId: waitingHostEntry.roomId,
         role: 'guest',
         matched: true,
       };
     }
   }
 
-  // No one waiting — create a room and wait
+  // No one waiting — create a room and wait as host
   const room = createRoom(playerName);
   const token = generateToken();
-  const entry: QueueEntry = {
+  queue.set(token, {
     playerName,
     joinedAt: Date.now(),
     roomId: room.id,
     role: 'host',
-    matched: false,
-  };
-  queue.set(token, entry);
+  });
 
   return {
     token,
@@ -133,19 +131,24 @@ export function checkQueue(token: string): {
   matched: boolean;
 } | null {
   const entry = queue.get(token);
-  if (!entry || !entry.roomId) return null;
+  if (!entry) return null;
 
-  // Check if someone joined the room
-  if (!entry.matched && entry.role === 'host') {
-    const room = getRoom(entry.roomId);
-    if (room && room.status !== 'waiting') {
-      entry.matched = true;
-    }
+  // Check if someone joined our room (host waiting → room no longer 'waiting')
+  const room = getRoom(entry.roomId);
+  if (!room) {
+    queue.delete(token);
+    return null;
+  }
+
+  const matched = room.status !== 'waiting';
+  if (matched) {
+    // We're matched — remove from queue
+    queue.delete(token);
   }
 
   return {
     roomId: entry.roomId,
-    role: entry.role!,
-    matched: entry.matched,
+    role: entry.role,
+    matched,
   };
 }
