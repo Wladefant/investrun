@@ -203,7 +203,7 @@ function InvestmentPicker({
       {/* Big number */}
       <div className="bg-card rounded-2xl shadow-sm p-6 text-center space-y-1">
         <p className="text-sm text-[#767676]">Monthly investment</p>
-        <p className="text-4xl font-bold text-[#333333]">
+        <p className="text-primaryxl font-bold text-[#333333]">
           CHF {monthly.toLocaleString("de-CH")}
         </p>
       </div>
@@ -339,7 +339,7 @@ function RevealPhase({
 
       {/* Punchline */}
       <div className="bg-[#FFC800]/10 border border-[#FFC800]/30 rounded-2xl p-5 text-center space-y-2">
-        <p className="text-2xl font-bold text-[#333333]">
+        <p className="text-primary-foregroundxl font-bold text-[#333333]">
           {Math.round(bestSaved * 10) / 10} years
         </p>
         <p className="text-sm text-[#767676]">

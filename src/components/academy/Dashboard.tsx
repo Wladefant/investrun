@@ -40,7 +40,7 @@ export function AcademyDashboard({
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <div
-              className="w-12 h-12 bg-gradient-to-br from-yellow-100 to-amber-100 rounded-full flex items-center justify-center text-2xl shadow-sm"
+              className="w-12 h-12 bg-gradient-to-br from-yellow-100 to-amber-100 rounded-full flex items-center justify-center text-primary-foregroundxl shadow-sm"
             >
               {rank.icon}
             </div>
@@ -82,7 +82,7 @@ export function AcademyDashboard({
           <div
             className="bg-card p-3 rounded-xl shadow-sm text-center"
           >
-            <div className="text-2xl mb-1">
+            <div className="text-primary-foregroundxl mb-1">
               <Trophy size={22} className="text-[#FFC800] mx-auto" />
             </div>
             <div className="text-lg font-bold text-[#333333]">{rank.label}</div>
@@ -91,7 +91,7 @@ export function AcademyDashboard({
           <div
             className="bg-card p-3 rounded-xl shadow-sm text-center"
           >
-            <div className="text-2xl mb-1">
+            <div className="text-primary-foregroundxl mb-1">
               <Sparkles size={22} className="text-[#FFC800] mx-auto" />
             </div>
             <div className="text-lg font-bold text-[#333333]">{progress.xp}</div>
@@ -100,7 +100,7 @@ export function AcademyDashboard({
           <div
             className="bg-card p-3 rounded-xl shadow-sm text-center"
           >
-            <div className="text-2xl mb-1">
+            <div className="text-primary-foregroundxl mb-1">
               <Target size={22} className="text-[#FFC800] mx-auto" />
             </div>
             <div className="text-lg font-bold text-[#333333]">

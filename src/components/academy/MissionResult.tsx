@@ -59,7 +59,7 @@ export function MissionResultScreen({
         </div>
 
         <p
-          className="text-2xl font-bold text-[#333333]"
+          className="text-primary-foregroundxl font-bold text-[#333333]"
         >
           Score: {score}/100
         </p>

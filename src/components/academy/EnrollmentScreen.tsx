@@ -71,7 +71,7 @@ export function EnrollmentScreen({ onEnroll }: { onEnroll: (name: string) => voi
           <GraduationCap size={28} className="text-[#333333]" />
         </div>
 
-        <h1 className="text-2xl font-bold text-[#333333] mb-2">
+        <h1 className="text-primary-foregroundxl font-bold text-[#333333] mb-2">
           Welcome, future investor.
         </h1>
         <p className="text-[#767676] text-sm mb-10">
