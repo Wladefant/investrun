@@ -33,17 +33,34 @@ function tryRemove() {
 }
 
 function killNodeProcesses() {
+  const myPid = process.pid;
+  const parentPid = process.ppid;
   if (isWindows) {
-    // Use cmd.exe explicitly so taskkill is always reachable
+    // Kill node processes EXCEPT ourselves and our parent (npm)
     try {
-      execSync("taskkill /F /IM node.exe", {
+      const out = execSync('wmic process where "name=\'node.exe\'" get processid /format:csv', {
         shell: "cmd.exe",
-        timeout: 15000,
+        timeout: 10000,
         stdio: "pipe",
+        encoding: "utf8",
       });
-      log("Killed node processes via taskkill.");
+      const pids = out.match(/\d+/g) || [];
+      const toKill = pids.filter(p => +p !== myPid && +p !== parentPid);
+      if (toKill.length > 0) {
+        for (const pid of toKill) {
+          try {
+            execSync(`taskkill /F /PID ${pid}`, { shell: "cmd.exe", timeout: 5000, stdio: "pipe" });
+          } catch { /* already dead */ }
+        }
+        log(`Killed ${toKill.length} node process(es).`);
+      } else {
+        log("No other node processes to kill.");
+      }
     } catch {
-      log("No node processes to kill (or already dead).");
+      log("Could not enumerate processes — trying force kill.");
+      try {
+        execSync("taskkill /F /IM node.exe", { shell: "cmd.exe", timeout: 10000, stdio: "pipe" });
+      } catch { /* nothing to kill */ }
     }
   } else {
     try {
@@ -74,9 +91,10 @@ log(".next is locked — killing node processes...");
 killNodeProcesses();
 
 // --- Wait for locks to release, retry removal ---
+sleepSync(2000); // Give Windows time to release handles
 const maxAttempts = 10;
 for (let i = 0; i < maxAttempts; i++) {
-  sleepSync(500);
+  sleepSync(1000);
   if (tryRemove()) {
     log("Removed .next successfully.");
     process.exit(0);
