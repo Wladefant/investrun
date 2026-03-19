@@ -5,6 +5,7 @@ import { AnimatePresence } from 'framer-motion';
 import { useArenaStore } from '@/lib/arena-store';
 import type { ArenaPhase } from '@/lib/arena-store';
 import { ArenaLobby } from './ArenaLobby';
+import { ArenaMatchSetup } from './ArenaMatchSetup';
 
 interface ArenaScreenProps {
   playerName: string;
@@ -53,8 +54,13 @@ export function ArenaScreen({
             onViewLeaderboard={() => setShowLeaderboard(true)}
           />
         )}
-        {phase === 'matchmaking' && <PhasePlaceholder key="matchmaking" phase="matchmaking" />}
-        {phase === 'setup' && <PhasePlaceholder key="setup" phase="setup" />}
+        {(phase === 'matchmaking' || phase === 'setup') && (
+          <ArenaMatchSetup
+            key="matchmaking-setup"
+            playerName={playerName}
+            playerElo={arenaStats.elo}
+          />
+        )}
         {phase === 'match' && <PhasePlaceholder key="match" phase="match" />}
         {phase === 'reveal' && <PhasePlaceholder key="reveal" phase="reveal" />}
         {phase === 'results' && <PhasePlaceholder key="results" phase="results" />}
