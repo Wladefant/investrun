@@ -2,7 +2,7 @@
 
 import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
-import { Home, Target, GraduationCap, User, BookOpen } from "lucide-react";
+import { Home, Target, GraduationCap, User, Gamepad2 } from "lucide-react";
 
 interface LayoutProps {
   children: ReactNode;
@@ -146,10 +146,10 @@ export function BottomNav({
       </div>
 
       <NavItem
-        icon={<BookOpen size={24} />}
-        label="Learn"
-        active={activeTab === "learn"}
-        onClick={() => onNavigate("learn")}
+        icon={<Gamepad2 size={24} />}
+        label="Solo"
+        active={activeTab === "solo"}
+        onClick={() => onNavigate("solo")}
       />
       <NavItem
         icon={<User size={24} />}
