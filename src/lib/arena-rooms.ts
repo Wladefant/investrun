@@ -38,8 +38,14 @@ export interface ArenaRoom {
   createdAt: number;
 }
 
-// Global room store
-const rooms = new Map<string, ArenaRoom>();
+// Global room store — survives Next.js HMR in dev mode
+const globalForRooms = globalThis as typeof globalThis & {
+  __arenaRooms?: Map<string, ArenaRoom>;
+};
+if (!globalForRooms.__arenaRooms) {
+  globalForRooms.__arenaRooms = new Map<string, ArenaRoom>();
+}
+const rooms = globalForRooms.__arenaRooms;
 
 // Clean up rooms older than 30 minutes
 function cleanupOldRooms() {

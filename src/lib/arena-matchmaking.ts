@@ -12,8 +12,14 @@ interface QueueEntry {
   matched: boolean;
 }
 
-// The queue: key = a unique token, value = queue entry
-const queue = new Map<string, QueueEntry>();
+// The queue — survives Next.js HMR in dev mode
+const globalForQueue = globalThis as typeof globalThis & {
+  __arenaMatchQueue?: Map<string, QueueEntry>;
+};
+if (!globalForQueue.__arenaMatchQueue) {
+  globalForQueue.__arenaMatchQueue = new Map<string, QueueEntry>();
+}
+const queue = globalForQueue.__arenaMatchQueue;
 
 // Clean up old entries (>2 min)
 function cleanup() {
