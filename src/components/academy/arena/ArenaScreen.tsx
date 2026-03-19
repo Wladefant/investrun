@@ -8,6 +8,7 @@ import { ArenaLobby } from './ArenaLobby';
 import { ArenaMatchSetup } from './ArenaMatchSetup';
 import { ArenaMatch } from './ArenaMatch';
 import { ArenaRoundReveal } from './ArenaRoundReveal';
+import { ArenaResults } from './ArenaResults';
 import { OPPONENTS } from '@/lib/arena-opponents';
 
 interface ArenaScreenProps {
@@ -75,7 +76,13 @@ export function ArenaScreen({
         {phase === 'reveal' && (
           <ArenaRoundReveal key="reveal" opponentName={opponentName} />
         )}
-        {phase === 'results' && <PhasePlaceholder key="results" phase="results" />}
+        {phase === 'results' && (
+          <ArenaResults
+            key="results"
+            playerName={playerName}
+            onStatsUpdate={onStatsUpdate}
+          />
+        )}
       </AnimatePresence>
     </div>
   );
