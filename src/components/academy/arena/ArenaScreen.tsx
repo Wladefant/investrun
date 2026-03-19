@@ -9,6 +9,7 @@ import { ArenaMatchSetup } from './ArenaMatchSetup';
 import { ArenaMatch } from './ArenaMatch';
 import { ArenaRoundReveal } from './ArenaRoundReveal';
 import { ArenaResults } from './ArenaResults';
+import { ArenaLeaderboard } from './ArenaLeaderboard';
 import { OPPONENTS } from '@/lib/arena-opponents';
 
 interface ArenaScreenProps {
@@ -47,6 +48,16 @@ export function ArenaScreen({
     initStats(arenaStats);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (showLeaderboard) {
+    return (
+      <ArenaLeaderboard
+        onBack={() => setShowLeaderboard(false)}
+        playerName={playerName}
+        playerStats={stats}
+      />
+    );
+  }
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden">
