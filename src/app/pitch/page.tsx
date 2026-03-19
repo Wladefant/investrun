@@ -206,17 +206,21 @@ export default function PitchPage() {
     return <AcademyAppInner initialScreen="dashboard" initialName={playerName} />;
   }
 
+  // Onboarding renders directly without AnimatePresence wrapper to avoid flex layout issues
+  if (phase === "onboarding") {
+    return (
+      <MobileLayout>
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <OnboardingFlow onComplete={handleOnboardingComplete} />
+        </div>
+      </MobileLayout>
+    );
+  }
+
   return (
     <MobileLayout>
       <div className="flex-1 flex flex-col overflow-hidden bg-background">
         <AnimatePresence mode="wait">
-
-          {/* Onboarding */}
-          {phase === "onboarding" && (
-            <motion.div key="onboarding" className="flex-1 flex flex-col overflow-hidden" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-              <OnboardingFlow onComplete={handleOnboardingComplete} />
-            </motion.div>
-          )}
 
           {/* Matchmaking */}
           {phase === "matchmaking" && (
