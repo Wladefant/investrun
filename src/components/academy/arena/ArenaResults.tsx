@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Trophy, Shield, Swords, Sparkles, ArrowUp, ArrowDown, RotateCcw, Zap } from 'lucide-react';
+import { Trophy, Shield, Swords, Sparkles, ArrowUp, ArrowDown, RotateCcw, Zap, Brain } from 'lucide-react';
 import {
   ResponsiveContainer,
   LineChart,
@@ -11,7 +11,7 @@ import {
   Tooltip,
 } from 'recharts';
 import { cn } from '@/lib/utils';
-import { useArenaStore, STARTING_CAPITAL } from '@/lib/arena-store';
+import { useArenaStore, STARTING_CAPITAL, TOTAL_ROUNDS } from '@/lib/arena-store';
 import {
   formatCHF,
   getReturnPercentage,
@@ -20,6 +20,9 @@ import {
 } from '@/lib/arena-engine';
 import { OPPONENTS } from '@/lib/arena-opponents';
 import { getEloBadgeTier } from '@/data/arena-leaderboard';
+import { getArenaRounds, getScenarioById } from '@/data/arena-scenarios';
+import { buildMatchContext, fetchArenaAI } from '@/lib/arena-ai';
+import { useTypewriter } from '@/hooks/useTypewriter';
 
 interface ArenaResultsProps {
   playerName: string;
@@ -66,8 +69,10 @@ export function ArenaResults({ playerName, onStatsUpdate }: ArenaResultsProps) {
   const [result, setResult] = useState<'win' | 'loss' | 'draw'>('draw');
   const [oldTier, setOldTier] = useState(getEloBadgeTier(store.stats.elo));
   const [newTier, setNewTier] = useState(getEloBadgeTier(store.stats.elo));
+  const [aiAnalysis, setAiAnalysis] = useState<string | null>(null);
+  const [aiLoading, setAiLoading] = useState(true);
 
-  // Run match outcome logic exactly once on mount
+  // Run match outcome logic exactly once on mount, then fetch AI analysis
   useEffect(() => {
     if (hasCalledRef.current) return;
     hasCalledRef.current = true;
@@ -110,6 +115,28 @@ export function ArenaResults({ playerName, onStatsUpdate }: ArenaResultsProps) {
 
     store.updateStats(matchResult, opponentElo);
     onStatsUpdate(updatedStats, xp);
+
+    // Fetch AI post-match analysis after outcome is determined
+    if (store.opponent && store.scenarioId) {
+      const scenario = getScenarioById(store.scenarioId);
+      const events = scenario ? getArenaRounds(scenario, TOTAL_ROUNDS) : [];
+      const context = buildMatchContext(
+        store.timeHorizon,
+        matchResult,
+        store.opponent,
+        store.playerPortfolio,
+        store.opponentPortfolio,
+        store.playerDecisions,
+        store.opponentDecisions,
+        events,
+      );
+      fetchArenaAI('match', context).then((text) => {
+        setAiAnalysis(text);
+        setAiLoading(false);
+      });
+    } else {
+      setAiLoading(false);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -131,6 +158,8 @@ export function ArenaResults({ playerName, onStatsUpdate }: ArenaResultsProps) {
   }));
 
   const tierChanged = oldTier !== newTier;
+
+  const { displayed: analysisText, done: analysisDone } = useTypewriter(aiAnalysis);
 
   return (
     <div className="flex-1 overflow-y-auto bg-background">
@@ -267,7 +296,36 @@ export function ArenaResults({ playerName, onStatsUpdate }: ArenaResultsProps) {
           </ResponsiveContainer>
         </motion.div>
 
-        {/* 4. XP & ELO */}
+        {/* 4. AI Match Analysis */}
+        <motion.div
+          className="bg-card rounded-2xl shadow-sm border border-border p-4"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.25 }}
+        >
+          <div className="flex items-center gap-2 mb-2">
+            <Brain size={16} className="text-primary" />
+            <span className="text-xs font-semibold text-primary uppercase tracking-wide">
+              Match Analysis
+            </span>
+          </div>
+          {aiLoading ? (
+            <div className="flex items-center gap-1 py-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground animate-pulse" />
+              <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground animate-pulse [animation-delay:150ms]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground animate-pulse [animation-delay:300ms]" />
+            </div>
+          ) : (
+            <p className="text-sm text-foreground/90 leading-relaxed">
+              {analysisText}
+              {!analysisDone && (
+                <span className="inline-block w-0.5 h-4 bg-primary ml-0.5 animate-pulse align-text-bottom" />
+              )}
+            </p>
+          )}
+        </motion.div>
+
+        {/* 5. XP & ELO */}
         <motion.div
           className="bg-card rounded-2xl shadow-sm border border-border p-4 space-y-3"
           initial={{ opacity: 0, y: 20 }}

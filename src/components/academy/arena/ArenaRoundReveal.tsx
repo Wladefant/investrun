@@ -1,12 +1,14 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, TrendingDown, Shield } from 'lucide-react';
+import { Sparkles, TrendingDown, Shield, Brain, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useArenaStore, STARTING_CAPITAL, TOTAL_ROUNDS } from '@/lib/arena-store';
 import { formatCHF, getRiskLabel } from '@/lib/arena-engine';
 import { getArenaRounds, getScenarioById } from '@/data/arena-scenarios';
+import { buildRoundContext, fetchArenaAI } from '@/lib/arena-ai';
+import { useTypewriter } from '@/hooks/useTypewriter';
 
 interface ArenaRoundRevealProps {
   opponentName: string;
@@ -21,10 +23,17 @@ export function ArenaRoundReveal({ opponentName }: ArenaRoundRevealProps) {
     playerPortfolio,
     opponentPortfolio,
     scenarioId,
+    timeHorizon,
+    opponent,
+    currentEvent,
     setPhase,
     nextRound,
     setCurrentEvent,
   } = store;
+
+  const [aiText, setAiText] = useState<string | null>(null);
+  const [aiLoading, setAiLoading] = useState(true);
+  const fetchedRef = useRef(false);
 
   // Derive last decision and portfolio values
   const lastPlayerDecision = playerDecisions[playerDecisions.length - 1] ?? 50;
@@ -42,30 +51,57 @@ export function ArenaRoundReveal({ opponentName }: ArenaRoundRevealProps) {
   const opponentWonRound = opponentChange > playerChange;
   const isTie = playerChange === opponentChange;
 
-  // Auto-advance after 3.5s
+  // Fetch AI commentary
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      if (currentRound >= TOTAL_ROUNDS) {
-        setPhase('results');
-      } else {
-        nextRound();
-        // After nextRound(), currentRound in the store is now +1
-        const newRound = currentRound + 1;
-        const scenario = scenarioId ? getScenarioById(scenarioId) : undefined;
-        if (scenario) {
-          const rounds = getArenaRounds(scenario, TOTAL_ROUNDS);
-          const nextEvent = rounds[newRound - 1];
-          if (nextEvent) {
-            setCurrentEvent(nextEvent);
-          }
-        }
-        setPhase('match');
-      }
-    }, 3500);
+    if (fetchedRef.current) return;
+    fetchedRef.current = true;
 
-    return () => clearTimeout(timeout);
+    if (!opponent || !currentEvent) {
+      setAiText(null);
+      setAiLoading(false);
+      return;
+    }
+
+    const context = buildRoundContext(
+      currentRound,
+      TOTAL_ROUNDS,
+      timeHorizon,
+      currentEvent,
+      lastPlayerDecision,
+      opponent,
+      lastOpponentDecision,
+      playerPortfolio,
+      opponentPortfolio,
+    );
+
+    fetchArenaAI('round', context).then((text) => {
+      setAiText(text);
+      setAiLoading(false);
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentRound]);
+  }, []);
+
+  const { displayed: typewriterText, done: typewriterDone } = useTypewriter(aiText);
+
+  const canAdvance = !aiLoading && typewriterDone;
+
+  const handleAdvance = useCallback(() => {
+    if (currentRound >= TOTAL_ROUNDS) {
+      setPhase('results');
+    } else {
+      nextRound();
+      const newRound = currentRound + 1;
+      const scenario = scenarioId ? getScenarioById(scenarioId) : undefined;
+      if (scenario) {
+        const rounds = getArenaRounds(scenario, TOTAL_ROUNDS);
+        const nextEvent = rounds[newRound - 1];
+        if (nextEvent) {
+          setCurrentEvent(nextEvent);
+        }
+      }
+      setPhase('match');
+    }
+  }, [currentRound, scenarioId, setPhase, nextRound, setCurrentEvent]);
 
   function formatChange(change: number): string {
     const abs = Math.round(Math.abs(change)).toLocaleString('de-CH');
@@ -163,12 +199,49 @@ export function ArenaRoundReveal({ opponentName }: ArenaRoundRevealProps) {
           </div>
         </div>
 
-        {/* Status text */}
-        <p className="text-center text-sm text-muted-foreground">
-          {currentRound < TOTAL_ROUNDS
-            ? 'Next round starting soon...'
-            : 'Final results coming...'}
-        </p>
+        {/* AI Commentary */}
+        <motion.div
+          className="bg-card rounded-2xl shadow-sm border border-border p-4"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.4 }}
+        >
+          <div className="flex items-center gap-2 mb-2">
+            <Brain size={16} className="text-primary" />
+            <span className="text-xs font-semibold text-primary uppercase tracking-wide">
+              AI Analysis
+            </span>
+          </div>
+          {aiLoading ? (
+            <div className="flex items-center gap-1 py-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground animate-pulse" />
+              <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground animate-pulse [animation-delay:150ms]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground animate-pulse [animation-delay:300ms]" />
+            </div>
+          ) : (
+            <p className="text-sm text-foreground/90 leading-relaxed">
+              {typewriterText}
+              {!typewriterDone && (
+                <span className="inline-block w-0.5 h-4 bg-primary ml-0.5 animate-pulse align-text-bottom" />
+              )}
+            </p>
+          )}
+        </motion.div>
+
+        {/* Next Round button */}
+        <button
+          onClick={handleAdvance}
+          disabled={!canAdvance}
+          className={cn(
+            'w-full flex items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold transition-all',
+            canAdvance
+              ? 'bg-primary text-primary-foreground hover:opacity-90'
+              : 'bg-muted text-muted-foreground cursor-not-allowed'
+          )}
+        >
+          {currentRound >= TOTAL_ROUNDS ? 'See Results' : 'Next Round'}
+          <ArrowRight size={16} />
+        </button>
 
       </div>
     </div>
