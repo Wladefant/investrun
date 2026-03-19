@@ -187,17 +187,17 @@ export function Mission2Screen({
             animate={{ opacity: 1, y: 0 }}
             className="flex-1"
           >
-            <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-lg">
+            <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-2xl flex items-center justify-center text-foregroundxl mb-6 shadow-lg">
               {"\uD83E\uDD5A"}
             </div>
-            <h1 className="text-2xl font-bold text-foreground mb-2">
+            <h1 className="text-primary-foregroundxl font-bold text-foreground mb-2">
               Don&apos;t Put All Your Eggs
             </h1>
             <p className="text-muted-foreground text-sm mb-6">Diversification</p>
 
-            <div className="bg-white rounded-2xl p-5 border border-border shadow-sm mb-6">
+            <div className="bg-card rounded-2xl p-5 border border-border shadow-sm mb-6">
               <p className="text-sm text-foreground leading-relaxed">
-                <span className="font-bold text-[#FFC800]">Professor Fortuna:</span>{" "}
+                <span className="font-bold text-primary">Professor Fortuna:</span>{" "}
                 The oldest rule in investing: never put all your eggs in one basket.
                 But how many baskets do you need? And what should go in each one?
               </p>
@@ -231,7 +231,7 @@ export function Mission2Screen({
         <div className="flex-1 overflow-y-auto px-5 py-4">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             {/* Total indicator */}
-            <div className="bg-white rounded-2xl p-4 border border-border shadow-sm mb-4">
+            <div className="bg-card rounded-2xl p-4 border border-border shadow-sm mb-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-bold text-foreground">Total Allocation</span>
                 <span
@@ -244,7 +244,7 @@ export function Mission2Screen({
                 </span>
               </div>
               {/* Allocation bar */}
-              <div className="w-full h-6 bg-gray-100 rounded-full overflow-hidden flex">
+              <div className="w-full h-6 bg-muted rounded-full overflow-hidden flex">
                 {ASSETS.map((asset) => {
                   const pct = allocation[asset.key] || 0;
                   if (pct === 0) return null;
@@ -274,7 +274,7 @@ export function Mission2Screen({
               {ASSETS.map((asset) => (
                 <div
                   key={asset.key}
-                  className="bg-white rounded-2xl p-4 border border-border shadow-sm"
+                  className="bg-card rounded-2xl p-4 border border-border shadow-sm"
                 >
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
@@ -313,12 +313,12 @@ export function Mission2Screen({
             {/* Professor reaction to concentration */}
             {total === 100 && (
               <motion.div
-                className="bg-white rounded-2xl p-4 border border-[#FFC800]/20 shadow-sm mb-4"
+                className="bg-card rounded-2xl p-4 border border-primary/20 shadow-sm mb-4"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
               >
                 <p className="text-xs text-foreground leading-relaxed">
-                  <span className="font-bold text-[#FFC800]">Professor Fortuna:</span>{" "}
+                  <span className="font-bold text-primary">Professor Fortuna:</span>{" "}
                   {getProfessorComment(allocation, hhi)}
                 </p>
               </motion.div>
@@ -363,7 +363,7 @@ export function Mission2Screen({
         <div className="flex-1 overflow-y-auto px-5 py-4">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             {/* Chart */}
-            <div className="bg-white rounded-2xl p-4 border border-border shadow-sm mb-4">
+            <div className="bg-card rounded-2xl p-4 border border-border shadow-sm mb-4">
               <p className="text-xs font-bold text-muted-foreground mb-3">
                 3-YEAR PERFORMANCE (CRASH IN YEAR 1)
               </p>
@@ -409,7 +409,7 @@ export function Mission2Screen({
 
             {/* Comparison cards */}
             <div className="grid grid-cols-2 gap-3 mb-4">
-              <div className="bg-white rounded-2xl p-3 border border-border shadow-sm text-center">
+              <div className="bg-card rounded-2xl p-3 border border-border shadow-sm text-center">
                 <p className="text-xs text-muted-foreground mb-1">Your Return</p>
                 <p
                   className={cn(
@@ -424,7 +424,7 @@ export function Mission2Screen({
                   Crash dip: {crashDrop}%
                 </p>
               </div>
-              <div className="bg-white rounded-2xl p-3 border border-border shadow-sm text-center">
+              <div className="bg-card rounded-2xl p-3 border border-border shadow-sm text-center">
                 <p className="text-xs text-muted-foreground mb-1">Benchmark</p>
                 <p
                   className={cn(
@@ -456,9 +456,9 @@ export function Mission2Screen({
             )}
 
             {/* Professor debrief */}
-            <div className="bg-white rounded-2xl p-5 border border-border shadow-sm mb-4">
+            <div className="bg-card rounded-2xl p-5 border border-border shadow-sm mb-4">
               <p className="text-sm text-foreground leading-relaxed">
-                <span className="font-bold text-[#FFC800]">Professor Fortuna:</span>{" "}
+                <span className="font-bold text-primary">Professor Fortuna:</span>{" "}
                 {isConcentrated
                   ? `Your portfolio dropped ${crashDrop}% in the crash year. A balanced portfolio only dropped ${benchDrop}%. That's the price of concentration - bigger swings in both directions. Would you like to rebalance before the next period?`
                   : `Well diversified! Your portfolio held up relatively well in the crash, dropping ${crashDrop}% compared to the benchmark's ${benchDrop}%. Diversification won't prevent losses, but it cushions the blow. Want to fine-tune before the next period?`}
@@ -494,16 +494,16 @@ export function Mission2Screen({
         <ScreenHeader title="Rebalance" onBack={() => setPhase("result1")} />
         <div className="flex-1 overflow-y-auto px-5 py-4">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <div className="bg-white rounded-2xl p-5 border border-border shadow-sm mb-4">
+            <div className="bg-card rounded-2xl p-5 border border-border shadow-sm mb-4">
               <p className="text-sm text-foreground leading-relaxed">
-                <span className="font-bold text-[#FFC800]">Professor Fortuna:</span>{" "}
+                <span className="font-bold text-primary">Professor Fortuna:</span>{" "}
                 Now that you&apos;ve seen the impact of a crash, you have a chance to
                 rebalance. Adjust your allocations for the next 3-year period.
               </p>
             </div>
 
             {/* Total indicator */}
-            <div className="bg-white rounded-2xl p-4 border border-border shadow-sm mb-4">
+            <div className="bg-card rounded-2xl p-4 border border-border shadow-sm mb-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-bold text-foreground">Total Allocation</span>
                 <span
@@ -515,7 +515,7 @@ export function Mission2Screen({
                   {rebTotal}%
                 </span>
               </div>
-              <div className="w-full h-6 bg-gray-100 rounded-full overflow-hidden flex">
+              <div className="w-full h-6 bg-muted rounded-full overflow-hidden flex">
                 {ASSETS.map((asset) => {
                   const pct = currentRebalance[asset.key] || 0;
                   if (pct === 0) return null;
@@ -545,7 +545,7 @@ export function Mission2Screen({
               {ASSETS.map((asset) => (
                 <div
                   key={asset.key}
-                  className="bg-white rounded-2xl p-4 border border-border shadow-sm"
+                  className="bg-card rounded-2xl p-4 border border-border shadow-sm"
                 >
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
@@ -655,14 +655,14 @@ export function Mission2Screen({
           <h2 className="text-xl font-bold text-foreground">
             Diversification: {diversificationGrade}
           </h2>
-          <p className={cn("text-3xl font-bold mt-2", gradeColor)}>
+          <p className={cn("text-foregroundxl font-bold mt-2", gradeColor)}>
             {finalScore}/100
           </p>
         </motion.div>
 
         {/* Recovery chart */}
         <motion.div
-          className="bg-white rounded-2xl p-4 border border-border shadow-sm mb-4"
+          className="bg-card rounded-2xl p-4 border border-border shadow-sm mb-4"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
@@ -710,7 +710,7 @@ export function Mission2Screen({
 
         {/* Final allocation summary */}
         <motion.div
-          className="bg-white rounded-2xl p-4 border border-border shadow-sm mb-4"
+          className="bg-card rounded-2xl p-4 border border-border shadow-sm mb-4"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
@@ -724,7 +724,7 @@ export function Mission2Screen({
                 <div key={asset.key} className="flex items-center gap-2">
                   <span className="text-sm">{asset.icon}</span>
                   <span className="text-xs text-foreground flex-1">{asset.label}</span>
-                  <div className="w-20 h-2 bg-gray-100 rounded-full overflow-hidden">
+                  <div className="w-20 h-2 bg-muted rounded-full overflow-hidden">
                     <div
                       className="h-full rounded-full"
                       style={{
@@ -756,13 +756,13 @@ export function Mission2Screen({
 
         {/* Professor debrief */}
         <motion.div
-          className="bg-white rounded-2xl p-5 border border-border shadow-sm mb-6"
+          className="bg-card rounded-2xl p-5 border border-border shadow-sm mb-6"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
         >
           <p className="text-sm text-foreground leading-relaxed">
-            <span className="font-bold text-[#FFC800]">Professor Fortuna:</span>{" "}
+            <span className="font-bold text-primary">Professor Fortuna:</span>{" "}
             {debriefHHI < 0.2
               ? "Excellent diversification! You spread your risk across multiple asset classes. In real markets, this is the single most reliable way to protect your wealth. Nobel Prize-winning research confirms it: diversification is the only free lunch in investing."
               : debriefHHI < 0.3

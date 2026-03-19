@@ -163,15 +163,15 @@ export function Mission3Screen({
         <ScreenHeader title="Mission 3" onBack={onBack} />
         <div className="flex-1 flex flex-col px-5 py-6">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex-1">
-            <div className="w-16 h-16 bg-gradient-to-br from-red-400 to-rose-600 rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-lg">
+            <div className="w-16 h-16 bg-gradient-to-br from-red-400 to-rose-600 rounded-2xl flex items-center justify-center text-foregroundxl mb-6 shadow-lg">
               📉
             </div>
-            <h1 className="text-2xl font-bold text-foreground mb-2">When Markets Bleed</h1>
+            <h1 className="text-primary-foregroundxl font-bold text-foreground mb-2">When Markets Bleed</h1>
             <p className="text-muted-foreground text-sm mb-6">Volatility & Crashes</p>
 
-            <div className="bg-white rounded-2xl p-5 border border-border shadow-sm mb-4">
+            <div className="bg-card rounded-2xl p-5 border border-border shadow-sm mb-4">
               <p className="text-sm text-foreground leading-relaxed">
-                <span className="font-bold text-[#FFC800]">Professor Fortuna:</span>{" "}
+                <span className="font-bold text-primary">Professor Fortuna:</span>{" "}
                 This is your hardest test. You start with a diversified CHF 100,000
                 portfolio. Then a crisis hits — the fastest market crash in history.
               </p>
@@ -231,7 +231,7 @@ export function Mission3Screen({
               {currentWeekData?.professorLine}
             </p>
             <div className="mt-3 flex items-center gap-3">
-              <span className="text-red-400 text-2xl font-bold">
+              <span className="text-red-400 text-primary-foregroundxl font-bold">
                 CHF {(currentWeekData?.portfolioValue || 0).toLocaleString("de-CH")}
               </span>
               <span className="bg-red-500/30 px-2 py-0.5 rounded-full text-red-300 text-xs font-bold">
@@ -244,8 +244,8 @@ export function Mission3Screen({
           <div className="space-y-2.5">
             {[
               { decision: "hold" as Decision, icon: "💎", label: "Hold — Stay the course", color: "bg-emerald-500/20 border-emerald-500/40 text-emerald-300" },
-              { decision: "buy_more" as Decision, icon: "📈", label: "Buy More — Into the dip", color: "bg-[#FFC800]/20 border-[#FFC800]/40 text-[#FFC800]" },
-              { decision: "sell_half" as Decision, icon: "⚖️", label: "Sell Half — Reduce risk", color: "bg-white/10 border-white/20 text-gray-300" },
+              { decision: "buy_more" as Decision, icon: "📈", label: "Buy More — Into the dip", color: "bg-primary/20 border-primary/40 text-primary" },
+              { decision: "sell_half" as Decision, icon: "⚖️", label: "Sell Half — Reduce risk", color: "bg-card/10 border-white/20 text-muted-foreground" },
               { decision: "sell" as Decision, icon: "🏃", label: "Panic Sell — Move to cash", color: "bg-red-500/20 border-red-500/40 text-red-300" },
             ].map(({ decision, icon, label, color }) => (
               <motion.button
@@ -300,7 +300,7 @@ export function Mission3Screen({
 
           {/* What happened chart */}
           <motion.div
-            className="bg-white rounded-2xl p-4 border border-border shadow-sm mb-4"
+            className="bg-card rounded-2xl p-4 border border-border shadow-sm mb-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
@@ -332,7 +332,7 @@ export function Mission3Screen({
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
             >
-              <p className="text-red-500 text-3xl font-bold">
+              <p className="text-red-500 text-foregroundxl font-bold">
                 CHF {costOfSelling.toLocaleString("de-CH")}
               </p>
               <p className="text-red-600 text-xs mt-1">
@@ -344,13 +344,13 @@ export function Mission3Screen({
 
           {/* Professor debrief */}
           <motion.div
-            className="bg-white rounded-2xl p-5 border border-border shadow-sm mb-6"
+            className="bg-card rounded-2xl p-5 border border-border shadow-sm mb-6"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7 }}
           >
             <p className="text-sm text-foreground leading-relaxed">
-              <span className="font-bold text-[#FFC800]">Professor Fortuna:</span>{" "}
+              <span className="font-bold text-primary">Professor Fortuna:</span>{" "}
               {held
                 ? "You held through the worst of it. That takes discipline. In 20 years of market data, every single crash recovered. Every one. The lesson: time in the market beats timing the market."
                 : "You sold at the bottom. That locks in the loss permanently. The market recovered within months — but you weren't in it. This is the single most expensive mistake in investing. The good news? You just experienced it here, not with real money. You won't forget this."}
@@ -377,9 +377,9 @@ export function Mission3Screen({
 
       {/* Portfolio value */}
       <div className="px-5 pb-4">
-        <p className="text-gray-500 text-xs mb-1">Your Portfolio</p>
+        <p className="text-muted-foreground text-xs mb-1">Your Portfolio</p>
         <div className="flex items-baseline gap-3">
-          <span className="text-white text-3xl font-bold">
+          <span className="text-white text-foregroundxl font-bold">
             CHF {(currentWeekData?.portfolioValue || 100000).toLocaleString("de-CH")}
           </span>
           <span className={cn(
@@ -391,7 +391,7 @@ export function Mission3Screen({
             {(currentWeekData?.change || 0) >= 0 ? "+" : ""}{currentWeekData?.change || 0}%
           </span>
         </div>
-        <p className="text-gray-600 text-xs mt-1">{currentWeekData?.label || ""}</p>
+        <p className="text-muted-foreground text-xs mt-1">{currentWeekData?.label || ""}</p>
       </div>
 
       {/* Chart */}
@@ -417,13 +417,13 @@ export function Mission3Screen({
       <AnimatePresence>
         {showNews && (
           <motion.div
-            className="absolute bottom-24 left-4 right-4 bg-white/95 backdrop-blur rounded-xl p-4 shadow-lg border border-border"
+            className="absolute bottom-24 left-4 right-4 bg-card/95 backdrop-blur rounded-xl p-4 shadow-lg border border-border"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
           >
             <div className="flex items-start gap-2">
-              <Newspaper size={14} className="text-[#FFC800] mt-0.5 shrink-0" />
+              <Newspaper size={14} className="text-primary mt-0.5 shrink-0" />
               <p className="text-xs text-foreground font-medium">{showNews}</p>
             </div>
           </motion.div>
@@ -432,9 +432,9 @@ export function Mission3Screen({
 
       {/* Progress */}
       <div className="px-5 py-3">
-        <div className="w-full h-1 bg-white/10 rounded-full">
+        <div className="w-full h-1 bg-card/10 rounded-full">
           <div
-            className="h-full bg-[#FFC800] rounded-full transition-all"
+            className="h-full bg-primary rounded-full transition-all"
             style={{ width: `${(currentWeek / CRASH_DATA.length) * 100}%` }}
           />
         </div>

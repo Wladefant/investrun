@@ -204,7 +204,7 @@ function ScoreBar({ label, score }: { label: string; score: number }) {
     score >= 75
       ? "bg-green-500"
       : score >= 50
-        ? "bg-yellow-500"
+        ? "bg-primary/100"
         : "bg-red-500";
 
   return (
@@ -325,19 +325,19 @@ export function Mission5Screen({
             animate={{ opacity: 1, y: 0 }}
             className="flex-1"
           >
-            <div className="w-16 h-16 bg-gradient-to-br from-violet-400 to-purple-600 rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-lg">
+            <div className="w-16 h-16 bg-gradient-to-br from-violet-400 to-purple-600 rounded-2xl flex items-center justify-center text-foregroundxl mb-6 shadow-lg">
               🏛️
             </div>
-            <h1 className="text-2xl font-bold text-foreground mb-2">
+            <h1 className="text-primary-foregroundxl font-bold text-foreground mb-2">
               Asset Classes 101
             </h1>
             <p className="text-muted-foreground text-sm mb-6">
               Understanding Assets
             </p>
 
-            <div className="bg-white rounded-2xl p-5 border border-border shadow-sm mb-6">
+            <div className="bg-card rounded-2xl p-5 border border-border shadow-sm mb-6">
               <p className="text-sm text-foreground leading-relaxed">
-                <span className="font-bold text-[#FFC800]">
+                <span className="font-bold text-primary">
                   Professor Fortuna:
                 </span>{" "}
                 Every asset class serves a purpose. Today you&apos;ll learn by
@@ -382,10 +382,10 @@ export function Mission5Screen({
             </h2>
 
             {/* Client card */}
-            <div className="bg-white rounded-2xl p-5 border border-border shadow-sm mb-5">
+            <div className="bg-card rounded-2xl p-5 border border-border shadow-sm mb-5">
               {/* Header row */}
               <div className="flex items-center gap-4 mb-4">
-                <div className="w-14 h-14 rounded-full bg-purple-100 flex items-center justify-center text-2xl shrink-0">
+                <div className="w-14 h-14 rounded-full bg-purple-100 flex items-center justify-center text-primary-foregroundxl shrink-0">
                   👩‍💼
                 </div>
                 <div>
@@ -396,7 +396,7 @@ export function Mission5Screen({
 
               {/* Stats grid */}
               <div className="grid grid-cols-2 gap-3 mb-4">
-                <div className="bg-gray-50 rounded-xl p-3">
+                <div className="bg-muted/50 rounded-xl p-3">
                   <p className="text-[10px] uppercase tracking-wide text-muted-foreground mb-0.5">
                     Income
                   </p>
@@ -404,7 +404,7 @@ export function Mission5Screen({
                     CHF 95,000/yr
                   </p>
                 </div>
-                <div className="bg-gray-50 rounded-xl p-3">
+                <div className="bg-muted/50 rounded-xl p-3">
                   <p className="text-[10px] uppercase tracking-wide text-muted-foreground mb-0.5">
                     Savings
                   </p>
@@ -449,9 +449,9 @@ export function Mission5Screen({
             </div>
 
             {/* Professor comment */}
-            <div className="bg-white rounded-2xl p-5 border border-[#FFC800]/20 shadow-sm mb-6">
+            <div className="bg-card rounded-2xl p-5 border border-primary/20 shadow-sm mb-6">
               <p className="text-sm text-foreground leading-relaxed">
-                <span className="font-bold text-[#FFC800]">
+                <span className="font-bold text-primary">
                   Professor Fortuna:
                 </span>{" "}
                 Maria has two very different goals with two very different time
@@ -492,7 +492,7 @@ export function Mission5Screen({
                     "w-full text-left rounded-xl border border-border shadow-sm transition-all overflow-hidden",
                     isExpanded
                       ? cn("border-l-4", asset.borderColor, asset.color)
-                      : "bg-white"
+                      : "bg-card"
                   )}
                 >
                   <div className="flex items-center gap-3 p-3">
@@ -526,7 +526,7 @@ export function Mission5Screen({
           {/* Portfolio allocation */}
           <div className="space-y-5 mb-6">
             {/* House Fund */}
-            <div className="bg-white rounded-2xl p-4 border border-border shadow-sm">
+            <div className="bg-card rounded-2xl p-4 border border-border shadow-sm">
               <div className="flex justify-between items-center mb-3">
                 <h3 className="text-sm font-bold text-foreground">
                   🏠 House Fund{" "}
@@ -571,7 +571,7 @@ export function Mission5Screen({
             </div>
 
             {/* Retirement Fund */}
-            <div className="bg-white rounded-2xl p-4 border border-border shadow-sm">
+            <div className="bg-card rounded-2xl p-4 border border-border shadow-sm">
               <div className="flex justify-between items-center mb-3">
                 <h3 className="text-sm font-bold text-foreground">
                   🏖️ Retirement Fund{" "}
@@ -644,12 +644,12 @@ export function Mission5Screen({
           {/* Overall score */}
           <div className="text-center mb-5">
             <motion.div
-              className="w-20 h-20 bg-gradient-to-br from-[#FFC800] to-[#E6B400] rounded-3xl flex items-center justify-center mx-auto mb-3 shadow-lg"
+              className="w-20 h-20 bg-gradient-to-br from-primary to-primary/90 rounded-3xl flex items-center justify-center mx-auto mb-3 shadow-lg"
               initial={{ scale: 0.5, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ type: "spring", stiffness: 120 }}
             >
-              <span className="text-3xl font-black text-[#1A2332]">
+              <span className="text-foregroundxl font-black text-primary-foreground">
                 {scores.overall}
               </span>
             </motion.div>
@@ -659,11 +659,11 @@ export function Mission5Screen({
           </div>
 
           {/* Criteria breakdown */}
-          <div className="bg-white rounded-2xl p-4 border border-border shadow-sm space-y-4 mb-4">
+          <div className="bg-card rounded-2xl p-4 border border-border shadow-sm space-y-4 mb-4">
             <ScoreBar label="House Fund Safety" score={scores.houseSafety} />
-            <div className="bg-gray-50 rounded-xl p-3">
+            <div className="bg-muted/50 rounded-xl p-3">
               <p className="text-xs text-foreground/80 leading-relaxed">
-                <span className="font-bold text-[#FFC800]">
+                <span className="font-bold text-primary">
                   Professor Fortuna:
                 </span>{" "}
                 {getHouseFundComment(houseFund.stocks)}
@@ -671,9 +671,9 @@ export function Mission5Screen({
             </div>
 
             <ScoreBar label="Retirement Growth" score={scores.retirementGrowth} />
-            <div className="bg-gray-50 rounded-xl p-3">
+            <div className="bg-muted/50 rounded-xl p-3">
               <p className="text-xs text-foreground/80 leading-relaxed">
-                <span className="font-bold text-[#FFC800]">
+                <span className="font-bold text-primary">
                   Professor Fortuna:
                 </span>{" "}
                 {getRetirementComment(retirementFund.stocks)}
@@ -681,9 +681,9 @@ export function Mission5Screen({
             </div>
 
             <ScoreBar label="Cash Buffer" score={scores.cashBuffer} />
-            <div className="bg-gray-50 rounded-xl p-3">
+            <div className="bg-muted/50 rounded-xl p-3">
               <p className="text-xs text-foreground/80 leading-relaxed">
-                <span className="font-bold text-[#FFC800]">
+                <span className="font-bold text-primary">
                   Professor Fortuna:
                 </span>{" "}
                 {getCashBufferComment(houseFund.cash)}
@@ -692,9 +692,9 @@ export function Mission5Screen({
           </div>
 
           {/* Overall professor comment */}
-          <div className="bg-white rounded-2xl p-5 border border-[#FFC800]/20 shadow-sm mb-6">
+          <div className="bg-card rounded-2xl p-5 border border-primary/20 shadow-sm mb-6">
             <p className="text-sm text-foreground leading-relaxed">
-              <span className="font-bold text-[#FFC800]">
+              <span className="font-bold text-primary">
                 Professor Fortuna:
               </span>{" "}
               {getOverallComment(scores.overall)}

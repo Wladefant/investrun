@@ -106,7 +106,7 @@ const QUIZ_REACTIONS: Record<number, string> = {
 
 const RISK_LEVELS = [
   { label: "Cautious", rate: 0.03, color: "text-blue-600" },
-  { label: "Balanced", rate: 0.05, color: "text-[#FFC800]" },
+  { label: "Balanced", rate: 0.05, color: "text-primary" },
   { label: "Growth", rate: 0.07, color: "text-emerald-600" },
 ];
 
@@ -200,19 +200,19 @@ export function Mission4Screen({
             animate={{ opacity: 1, y: 0 }}
             className="flex-1"
           >
-            <div className="w-16 h-16 bg-gradient-to-br from-emerald-400 to-green-600 rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-lg">
+            <div className="w-16 h-16 bg-gradient-to-br from-emerald-400 to-green-600 rounded-2xl flex items-center justify-center text-foregroundxl mb-6 shadow-lg">
               ⏳
             </div>
-            <h1 className="text-2xl font-bold text-foreground mb-2">
+            <h1 className="text-primary-foregroundxl font-bold text-foreground mb-2">
               The Long Game
             </h1>
             <p className="text-muted-foreground text-sm mb-6">
               Compound Growth
             </p>
 
-            <div className="bg-white rounded-2xl p-5 border border-border shadow-sm mb-6">
+            <div className="bg-card rounded-2xl p-5 border border-border shadow-sm mb-6">
               <p className="text-sm text-foreground leading-relaxed">
-                <span className="font-bold text-[#FFC800]">
+                <span className="font-bold text-primary">
                   Professor Fortuna:
                 </span>{" "}
                 Time is the most powerful force in investing. Let me show you
@@ -270,7 +270,7 @@ export function Mission4Screen({
             {/* Side-by-side cards */}
             <div className="grid grid-cols-2 gap-3 mb-4">
               {/* Investor A */}
-              <div className="bg-white rounded-2xl border border-border shadow-sm overflow-hidden">
+              <div className="bg-card rounded-2xl border border-border shadow-sm overflow-hidden">
                 <div className="h-1.5 bg-emerald-500" />
                 <div className="p-3">
                   <p className="text-xs font-bold text-emerald-600 mb-1">
@@ -309,7 +309,7 @@ export function Mission4Screen({
               </div>
 
               {/* Investor B */}
-              <div className="bg-white rounded-2xl border border-border shadow-sm overflow-hidden">
+              <div className="bg-card rounded-2xl border border-border shadow-sm overflow-hidden">
                 <div className="h-1.5 bg-blue-500" />
                 <div className="p-3">
                   <p className="text-xs font-bold text-blue-600 mb-1">
@@ -351,7 +351,7 @@ export function Mission4Screen({
             {/* Progress bar */}
             <div className="w-full h-1.5 bg-muted rounded-full mb-4 overflow-hidden">
               <motion.div
-                className="h-full bg-gradient-to-r from-[#FFC800] to-[#FFD633] rounded-full"
+                className="h-full bg-gradient-to-r from-primary to-[#FFD633] rounded-full"
                 animate={{
                   width: `${((animYear + 1) / FULL_SIMULATION.length) * 100}%`,
                 }}
@@ -360,9 +360,9 @@ export function Mission4Screen({
             </div>
 
             {/* Status annotation */}
-            <div className="bg-white rounded-2xl p-4 border border-border shadow-sm mb-4">
+            <div className="bg-card rounded-2xl p-4 border border-border shadow-sm mb-4">
               <p className="text-xs text-foreground leading-relaxed">
-                <span className="font-bold text-[#FFC800]">
+                <span className="font-bold text-primary">
                   Professor Fortuna:
                 </span>{" "}
                 {current.age < 35
@@ -458,7 +458,7 @@ export function Mission4Screen({
 
           {/* Growth chart */}
           <motion.div
-            className="bg-white rounded-2xl p-4 border border-border shadow-sm mb-4"
+            className="bg-card rounded-2xl p-4 border border-border shadow-sm mb-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
@@ -516,13 +516,13 @@ export function Mission4Screen({
 
           {/* Professor explanation */}
           <motion.div
-            className="bg-white rounded-2xl p-5 border border-border shadow-sm mb-6"
+            className="bg-card rounded-2xl p-5 border border-border shadow-sm mb-6"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7 }}
           >
             <p className="text-sm text-foreground leading-relaxed">
-              <span className="font-bold text-[#FFC800]">
+              <span className="font-bold text-primary">
                 Professor Fortuna:
               </span>{" "}
               Investor A put in a third of the money but started 10 years
@@ -566,7 +566,7 @@ export function Mission4Screen({
             </p>
 
             {/* Monthly Amount Slider */}
-            <div className="bg-white rounded-2xl p-4 border border-border shadow-sm mb-3">
+            <div className="bg-card rounded-2xl p-4 border border-border shadow-sm mb-3">
               <div className="flex items-center justify-between mb-2">
                 <p className="text-xs font-bold text-muted-foreground">
                   MONTHLY INVESTMENT
@@ -591,7 +591,7 @@ export function Mission4Screen({
             </div>
 
             {/* Horizon Slider */}
-            <div className="bg-white rounded-2xl p-4 border border-border shadow-sm mb-3">
+            <div className="bg-card rounded-2xl p-4 border border-border shadow-sm mb-3">
               <div className="flex items-center justify-between mb-2">
                 <p className="text-xs font-bold text-muted-foreground">
                   INVESTMENT HORIZON
@@ -616,7 +616,7 @@ export function Mission4Screen({
             </div>
 
             {/* Risk Level */}
-            <div className="bg-white rounded-2xl p-4 border border-border shadow-sm mb-4">
+            <div className="bg-card rounded-2xl p-4 border border-border shadow-sm mb-4">
               <p className="text-xs font-bold text-muted-foreground mb-3">
                 RISK LEVEL
               </p>
@@ -628,8 +628,8 @@ export function Mission4Screen({
                     className={cn(
                       "p-2.5 rounded-xl border text-center transition-all",
                       riskLevel === i
-                        ? "bg-[#FFC800]/10 border-[#FFC800] shadow-sm"
-                        : "bg-white border-border hover:border-[#FFC800]/50"
+                        ? "bg-primary/10 border-primary shadow-sm"
+                        : "bg-card border-border hover:border-primary/50"
                     )}
                   >
                     <p className="text-xs font-bold text-foreground">
@@ -645,7 +645,7 @@ export function Mission4Screen({
 
             {/* Results */}
             <motion.div
-              className="bg-white rounded-2xl p-5 border border-border shadow-sm mb-4"
+              className="bg-card rounded-2xl p-5 border border-border shadow-sm mb-4"
               key={`${monthlyAmount}-${horizon}-${riskLevel}`}
               initial={{ opacity: 0.5 }}
               animate={{ opacity: 1 }}
@@ -678,7 +678,7 @@ export function Mission4Screen({
                   <span className="text-xs text-muted-foreground">
                     Growth from Compound Interest
                   </span>
-                  <span className="text-sm font-bold text-[#FFC800]">
+                  <span className="text-sm font-bold text-primary">
                     + CHF{" "}
                     {planResult.growth.toLocaleString("de-CH")}
                   </span>
@@ -695,9 +695,9 @@ export function Mission4Screen({
             </motion.div>
 
             {/* Professor comment */}
-            <div className="bg-white rounded-2xl p-4 border border-border shadow-sm mb-6">
+            <div className="bg-card rounded-2xl p-4 border border-border shadow-sm mb-6">
               <p className="text-xs text-foreground leading-relaxed">
-                <span className="font-bold text-[#FFC800]">
+                <span className="font-bold text-primary">
                   Professor Fortuna:
                 </span>{" "}
                 {getProfessorPlanComment()}
@@ -741,9 +741,9 @@ export function Mission4Screen({
           animate={{ opacity: 1, y: 0 }}
           className="flex-1"
         >
-          <div className="bg-white rounded-2xl p-5 border border-border shadow-sm mb-5">
+          <div className="bg-card rounded-2xl p-5 border border-border shadow-sm mb-5">
             <p className="text-sm text-foreground leading-relaxed">
-              <span className="font-bold text-[#FFC800]">
+              <span className="font-bold text-primary">
                 Professor Fortuna:
               </span>{" "}
               If you could give one piece of investing advice to your
@@ -766,8 +766,8 @@ export function Mission4Screen({
                     : quizAnswer !== null
                       ? opt.correct
                         ? "bg-emerald-50 border-emerald-300 opacity-80"
-                        : "bg-gray-50 border-border opacity-60"
-                      : "bg-white border-border hover:border-[#FFC800]/50 active:scale-[0.98] shadow-sm"
+                        : "bg-muted/50 border-border opacity-60"
+                      : "bg-card border-border hover:border-primary/50 active:scale-[0.98] shadow-sm"
                 )}
               >
                 <span className="text-xl">{opt.icon}</span>
@@ -803,12 +803,12 @@ export function Mission4Screen({
           {/* Professor reaction */}
           {quizAnswer !== null && (
             <motion.div
-              className="bg-white rounded-2xl p-4 border border-[#FFC800]/20 shadow-sm mb-4"
+              className="bg-card rounded-2xl p-4 border border-primary/20 shadow-sm mb-4"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
             >
               <p className="text-xs text-foreground leading-relaxed">
-                <span className="font-bold text-[#FFC800]">Professor:</span>{" "}
+                <span className="font-bold text-primary">Professor:</span>{" "}
                 {QUIZ_REACTIONS[quizAnswer]}
               </p>
             </motion.div>

@@ -29,20 +29,20 @@ export function MissionPlaceholderScreen({
       <div className="flex-1 flex flex-col px-5 py-6">
         <div className="flex-1">
           <div
-            className={`w-16 h-16 bg-gradient-to-br ${mission.color} rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-lg`}
+            className={`w-16 h-16 bg-gradient-to-br ${mission.color} rounded-2xl flex items-center justify-center text-foregroundxl mb-6 shadow-lg`}
           >
             {mission.icon}
           </div>
-          <h1 className="text-2xl font-bold text-foreground mb-2">
+          <h1 className="text-primary-foregroundxl font-bold text-foreground mb-2">
             {mission.title}
           </h1>
           <p className="text-muted-foreground text-sm mb-4">
             {mission.subtitle}
           </p>
 
-          <div className="bg-white rounded-2xl p-5 border border-border shadow-sm mb-6">
+          <div className="bg-card rounded-2xl p-5 border border-border shadow-sm mb-6">
             <p className="text-sm text-foreground leading-relaxed">
-              <span className="font-bold text-[#FFC800]">
+              <span className="font-bold text-primary">
                 Professor Fortuna:
               </span>{" "}
               {mission.concept}. This mission will teach you one of the most
@@ -50,9 +50,9 @@ export function MissionPlaceholderScreen({
             </p>
           </div>
 
-          <div className="bg-[#FFC800]/10 border border-[#FFC800]/20 rounded-2xl p-4 mb-6">
+          <div className="bg-primary/10 border border-primary/20 rounded-2xl p-4 mb-6">
             <div className="flex items-center gap-2 mb-2">
-              <Sparkles size={16} className="text-[#FFC800]" />
+              <Sparkles size={16} className="text-primary" />
               <span className="text-sm font-bold text-foreground">
                 Demo Mode
               </span>

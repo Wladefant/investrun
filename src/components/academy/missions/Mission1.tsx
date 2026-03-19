@@ -191,15 +191,15 @@ export function Mission1Screen({
             animate={{ opacity: 1, y: 0 }}
             className="flex-1"
           >
-            <div className="w-16 h-16 bg-gradient-to-br from-amber-400 to-yellow-500 rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-lg">
+            <div className="w-16 h-16 bg-gradient-to-br from-amber-400 to-yellow-500 rounded-2xl flex items-center justify-center text-foregroundxl mb-6 shadow-lg">
               🪞
             </div>
-            <h1 className="text-2xl font-bold text-foreground mb-2">Know Thyself</h1>
+            <h1 className="text-primary-foregroundxl font-bold text-foreground mb-2">Know Thyself</h1>
             <p className="text-muted-foreground text-sm mb-6">Risk Profiling</p>
 
-            <div className="bg-white rounded-2xl p-5 border border-border shadow-sm mb-6">
+            <div className="bg-card rounded-2xl p-5 border border-border shadow-sm mb-6">
               <p className="text-sm text-foreground leading-relaxed">
-                <span className="font-bold text-[#FFC800]">Professor Fortuna:</span>
+                <span className="font-bold text-primary">Professor Fortuna:</span>
                 {" "}Before we begin your journey, I need to understand who you are as
                 an investor. Not who you think you should be — who you actually are.
               </p>
@@ -245,17 +245,17 @@ export function Mission1Screen({
             animate={{ opacity: 1, scale: 1 }}
             transition={{ type: "spring", stiffness: 100 }}
           >
-            <div className="w-20 h-20 bg-gradient-to-br from-[#FFC800] to-[#E6B400] rounded-3xl flex items-center justify-center text-4xl mx-auto mb-4 pf-glow">
+            <div className="w-20 h-20 bg-gradient-to-br from-primary to-primary/90 rounded-3xl flex items-center justify-center text-4xl mx-auto mb-4 pf-glow">
               {result.icon}
             </div>
-            <h2 className="text-2xl font-bold text-foreground">{result.label}</h2>
+            <h2 className="text-primary-foregroundxl font-bold text-foreground">{result.label}</h2>
             <p className="text-sm text-muted-foreground mt-2 max-w-[280px] mx-auto">
               {result.description}
             </p>
           </motion.div>
 
           <motion.div
-            className="bg-white rounded-2xl p-4 border border-border shadow-sm mb-4"
+            className="bg-card rounded-2xl p-4 border border-border shadow-sm mb-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
@@ -281,13 +281,13 @@ export function Mission1Screen({
           </motion.div>
 
           <motion.div
-            className="bg-white rounded-2xl p-5 border border-border shadow-sm mb-6"
+            className="bg-card rounded-2xl p-5 border border-border shadow-sm mb-6"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
           >
             <p className="text-sm text-foreground leading-relaxed">
-              <span className="font-bold text-[#FFC800]">Professor Fortuna:</span>{" "}
+              <span className="font-bold text-primary">Professor Fortuna:</span>{" "}
               Fascinating, {result.label}. Your responses show a clear pattern.
               Remember — your risk profile isn&apos;t a grade. It&apos;s a compass.
               Every great investor starts by knowing themselves. You&apos;ve passed the first test.
@@ -318,7 +318,7 @@ export function Mission1Screen({
         {/* Progress bar */}
         <div className="w-full h-1.5 bg-muted rounded-full mb-6 overflow-hidden">
           <motion.div
-            className="h-full bg-gradient-to-r from-[#FFC800] to-[#FFD633] rounded-full"
+            className="h-full bg-gradient-to-r from-primary to-[#FFD633] rounded-full"
             animate={{ width: `${progress}%` }}
             transition={{ duration: 0.4 }}
           />
@@ -346,10 +346,10 @@ export function Mission1Screen({
                   className={cn(
                     "w-full p-4 rounded-xl border text-left transition-all flex items-center gap-3",
                     selectedAnswer === i
-                      ? "bg-[#FFC800]/10 border-[#FFC800] shadow-sm"
+                      ? "bg-primary/10 border-primary shadow-sm"
                       : selectedAnswer !== null
-                        ? "bg-gray-50 border-border opacity-60"
-                        : "bg-white border-border hover:border-[#FFC800]/50 active:scale-[0.98] shadow-sm"
+                        ? "bg-muted/50 border-border opacity-60"
+                        : "bg-card border-border hover:border-primary/50 active:scale-[0.98] shadow-sm"
                   )}
                 >
                   <span className="text-xl">{opt.icon}</span>
@@ -360,7 +360,7 @@ export function Mission1Screen({
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                     >
-                      <div className="w-5 h-5 bg-[#FFC800] rounded-full flex items-center justify-center">
+                      <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1A2332" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                           <polyline points="20 6 9 17 4 12" />
                         </svg>
@@ -375,13 +375,13 @@ export function Mission1Screen({
             <AnimatePresence>
               {showReaction && selectedAnswer !== null && (
                 <motion.div
-                  className="bg-white rounded-2xl p-4 border border-[#FFC800]/20 shadow-sm mb-4"
+                  className="bg-card rounded-2xl p-4 border border-primary/20 shadow-sm mb-4"
                   initial={{ opacity: 0, y: 10, height: 0 }}
                   animate={{ opacity: 1, y: 0, height: "auto" }}
                   exit={{ opacity: 0 }}
                 >
                   <p className="text-xs text-foreground leading-relaxed">
-                    <span className="font-bold text-[#FFC800]">Professor:</span>{" "}
+                    <span className="font-bold text-primary">Professor:</span>{" "}
                     {scenario.professorReaction[
                       scenario.options[selectedAnswer].points
                     ] ||
