@@ -928,7 +928,7 @@ export function Mission6Screen({
 
         <Button
           className="w-full h-12 rounded-xl bg-primary text-primary-foreground font-bold text-base hover:bg-[#FFD633]"
-          onClick={() => onComplete(finalScore, { arenaScore: finalScore })}
+          onClick={() => onComplete(finalScore, {})}
         >
           Complete Mission
         </Button>
