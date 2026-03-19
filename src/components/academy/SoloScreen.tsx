@@ -11,6 +11,8 @@ import {
   type SimulationState,
   type EventOption,
   ASSET_CLASSES,
+  BASE_ASSETS,
+  ALTERNATIVE_ASSETS,
 } from "@/lib/solo-types";
 import {
   formatCurrency,
@@ -21,9 +23,11 @@ import {
 } from "@/lib/solo-calculations";
 import {
   ALLOCATION_PRESETS,
+  TURNS_PER_GAME,
   initializeSimulation,
   processQuarter,
   applyEventChoice,
+  filterOptionsForUnlocked,
 } from "@/lib/solo-simulation";
 import { getRandomScenario, type MarketScenario } from "@/data/solo-scenarios";
 import { getPostGameAnalysis } from "@/lib/solo-analysis";
@@ -31,6 +35,7 @@ import {
   XAxis,
   YAxis,
   Tooltip,
+  CartesianGrid,
   ResponsiveContainer,
   AreaChart,
   Area,
@@ -50,6 +55,8 @@ import {
   Shield,
   BarChart3,
   Newspaper,
+  Lock,
+  Check,
 } from "lucide-react";
 
 type SimPhase = "setup" | "running" | "paused" | "checkpoint" | "complete";
@@ -122,6 +129,7 @@ export function SoloScreen() {
   const [newsFeed, setNewsFeed] = useState<{ year: number; text: string; type: string }[]>([]);
   const [selectedScenario, setSelectedScenario] = useState<MarketScenario | null>(null);
   const [isChartReady, setIsChartReady] = useState(false);
+  const [unlockedAssets, setUnlockedAssets] = useState<Set<AssetClass>>(() => new Set(BASE_ASSETS));
 
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const quarterRef = useRef(1);
@@ -150,7 +158,14 @@ export function SoloScreen() {
     const scenario = getRandomScenario(selectedDuration);
     setSelectedScenario(scenario);
 
-    const sim = initializeSimulation(1000, 300, selectedDuration, allocations);
+    const startingAllocations: Allocation[] = [...allocations];
+    for (const alt of ALTERNATIVE_ASSETS) {
+      if (unlockedAssets.has(alt.asset) && !startingAllocations.some(a => a.assetClass === alt.asset)) {
+        startingAllocations.push({ assetClass: alt.asset, percentage: 0, value: 0 });
+      }
+    }
+
+    const sim = initializeSimulation(1000, 300, selectedDuration, startingAllocations);
     setSimulation(sim);
 
     setChartData([{ year: 0, value: 1000 }]);
@@ -175,7 +190,8 @@ export function SoloScreen() {
       const yearNum = newState.currentYear - simulation.startYear;
       setNewsFeed((prev) => [{ year: yearNum, text: event.title, type: event.type }, ...prev].slice(0, 8));
 
-      if (event.options && event.options.length > 0) {
+      const visible = filterOptionsForUnlocked(event.options, unlockedAssets);
+      if (visible.length > 0) {
         setPhase("checkpoint");
         setShowCheckpoint(true);
       }
@@ -186,7 +202,7 @@ export function SoloScreen() {
     if (newState.currentYear >= simulation.endYear) {
       setPhase("complete");
     }
-  }, [simulation, phase]);
+  }, [simulation, phase, unlockedAssets]);
 
   useEffect(() => {
     if (phase === "running") {
@@ -211,6 +227,7 @@ export function SoloScreen() {
     setNewsFeed([]);
     setCurrentEvent(null);
     setSelectedScenario(null);
+    setUnlockedAssets(new Set(BASE_ASSETS));
     quarterRef.current = 1;
   };
 
@@ -354,6 +371,59 @@ export function SoloScreen() {
             </div>
           </div>
 
+          {/* Alternative Investments */}
+          <div className={cn(CARD, "p-4 border-dashed border-[#FFC800]/40")}>
+            <h3 className="text-sm font-bold text-[#333333] mb-1">Alternative Investments</h3>
+            <p className="text-[10px] text-[#767676] mb-3">Unlock extra asset classes for more strategic options during the game.</p>
+            <div className="space-y-2">
+              {ALTERNATIVE_ASSETS.map(({ asset, icon, teaser }) => {
+                const isUnlocked = unlockedAssets.has(asset);
+                const info = ASSET_CLASSES[asset];
+                return (
+                  <button
+                    key={asset}
+                    onClick={() => {
+                      setUnlockedAssets(prev => {
+                        const next = new Set(prev);
+                        if (next.has(asset) && !BASE_ASSETS.includes(asset)) {
+                          next.delete(asset);
+                        } else {
+                          next.add(asset);
+                        }
+                        return next;
+                      });
+                    }}
+                    className={cn(
+                      "w-full p-3 rounded-xl border text-left transition-all",
+                      isUnlocked
+                        ? "border-[#FFC800]/50 bg-[#FFC800]/5"
+                        : "border-gray-200 bg-white hover:border-[#FFC800]/30 active:scale-[0.98]"
+                    )}
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <div
+                        className="w-8 h-8 rounded-lg flex items-center justify-center text-base"
+                        style={{ backgroundColor: `${info.color}15` }}
+                      >
+                        {icon}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-[12px] font-semibold text-[#333333]">{info.name}</span>
+                          {isUnlocked && <Check className="w-3.5 h-3.5 text-[#FFC800]" />}
+                        </div>
+                        <p className="text-[10px] text-[#767676] truncate">{teaser}</p>
+                      </div>
+                      {!isUnlocked && (
+                        <Lock className="w-4 h-4 text-[#767676] shrink-0" />
+                      )}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
           {/* Start */}
           <PFButton onClick={handleStart}>
             <span className="flex items-center justify-center gap-2">
@@ -422,18 +492,32 @@ export function SoloScreen() {
           {/* Journey chart */}
           <div className={cn(CARD, "p-4")}>
             <h3 className="text-sm font-bold text-[#333333] mb-3">Your Journey</h3>
-            <div className="h-36" style={{ minHeight: "144px" }}>
+            <div className="h-44" style={{ minHeight: "176px" }}>
               {isChartReady && chartData.length > 0 && (
                 <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={chartData} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
+                  <AreaChart data={chartData} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
                     <defs>
                       <linearGradient id="soloGradComplete" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="5%" stopColor="#33307E" stopOpacity={0.35} />
                         <stop offset="95%" stopColor="#33307E" stopOpacity={0.03} />
                       </linearGradient>
                     </defs>
-                    <XAxis dataKey="year" hide />
-                    <YAxis hide />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
+                    <XAxis
+                      dataKey="year"
+                      tick={{ fontSize: 10, fill: "#767676" }}
+                      tickLine={false}
+                      axisLine={false}
+                      interval="preserveStartEnd"
+                      minTickGap={30}
+                    />
+                    <YAxis
+                      tick={{ fontSize: 10, fill: "#767676" }}
+                      tickLine={false}
+                      axisLine={false}
+                      tickFormatter={(v: number) => formatCompactNumber(v)}
+                      width={48}
+                    />
                     <Area
                       type="monotone"
                       dataKey="value"
@@ -514,7 +598,10 @@ export function SoloScreen() {
      ══════════════════════════════════════════ */
   if (simulation) {
     const progress = ((simulation.currentYear - simulation.startYear) / (simulation.endYear - simulation.startYear)) * 100;
-    const returns = ((simulation.portfolio.totalValue - 1000) / 1000) * 100;
+    const quartersElapsed = simulation.portfolio.history.length - 1;
+    const totalPrincipal = 1000 + 300 * quartersElapsed * 3;
+    const returns = totalPrincipal > 0 ? ((simulation.portfolio.totalValue - totalPrincipal) / totalPrincipal) * 100 : 0;
+    const completedTurns = simulation.decisions.length;
     return (
       <div className="flex-1 overflow-y-auto bg-[#F3F3F3]">
         <div className="px-4 pt-4 pb-6 space-y-3">
@@ -535,8 +622,8 @@ export function SoloScreen() {
           {/* Progress bar */}
           <div>
             <div className="flex justify-between text-[10px] text-[#767676] mb-1">
-              <span>Start</span>
-              <span className="font-medium">{Math.round(progress)}% complete</span>
+              <span>Turn {completedTurns}/{TURNS_PER_GAME}</span>
+              <span className="font-medium">{Math.round(progress)}%</span>
               <span>{selectedDuration}Y</span>
             </div>
             <PFProgressBar value={progress} className="h-2" />
@@ -586,7 +673,7 @@ export function SoloScreen() {
                   <p className="text-xs font-semibold text-[#333333] mb-2">What will you do?</p>
 
                   <div className="space-y-2">
-                    {currentEvent.options.map((option, idx) => {
+                    {filterOptionsForUnlocked(currentEvent.options, unlockedAssets).map((option, idx) => {
                       const Icon = SENTIMENT_ICONS[option.sentiment];
                       return (
                         <button
@@ -641,18 +728,32 @@ export function SoloScreen() {
           {/* Live chart */}
           <div className={cn(CARD, "p-4")}>
             <h3 className="text-xs font-bold text-[#333333] mb-2">Portfolio Value</h3>
-            <div className="h-32" style={{ minHeight: "128px" }}>
+            <div className="h-40" style={{ minHeight: "160px" }}>
               {isChartReady && chartData.length > 0 && (
                 <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={chartData} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
+                  <AreaChart data={chartData} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
                     <defs>
                       <linearGradient id="soloGradLive" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="5%" stopColor="#33307E" stopOpacity={0.35} />
                         <stop offset="95%" stopColor="#33307E" stopOpacity={0.03} />
                       </linearGradient>
                     </defs>
-                    <XAxis dataKey="year" hide />
-                    <YAxis hide />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
+                    <XAxis
+                      dataKey="year"
+                      tick={{ fontSize: 10, fill: "#767676" }}
+                      tickLine={false}
+                      axisLine={false}
+                      interval="preserveStartEnd"
+                      minTickGap={30}
+                    />
+                    <YAxis
+                      tick={{ fontSize: 10, fill: "#767676" }}
+                      tickLine={false}
+                      axisLine={false}
+                      tickFormatter={(v: number) => formatCompactNumber(v)}
+                      width={48}
+                    />
                     <Tooltip
                       contentStyle={{
                         background: "#fff",
