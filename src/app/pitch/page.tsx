@@ -221,7 +221,7 @@ export default function PitchPage() {
     return (
       <MobileLayout>
         <div className="flex-1 flex flex-col overflow-hidden">
-          <OnboardingFlow onComplete={handleOnboardingComplete} />
+          <OnboardingFlow onComplete={handleOnboardingComplete} onSkip={() => { setPlayerName("Player"); handleOnboardingComplete({ name: "Player", age: 25, investmentHorizonMonths: 60, monthlyContribution: 300, selectedGoal: { id: "retirement", label: "Retirement", icon: "🏖️", amount: 500000 }, riskProfileId: "balanced" }); }} />
         </div>
       </MobileLayout>
     );

@@ -67,8 +67,10 @@ const slideIn = {
 
 export function OnboardingFlow({
   onComplete,
+  onSkip,
 }: {
   onComplete: (result: OnboardingResult) => void;
+  onSkip?: () => void;
 }) {
   const [step, setStep] = useState(0);
 
@@ -157,7 +159,7 @@ export function OnboardingFlow({
       )}
 
       <AnimatePresence mode="wait">
-        {step === 0 && <SplashStep key="splash" onNext={handleNext} />}
+        {step === 0 && <SplashStep key="splash" onNext={handleNext} onSkip={onSkip} />}
 
         {step >= 1 && step <= 3 && (
           <IntroStep
@@ -234,7 +236,7 @@ export function OnboardingFlow({
 
 /* ─── Step 0: Welcome Splash ─── */
 
-function SplashStep({ onNext }: { onNext: () => void }) {
+function SplashStep({ onNext, onSkip }: { onNext: () => void; onSkip?: () => void }) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -305,6 +307,14 @@ function SplashStep({ onNext }: { onNext: () => void }) {
         <Button size="lg" onClick={onNext}>
           Get Started <ChevronRight className="ml-1 w-4 h-4" />
         </Button>
+        {onSkip && (
+          <button
+            onClick={onSkip}
+            className="mt-3 text-xs text-muted-foreground hover:text-foreground transition-colors"
+          >
+            Skip onboarding →
+          </button>
+        )}
       </motion.div>
     </motion.div>
   );

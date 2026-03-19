@@ -167,7 +167,7 @@ export function AcademyAppInner({
     <MobileLayout>
       {screen === "enrollment" && (
         <div className="flex-1 flex flex-col overflow-hidden">
-          <OnboardingFlow onComplete={handleOnboardingComplete} />
+          <OnboardingFlow onComplete={handleOnboardingComplete} onSkip={() => setScreen("dashboard")} />
         </div>
       )}
 
