@@ -67,11 +67,12 @@ export function ArenaLobby({ playerName, stats, onViewLeaderboard, onMultiplayer
               <div className="text-[10px] text-muted-foreground">ELO</div>
             </div>
             <div className="bg-muted rounded-xl p-2.5 text-center">
-              <div className="text-base font-bold text-foreground">
-                {stats.wins}<span className="text-emerald-500 text-xs">W</span>{' '}
-                {stats.losses}<span className="text-red-500 text-xs">L</span>
+              <div className="text-sm font-bold text-foreground leading-tight">
+                <span className="text-emerald-500">{stats.wins}</span>
+                {' / '}
+                <span className="text-red-500">{stats.losses}</span>
               </div>
-              <div className="text-[10px] text-muted-foreground">Record</div>
+              <div className="text-[10px] text-muted-foreground">Wins / Losses</div>
             </div>
             <div className="bg-muted rounded-xl p-2.5 text-center">
               <div
