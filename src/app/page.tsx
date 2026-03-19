@@ -34,7 +34,8 @@ type Screen =
   | "mission"
   | "mission_result"
   | "dna_report"
-  | "simulator";
+  | "simulator"
+  | "future";
 
 export default function AcademyApp() {
   const [screen, setScreen] = useState<Screen>("enrollment");
@@ -267,11 +268,7 @@ export default function AcademyApp() {
               </div>
             </button>
             <button
-              onClick={() => {
-                // Temporarily swap to estimation - we'll use a sub-state
-                setScreen("learn" as Screen);
-                setActiveMissionId(-1); // flag for estimation
-              }}
+              onClick={() => setScreen("future" as Screen)}
               className="w-full bg-white rounded-2xl shadow-sm border border-gray-100 p-4 text-left active:scale-[0.98] transition-transform"
             >
               <div className="flex items-center gap-3">
@@ -290,6 +287,12 @@ export default function AcademyApp() {
       {screen === "simulator" && (
         <div className="flex-1 flex flex-col overflow-hidden">
           <HistoricSimulatorScreen onBack={() => setScreen("learn")} />
+        </div>
+      )}
+
+      {screen === "future" && (
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <FutureEstimationScreen onBack={() => setScreen("learn")} />
         </div>
       )}
 

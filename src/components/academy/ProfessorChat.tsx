@@ -121,7 +121,7 @@ export function ProfessorChat({
         </div>
         <button
           onClick={onClose}
-          className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-colors active:scale-[0.98]"
+          className="w-8 h-8 bg-card/10 rounded-full flex items-center justify-center text-white hover:bg-card/20 transition-colors active:scale-[0.98]"
         >
           <X size={16} />
         </button>
@@ -147,7 +147,7 @@ export function ProfessorChat({
                 "max-w-[80%] px-4 py-3",
                 msg.role === "student"
                   ? "bg-[#FFC800] text-[#333333] rounded-2xl rounded-br-sm"
-                  : "bg-white shadow-sm border border-gray-100 rounded-2xl rounded-bl-sm"
+                  : "bg-card shadow-sm border border-border rounded-2xl rounded-bl-sm"
               )}
             >
               <p className="text-sm leading-relaxed">{msg.content}</p>
@@ -160,7 +160,7 @@ export function ProfessorChat({
             <div className="w-7 h-7 bg-[#FFC800] rounded-full flex items-center justify-center shrink-0">
               <GraduationCap size={12} className="text-[#1A2332]" />
             </div>
-            <div className="bg-white border border-gray-100 rounded-2xl rounded-bl-sm px-4 py-3 shadow-sm">
+            <div className="bg-card border border-border rounded-2xl rounded-bl-sm px-4 py-3 shadow-sm">
               <div className="flex items-center gap-1.5">
                 <div className="flex gap-1">
                   <span className="w-1.5 h-1.5 bg-[#767676] rounded-full animate-bounce [animation-delay:0ms]" />
@@ -175,7 +175,7 @@ export function ProfessorChat({
       </div>
 
       {/* Input */}
-      <div className="px-4 pb-8 pt-3 bg-white border-t border-gray-100 shrink-0">
+      <div className="px-4 pb-8 pt-3 bg-card border-t border-border shrink-0">
         <div className="flex items-center gap-2">
           <input
             type="text"

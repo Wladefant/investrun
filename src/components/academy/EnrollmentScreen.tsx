@@ -21,7 +21,7 @@ export function EnrollmentScreen({ onEnroll }: { onEnroll: (name: string) => voi
 
         <div className="flex-1 flex flex-col items-center px-8 text-center">
           <div className="mb-4">
-            <h1 className="text-3xl font-bold text-[#333333] mb-1 tracking-tight">
+            <h1 className="text-foregroundxl font-bold text-[#333333] mb-1 tracking-tight">
               Wealth Manager
             </h1>
             <h2 className="text-xl font-bold text-[#FFC800]">Academy</h2>
@@ -38,7 +38,7 @@ export function EnrollmentScreen({ onEnroll }: { onEnroll: (name: string) => voi
               (item, i) => (
                 <div
                   key={i}
-                  className="bg-white border border-gray-200 px-3 py-1.5 rounded-full text-[10px] text-[#333333] font-medium shadow-sm"
+                  className="bg-card border border-border px-3 py-1.5 rounded-full text-[10px] text-[#333333] font-medium shadow-sm"
                 >
                   {item}
                 </div>
@@ -86,7 +86,7 @@ export function EnrollmentScreen({ onEnroll }: { onEnroll: (name: string) => voi
             placeholder="Your name"
             maxLength={20}
             autoFocus
-            className="w-full bg-white border border-gray-200 rounded-xl px-4 py-4 text-[#333333] text-lg placeholder-gray-400 outline-none focus:border-[#FFC800] focus:ring-2 focus:ring-[#FFC800]/30 transition-all shadow-sm"
+            className="w-full bg-card border border-border rounded-xl px-4 py-4 text-[#333333] text-lg placeholder-gray-400 outline-none focus:border-[#FFC800] focus:ring-2 focus:ring-[#FFC800]/30 transition-all shadow-sm"
             onKeyDown={(e) => {
               if (e.key === "Enter" && name.trim()) onEnroll(name.trim());
             }}

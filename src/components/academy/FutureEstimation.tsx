@@ -120,9 +120,9 @@ function GoalSelection({
         <button
           key={goal.id}
           onClick={() => onSelect(goal)}
-          className="w-full bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4 active:scale-[0.98] transition-transform text-left"
+          className="w-full bg-card p-4 rounded-xl shadow-sm border border-border flex items-center gap-4 active:scale-[0.98] transition-transform text-left"
         >
-          <span className="text-3xl">{goal.icon}</span>
+          <span className="text-foregroundxl">{goal.icon}</span>
           <div className="flex-1 min-w-0">
             <p className="font-semibold text-[#333333]">{goal.label}</p>
             <p className="text-sm text-[#767676]">
@@ -145,7 +145,7 @@ function GoalSelection({
       ))}
 
       {/* Custom amount */}
-      <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 space-y-3">
+      <div className="bg-card p-4 rounded-xl shadow-sm border border-border space-y-3">
         <p className="font-semibold text-[#333333]">Or enter your own amount</p>
         <div className="flex gap-2">
           <div className="flex-1 relative">
@@ -157,7 +157,7 @@ function GoalSelection({
               value={customAmount}
               onChange={(e) => onCustomAmountChange(e.target.value)}
               placeholder="0"
-              className="w-full h-11 pl-12 pr-3 rounded-lg border border-gray-200 text-[#333333] text-sm focus:outline-none focus:border-[#FFC800] focus:ring-1 focus:ring-[#FFC800]"
+              className="w-full h-11 pl-12 pr-3 rounded-lg border border-border text-[#333333] text-sm focus:outline-none focus:border-[#FFC800] focus:ring-1 focus:ring-[#FFC800]"
             />
           </div>
           <Button
@@ -201,7 +201,7 @@ function InvestmentPicker({
       </div>
 
       {/* Big number */}
-      <div className="bg-white rounded-2xl shadow-sm p-6 text-center space-y-1">
+      <div className="bg-card rounded-2xl shadow-sm p-6 text-center space-y-1">
         <p className="text-sm text-[#767676]">Monthly investment</p>
         <p className="text-4xl font-bold text-[#333333]">
           CHF {monthly.toLocaleString("de-CH")}
@@ -238,7 +238,7 @@ function InvestmentPicker({
               "px-4 py-2 rounded-full text-sm font-medium transition-colors",
               monthly === amount
                 ? "bg-[#FFC800] text-[#333333]"
-                : "bg-white border border-gray-200 text-[#333333] hover:border-[#FFC800]"
+                : "bg-card border border-border text-[#333333] hover:border-[#FFC800]"
             )}
           >
             {amount}
@@ -306,7 +306,7 @@ function RevealPhase({
         Time to reach your goal
       </h2>
 
-      <div className="bg-white rounded-2xl shadow-sm p-5 space-y-4">
+      <div className="bg-card rounded-2xl shadow-sm p-5 space-y-4">
         {allResults.map((result, i) => {
           const widthPct = maxYears > 0 ? (result.years / maxYears) * 100 : 0;
           const displayYears = Math.round(result.years * 10) / 10;

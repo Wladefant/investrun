@@ -36,7 +36,7 @@ export function AcademyDashboard({
   return (
     <div className="flex-1 overflow-y-auto bg-[#F3F3F3]">
       {/* Header section - white with rounded bottom like ing-app */}
-      <div className="bg-white px-4 py-4 pb-6 rounded-b-[30px] shadow-sm">
+      <div className="bg-card px-4 py-4 pb-6 rounded-b-[30px] shadow-sm">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <div
@@ -80,7 +80,7 @@ export function AcademyDashboard({
         {/* Quick stats grid - 3 columns like ing-app */}
         <div className="grid grid-cols-3 gap-3">
           <div
-            className="bg-white p-3 rounded-xl shadow-sm text-center"
+            className="bg-card p-3 rounded-xl shadow-sm text-center"
           >
             <div className="text-2xl mb-1">
               <Trophy size={22} className="text-[#FFC800] mx-auto" />
@@ -89,7 +89,7 @@ export function AcademyDashboard({
             <div className="text-[10px] text-[#767676]">Rank</div>
           </div>
           <div
-            className="bg-white p-3 rounded-xl shadow-sm text-center"
+            className="bg-card p-3 rounded-xl shadow-sm text-center"
           >
             <div className="text-2xl mb-1">
               <Sparkles size={22} className="text-[#FFC800] mx-auto" />
@@ -98,7 +98,7 @@ export function AcademyDashboard({
             <div className="text-[10px] text-[#767676]">XP</div>
           </div>
           <div
-            className="bg-white p-3 rounded-xl shadow-sm text-center"
+            className="bg-card p-3 rounded-xl shadow-sm text-center"
           >
             <div className="text-2xl mb-1">
               <Target size={22} className="text-[#FFC800] mx-auto" />
@@ -122,14 +122,14 @@ export function AcademyDashboard({
                 onClick={() => onStartMission(nextMission.id)}
                 className="w-full bg-gradient-to-br from-[#FFC800] to-[#E6B400] p-4 rounded-2xl shadow-lg text-left active:scale-[0.98] transition-transform relative overflow-hidden"
               >
-                <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-10 -mt-10" />
+                <div className="absolute top-0 right-0 w-32 h-32 bg-card/10 rounded-full -mr-10 -mt-10" />
                 <div className="relative z-10">
                   <div className="flex justify-between items-start mb-3">
                     <div className="flex items-center gap-2 font-bold text-[#333333]">
                       <Target size={20} />
                       <span>Next Mission</span>
                     </div>
-                    <span className="text-xs font-bold bg-white/30 text-[#333333] px-2 py-1 rounded-md">
+                    <span className="text-xs font-bold bg-card/30 text-[#333333] px-2 py-1 rounded-md">
                       +{50 + nextMission.id * 20} XP
                     </span>
                   </div>
@@ -174,10 +174,10 @@ export function AcademyDashboard({
                   className={cn(
                     "w-full rounded-xl p-3.5 flex items-center gap-3 text-left transition-all",
                     status === "locked"
-                      ? "bg-gray-50 opacity-60 grayscale border border-gray-100"
+                      ? "bg-gray-50 opacity-60 grayscale border border-border"
                       : status === "completed"
                         ? "bg-green-50 border border-green-100 shadow-sm"
-                        : "bg-white border border-gray-100 shadow-sm hover:border-[#FFC800]/50 active:scale-[0.98]"
+                        : "bg-card border border-border shadow-sm hover:border-[#FFC800]/50 active:scale-[0.98]"
                   )}
                 >
                   {/* Icon with colored indicator */}

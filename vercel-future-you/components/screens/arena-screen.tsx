@@ -440,9 +440,9 @@ export function ArenaScreen() {
                   </TabsList>
 
                   <TabsContent value="global" className="space-y-2">
-                    {MOCK_LEADERBOARD.slice(0, 7).map((player, index) => (
+                    {MOCK_LEADERBOARD.slice(0, 7).map((entry, index) => (
                       <motion.div
-                        key={player.id}
+                        key={entry.player.id}
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.05 }}
@@ -461,29 +461,29 @@ export function ArenaScreen() {
                                   : "bg-secondary text-muted-foreground"
                           }`}
                         >
-                          {player.rank}
+                          {entry.rank}
                         </div>
                         <div className="flex-1">
                           <div className="flex items-center gap-2">
-                            <span className="font-medium">{player.username}</span>
+                            <span className="font-medium">{entry.player.name}</span>
                             <Badge
                               variant="outline"
                               className="text-xs"
                               style={{
-                                borderColor: TIER_COLORS[player.tier as keyof typeof TIER_COLORS],
-                                color: TIER_COLORS[player.tier as keyof typeof TIER_COLORS],
+                                borderColor: TIER_COLORS[entry.player.tier as keyof typeof TIER_COLORS],
+                                color: TIER_COLORS[entry.player.tier as keyof typeof TIER_COLORS],
                               }}
                             >
-                              <TierIcon tier={player.tier} />
-                              <span className="ml-1 capitalize">{player.tier}</span>
+                              <TierIcon tier={entry.player.tier} />
+                              <span className="ml-1 capitalize">{entry.player.tier}</span>
                             </Badge>
                           </div>
                           <p className="text-xs text-muted-foreground">
-                            {player.wins}W - {player.losses}L
+                            {entry.wins}W - {entry.losses}L
                           </p>
                         </div>
                         <div className="text-right">
-                          <p className="font-mono font-bold">{player.eloScore}</p>
+                          <p className="font-mono font-bold">{entry.avgReturn.toFixed(1)}%</p>
                         </div>
                       </motion.div>
                     ))}

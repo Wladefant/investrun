@@ -85,30 +85,46 @@
 }
 
 .dark {
-  --background: 240 10% 3.9%;
-  --foreground: 0 0% 98%;
-  --card: 240 10% 3.9%;
-  --card-foreground: 0 0% 98%;
-  --popover: 240 10% 3.9%;
-  --popover-foreground: 0 0% 98%;
-  --primary: 45 100% 50%;
-  --primary-foreground: 0 0% 98%;
-  --secondary: 242 45% 34%;
+  /* PostFinance Dark Theme — deep navy with warm yellow accents */
+  /* Background: #0F1419 (deep navy-black) */
+  /* Card: #1A2332 (elevated surface) */
+  /* Muted: #243044 (subtle surface) */
+
+  --background: 213 28% 8%;    /* #0F1419 */
+  --foreground: 0 0% 95%;      /* #F2F2F2 */
+
+  --card: 215 30% 15%;         /* #1A2332 */
+  --card-foreground: 0 0% 93%; /* #EDEDED */
+
+  --popover: 215 30% 15%;
+  --popover-foreground: 0 0% 93%;
+
+  --primary: 45 100% 50%;      /* #FFC800 — same yellow */
+  --primary-foreground: 215 30% 10%; /* Dark text on yellow */
+
+  --secondary: 242 45% 45%;    /* Brighter purple for dark bg */
   --secondary-foreground: 0 0% 98%;
-  --muted: 240 3.7% 15.9%;
-  --muted-foreground: 240 5% 64.9%;
-  --accent: 240 3.7% 15.9%;
-  --accent-foreground: 0 0% 98%;
-  --destructive: 0 62.8% 30.6%;
+
+  --muted: 215 25% 18%;        /* #243044 */
+  --muted-foreground: 215 10% 55%; /* #7A8A9E */
+
+  --accent: 45 100% 10%;       /* Dark warm accent */
+  --accent-foreground: 45 100% 70%;
+
+  --destructive: 0 72% 51%;
   --destructive-foreground: 0 0% 98%;
-  --border: 240 3.7% 15.9%;
-  --input: 240 3.7% 15.9%;
-  --ring: 240 4.9% 83.9%;
-  --chart-1: 220 70% 50%;
-  --chart-2: 160 60% 45%;
-  --chart-3: 30 80% 55%;
-  --chart-4: 280 65% 60%;
-  --chart-5: 340 75% 55%;
+
+  --border: 215 20% 20%;       /* #2A3548 */
+  --input: 215 20% 25%;
+  --ring: 45 100% 50%;
+
+  --chart-1: 45 100% 50%;      /* Yellow */
+  --chart-2: 262 52% 55%;      /* Purple */
+  --chart-3: 142 76% 46%;      /* Green */
+  --chart-4: 200 80% 55%;      /* Blue */
+  --chart-5: 25 95% 55%;       /* Orange */
+
+  --pf-green: 142 76% 46%;
 }
 
 @layer base {
