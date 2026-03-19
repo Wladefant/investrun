@@ -348,16 +348,16 @@ export default function AcademyApp() {
         />
       )}
 
-      <AnimatePresence>
-        {showProfessor && (
-          <ProfessorChat
-            isOpen={showProfessor}
-            onClose={() => setShowProfessor(false)}
-            playerName={progress.playerName}
-            rank={getCurrentRank(progress.xp)}
-          />
-        )}
-      </AnimatePresence>
+      <ProfessorChat
+        isOpen={showProfessor}
+        onClose={() => setShowProfessor(false)}
+        playerName={progress.playerName}
+        rank={getCurrentRank(progress.xp)}
+        onNavigate={(screen) => {
+          setShowProfessor(false);
+          setScreen(screen as Screen);
+        }}
+      />
     </MobileLayout>
   );
 }
