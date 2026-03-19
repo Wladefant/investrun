@@ -67,9 +67,10 @@ export function ArenaLobby({ playerName, stats, onViewLeaderboard }: ArenaLobbyP
             </div>
             <div className="bg-muted rounded-xl p-2.5 text-center">
               <div className="text-base font-bold text-foreground">
-                {stats.wins}-{stats.losses}
+                {stats.wins}<span className="text-emerald-500 text-xs">W</span>{' '}
+                {stats.losses}<span className="text-red-500 text-xs">L</span>
               </div>
-              <div className="text-[10px] text-muted-foreground">W/L</div>
+              <div className="text-[10px] text-muted-foreground">Record</div>
             </div>
             <div className="bg-muted rounded-xl p-2.5 text-center">
               <div

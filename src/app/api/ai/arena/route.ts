@@ -93,7 +93,7 @@ export async function POST(request: Request) {
 
     const client = getClient();
     const response = await client.chat.completions.create({
-      model: 'gpt-4o',
+      model: 'gpt-5.2',
       messages: [
         { role: 'system', content: systemPrompt },
         { role: 'user', content: userMessage },

@@ -8,6 +8,7 @@ import {
   LineChart,
   Line,
   XAxis,
+  YAxis,
   Tooltip,
 } from 'recharts';
 import { cn } from '@/lib/utils';
@@ -252,11 +253,11 @@ export function ArenaResults({ playerName, onStatsUpdate }: ArenaResultsProps) {
           {/* Legend */}
           <div className="flex gap-4 mb-2 text-xs text-muted-foreground">
             <span className="flex items-center gap-1">
-              <span className="inline-block w-3 h-0.5 bg-primary rounded" />
+              <span className="inline-block w-3 h-0.5 rounded" style={{ backgroundColor: '#10b981' }} />
               You
             </span>
             <span className="flex items-center gap-1">
-              <span className="inline-block w-3 h-0.5 rounded" style={{ backgroundColor: 'hsl(var(--muted-foreground))' }} />
+              <span className="inline-block w-3 h-0.5 rounded" style={{ backgroundColor: '#ef4444' }} />
               {opponentName}
             </span>
           </div>
@@ -266,6 +267,11 @@ export function ArenaResults({ playerName, onStatsUpdate }: ArenaResultsProps) {
                 dataKey="round"
                 tick={{ fontSize: 11 }}
                 tickFormatter={(v) => (v === 0 ? 'Start' : `R${v}`)}
+              />
+              <YAxis
+                tick={{ fontSize: 10 }}
+                tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`}
+                width={35}
               />
               <Tooltip
                 formatter={(value: number, name: string) => [
@@ -278,7 +284,7 @@ export function ArenaResults({ playerName, onStatsUpdate }: ArenaResultsProps) {
               <Line
                 type="monotone"
                 dataKey="player"
-                stroke="hsl(var(--primary))"
+                stroke="#10b981"
                 strokeWidth={2}
                 dot={false}
                 name="player"
@@ -286,7 +292,7 @@ export function ArenaResults({ playerName, onStatsUpdate }: ArenaResultsProps) {
               <Line
                 type="monotone"
                 dataKey="opponent"
-                stroke="hsl(var(--muted-foreground))"
+                stroke="#ef4444"
                 strokeWidth={2}
                 dot={false}
                 strokeDasharray="4 2"

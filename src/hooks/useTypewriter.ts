@@ -14,7 +14,7 @@ export function useTypewriter(text: string | null, charsPerTick = 2, intervalMs 
   useEffect(() => {
     if (!text) {
       setDisplayed('');
-      setDone(false);
+      setDone(true); // null text = nothing to animate = done
       indexRef.current = 0;
       return;
     }

@@ -35,6 +35,16 @@ export function ArenaRoundReveal({ opponentName }: ArenaRoundRevealProps) {
   const [aiLoading, setAiLoading] = useState(true);
   const fetchedRef = useRef(false);
 
+  // Resolve the event for this round — currentEvent may be null (cleared by nextRound),
+  // so fall back to looking it up from the scenario data
+  const resolvedEvent = currentEvent ?? (() => {
+    if (!scenarioId) return null;
+    const scenario = getScenarioById(scenarioId);
+    if (!scenario) return null;
+    const rounds = getArenaRounds(scenario, TOTAL_ROUNDS);
+    return rounds[currentRound - 1] ?? null;
+  })();
+
   // Derive last decision and portfolio values
   const lastPlayerDecision = playerDecisions[playerDecisions.length - 1] ?? 50;
   const lastOpponentDecision = opponentDecisions[opponentDecisions.length - 1] ?? 50;
@@ -56,7 +66,7 @@ export function ArenaRoundReveal({ opponentName }: ArenaRoundRevealProps) {
     if (fetchedRef.current) return;
     fetchedRef.current = true;
 
-    if (!opponent || !currentEvent) {
+    if (!opponent || !resolvedEvent) {
       setAiText(null);
       setAiLoading(false);
       return;
@@ -66,7 +76,7 @@ export function ArenaRoundReveal({ opponentName }: ArenaRoundRevealProps) {
       currentRound,
       TOTAL_ROUNDS,
       timeHorizon,
-      currentEvent,
+      resolvedEvent,
       lastPlayerDecision,
       opponent,
       lastOpponentDecision,
