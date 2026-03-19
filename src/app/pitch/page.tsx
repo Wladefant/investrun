@@ -14,6 +14,7 @@ import {
   Users,
   Swords,
   Zap,
+  Brain,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -26,6 +27,8 @@ import {
   getReturnPercentage,
 } from "@/lib/arena-engine";
 import type { ArenaRoom } from "@/lib/arena-rooms";
+import { fetchArenaAI, buildMultiplayerRoundContext, buildMultiplayerMatchContext } from "@/lib/arena-ai";
+import { useTypewriter } from "@/hooks/useTypewriter";
 
 type PitchPhase = "onboarding" | "matchmaking" | "countdown" | "match" | "waiting" | "reveal" | "results" | "full_app";
 
@@ -52,6 +55,12 @@ export default function PitchPage() {
   const [playerRisk, setPlayerRisk] = useState(50);
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [countdownNum, setCountdownNum] = useState(3);
+  const [roundAiText, setRoundAiText] = useState<string | null>(null);
+  const [roundAiLoading, setRoundAiLoading] = useState(false);
+  const [matchAiText, setMatchAiText] = useState<string | null>(null);
+  const [matchAiLoading, setMatchAiLoading] = useState(false);
+  const roundAiFetched = useRef(false);
+  const matchAiFetched = useRef(false);
 
   // Polling
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -91,6 +100,9 @@ export default function PitchPage() {
     }
     if (room.status === "reveal" && phase !== "reveal" && phase !== "results") {
       setPhase("reveal");
+      roundAiFetched.current = false;
+      setRoundAiText(null);
+      setRoundAiLoading(true);
     }
     if (room.status === "finished" && phase !== "results") {
       setPhase("results");
@@ -117,6 +129,35 @@ export default function PitchPage() {
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase, timer, hasSubmitted]);
+
+  // Typewriter hooks
+  const { displayed: roundAiDisplayed, done: roundAiDone } = useTypewriter(roundAiText);
+  const { displayed: matchAiDisplayed, done: matchAiDone } = useTypewriter(matchAiText);
+
+  // Fetch round AI
+  useEffect(() => {
+    if (phase !== "reveal" || roundAiFetched.current || !room || !myDecisions || !oppDecisions || !myPortfolio || !oppPortfolio) return;
+    roundAiFetched.current = true;
+    setRoundAiLoading(true);
+    const event = room.rounds[room.currentRound - 1];
+    if (!event || !opponentName) { setRoundAiLoading(false); return; }
+    const ctx = buildMultiplayerRoundContext(room.currentRound, room.totalRounds, room.timeHorizon, event, myDecisions[myDecisions.length - 1] ?? 50, opponentName, oppDecisions[oppDecisions.length - 1] ?? 50, myPortfolio, oppPortfolio);
+    fetchArenaAI("round", ctx).then(t => { setRoundAiText(t); setRoundAiLoading(false); });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase, room?.currentRound]);
+
+  // Fetch match AI
+  useEffect(() => {
+    if (phase !== "results" || matchAiFetched.current || !room || !myPortfolio || !oppPortfolio || !myDecisions || !oppDecisions) return;
+    matchAiFetched.current = true;
+    setMatchAiLoading(true);
+    const myFinal = myPortfolio[myPortfolio.length - 1];
+    const oppFinal = oppPortfolio[oppPortfolio.length - 1];
+    const outcome = myFinal > oppFinal ? "win" as const : myFinal < oppFinal ? "loss" as const : "draw" as const;
+    const ctx = buildMultiplayerMatchContext(room.timeHorizon, outcome, opponentName || "Opponent", myPortfolio, oppPortfolio, myDecisions, oppDecisions, room.rounds);
+    fetchArenaAI("match", ctx).then(t => { setMatchAiText(t); setMatchAiLoading(false); });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase]);
 
   // Onboarding complete → enter matchmaking
   const handleOnboardingComplete = async (result: OnboardingResult) => {
@@ -389,8 +430,28 @@ export default function PitchPage() {
                   </>
                 );
               })()}
+              {/* AI Round Analysis */}
+              <div className="bg-card rounded-2xl shadow-sm border border-border p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <Brain size={16} className="text-primary" />
+                  <span className="text-xs font-semibold text-primary uppercase tracking-wide">AI Analysis</span>
+                </div>
+                {roundAiLoading ? (
+                  <div className="flex items-center gap-1 py-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground animate-pulse" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground animate-pulse [animation-delay:150ms]" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground animate-pulse [animation-delay:300ms]" />
+                  </div>
+                ) : (
+                  <p className="text-sm text-foreground/90 leading-relaxed">
+                    {roundAiDisplayed}
+                    {!roundAiDone && <span className="inline-block w-0.5 h-4 bg-primary ml-0.5 animate-pulse align-text-bottom" />}
+                  </p>
+                )}
+              </div>
+
               {role === "host" ? (
-                <button onClick={handleNextRound} className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-semibold">
+                <button onClick={handleNextRound} disabled={roundAiLoading || !roundAiDone} className={cn("w-full bg-primary text-primary-foreground py-3 rounded-xl font-semibold", (roundAiLoading || !roundAiDone) && "opacity-50 cursor-not-allowed")}>
                   {room.currentRound >= TOTAL_ROUNDS ? "See Results" : "Next Round →"}
                 </button>
               ) : (
@@ -434,6 +495,26 @@ export default function PitchPage() {
                         </p>
                       </div>
                     </div>
+                    {/* AI Match Analysis */}
+                    <div className="bg-card rounded-2xl shadow-sm border border-border p-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Brain size={16} className="text-primary" />
+                        <span className="text-xs font-semibold text-primary uppercase tracking-wide">Match Analysis</span>
+                      </div>
+                      {matchAiLoading ? (
+                        <div className="flex items-center gap-1 py-2">
+                          <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground animate-pulse" />
+                          <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground animate-pulse [animation-delay:150ms]" />
+                          <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground animate-pulse [animation-delay:300ms]" />
+                        </div>
+                      ) : (
+                        <p className="text-sm text-foreground/90 leading-relaxed">
+                          {matchAiDisplayed}
+                          {!matchAiDone && <span className="inline-block w-0.5 h-4 bg-primary ml-0.5 animate-pulse align-text-bottom" />}
+                        </p>
+                      )}
+                    </div>
+
                     <button onClick={() => { stopPolling(); setPhase("full_app"); }} className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-bold text-sm">
                       Continue
                     </button>

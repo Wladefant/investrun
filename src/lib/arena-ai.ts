@@ -152,6 +152,84 @@ export function buildMatchContext(
   };
 }
 
+// --- Multiplayer context builders (accept name strings, no OpponentPersonalityId) ---
+
+export function buildMultiplayerRoundContext(
+  roundNumber: number,
+  totalRounds: number,
+  timeHorizon: number,
+  event: { title: string; description: string; type: string; severity: number },
+  playerRisk: number,
+  opponentName: string,
+  opponentRisk: number,
+  playerPortfolio: number[],
+  opponentPortfolio: number[],
+): RoundCommentaryContext {
+  const playerBefore = playerPortfolio[roundNumber - 1];
+  const playerAfter = playerPortfolio[roundNumber];
+  const opponentBefore = opponentPortfolio[roundNumber - 1];
+  const opponentAfter = opponentPortfolio[roundNumber];
+
+  return {
+    roundNumber,
+    totalRounds,
+    timeHorizon,
+    event,
+    player: {
+      risk: playerRisk,
+      allocation: getAllocationFromRisk(playerRisk) as Record<string, number>,
+      portfolioBefore: playerBefore,
+      portfolioAfter: playerAfter,
+      returnPct: ((playerAfter - playerBefore) / playerBefore) * 100,
+    },
+    opponent: {
+      name: opponentName,
+      personality: 'human player',
+      risk: opponentRisk,
+      allocation: getAllocationFromRisk(opponentRisk) as Record<string, number>,
+      portfolioBefore: opponentBefore,
+      portfolioAfter: opponentAfter,
+      returnPct: ((opponentAfter - opponentBefore) / opponentBefore) * 100,
+    },
+  };
+}
+
+export function buildMultiplayerMatchContext(
+  timeHorizon: number,
+  outcome: 'win' | 'loss' | 'draw',
+  opponentName: string,
+  playerPortfolio: number[],
+  opponentPortfolio: number[],
+  playerDecisions: number[],
+  opponentDecisions: number[],
+  events: Array<{ title: string; type: string; severity: number }>,
+): MatchAnalysisContext {
+  const rounds = playerDecisions.map((playerRisk, i) => {
+    const pBefore = playerPortfolio[i];
+    const pAfter = playerPortfolio[i + 1];
+    const oBefore = opponentPortfolio[i];
+    const oAfter = opponentPortfolio[i + 1];
+    return {
+      roundNumber: i + 1,
+      event: { title: events[i]?.title ?? `Round ${i + 1}`, type: events[i]?.type ?? 'sideways', severity: events[i]?.severity ?? 1 },
+      playerRisk,
+      opponentRisk: opponentDecisions[i],
+      playerReturn: ((pAfter - pBefore) / pBefore) * 100,
+      opponentReturn: ((oAfter - oBefore) / oBefore) * 100,
+      playerPortfolio: pAfter,
+      opponentPortfolio: oAfter,
+    };
+  });
+
+  return {
+    timeHorizon,
+    outcome,
+    opponent: { name: opponentName, personality: 'human player' },
+    finalPortfolios: { player: playerPortfolio[playerPortfolio.length - 1], opponent: opponentPortfolio[opponentPortfolio.length - 1] },
+    rounds,
+  };
+}
+
 // --- Fetch helper ---
 
 export async function fetchArenaAI(
