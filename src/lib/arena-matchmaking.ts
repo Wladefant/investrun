@@ -73,24 +73,17 @@ export function enterQueue(playerName: string): {
       // Remove the host from the queue — they're matched now
       queue.delete(waitingHostToken);
 
-      // Auto-setup the room with a random scenario
-      const scenario = MARKET_SCENARIOS[Math.floor(Math.random() * MARKET_SCENARIOS.length)];
-      const rounds = scenario.events.slice(0, 8).map(e => ({
+      // Auto-setup the room with a random scenario — pick one with enough events
+      // Shuffle scenarios and pick one with at least 5 events
+      const shuffled = [...MARKET_SCENARIOS].sort(() => Math.random() - 0.5);
+      const scenario = shuffled.find(s => s.events.length >= 5) || shuffled[0];
+      const rounds = scenario.events.slice(0, 5).map(e => ({
         title: e.title,
         description: e.description,
         type: e.type,
         severity: e.severity,
         assetImpacts: e.assetImpacts as Record<string, number>,
       }));
-      while (rounds.length < 8) {
-        rounds.push({
-          title: 'Sideways Market',
-          description: 'Markets move sideways with little change.',
-          type: 'sideways',
-          severity: 1,
-          assetImpacts: { 'global-equity': 0.01, bonds: 0.005, gold: 0, cash: 0.001, bitcoin: -0.02, 'tech-growth': 0.015 },
-        });
-      }
       setupRoom(waitingHostEntry.roomId, scenario.id, 20, rounds);
 
       // Guest doesn't need to be in the queue — they're matched

@@ -117,6 +117,7 @@ export function setupRoom(
   room.scenarioId = scenarioId;
   room.timeHorizon = timeHorizon;
   room.rounds = rounds;
+  room.totalRounds = rounds.length;
   room.currentRound = 1;
   room.status = 'playing';
   room.hostPortfolio = [10000];

@@ -30,7 +30,7 @@ import type { ArenaRoom } from "@/lib/arena-rooms";
 type PitchPhase = "onboarding" | "matchmaking" | "countdown" | "match" | "waiting" | "reveal" | "results" | "full_app";
 
 const STARTING_CAPITAL = 10000;
-const TOTAL_ROUNDS = 8;
+const TOTAL_ROUNDS = 5;
 const ROUND_TIMER = 15;
 
 function getEventStyle(type: string) {
@@ -201,9 +201,18 @@ export default function PitchPage() {
   const opponentName = role === "host" ? room?.guestName : room?.hostName;
   const currentEvent = room?.rounds[(room?.currentRound ?? 1) - 1];
 
-  // After match, render the full app starting at dashboard
+  // After match, redirect to main app with name in URL
   if (phase === "full_app") {
-    return <AcademyAppInner initialScreen="dashboard" initialName={playerName} key="full-app" />;
+    if (typeof window !== "undefined") {
+      window.location.href = `/?name=${encodeURIComponent(playerName)}`;
+    }
+    return (
+      <MobileLayout>
+        <div className="flex-1 flex items-center justify-center">
+          <p className="text-sm text-muted-foreground">Loading...</p>
+        </div>
+      </MobileLayout>
+    );
   }
 
 
