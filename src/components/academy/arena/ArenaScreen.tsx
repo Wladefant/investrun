@@ -10,6 +10,7 @@ import { ArenaMatch } from './ArenaMatch';
 import { ArenaRoundReveal } from './ArenaRoundReveal';
 import { ArenaResults } from './ArenaResults';
 import { ArenaLeaderboard } from './ArenaLeaderboard';
+import { ArenaMultiplayer } from './ArenaMultiplayer';
 import { OPPONENTS } from '@/lib/arena-opponents';
 
 interface ArenaScreenProps {
@@ -42,6 +43,7 @@ export function ArenaScreen({
   const { phase, stats, opponent, currentRound, initStats } = useArenaStore();
   const opponentName = opponent ? OPPONENTS[opponent].name : 'Opponent';
   const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [showMultiplayer, setShowMultiplayer] = useState(false);
 
   // Sync parent stats into the store on mount
   useEffect(() => {
@@ -59,6 +61,15 @@ export function ArenaScreen({
     );
   }
 
+  if (showMultiplayer) {
+    return (
+      <ArenaMultiplayer
+        playerName={playerName}
+        onBack={() => setShowMultiplayer(false)}
+      />
+    );
+  }
+
   return (
     <div className="flex-1 flex flex-col overflow-hidden">
       <AnimatePresence mode="wait">
@@ -68,6 +79,7 @@ export function ArenaScreen({
             playerName={playerName}
             stats={stats}
             onViewLeaderboard={() => setShowLeaderboard(true)}
+            onMultiplayer={() => setShowMultiplayer(true)}
           />
         )}
         {(phase === 'matchmaking' || phase === 'setup') && (

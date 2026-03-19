@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Swords, Zap, Trophy } from 'lucide-react';
+import { Swords, Zap, Trophy, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useArenaStore } from '@/lib/arena-store';
 import { MOCK_LEADERBOARD, TIER_COLORS, getEloBadgeTier } from '@/data/arena-leaderboard';
@@ -10,6 +10,7 @@ interface ArenaLobbyProps {
   playerName: string;
   stats: { elo: number; wins: number; losses: number; draws: number };
   onViewLeaderboard: () => void;
+  onMultiplayer?: () => void;
 }
 
 const RANK_COLORS: Record<number, string> = {
@@ -36,7 +37,7 @@ const HOW_IT_WORKS_STEPS = [
   },
 ];
 
-export function ArenaLobby({ playerName, stats, onViewLeaderboard }: ArenaLobbyProps) {
+export function ArenaLobby({ playerName, stats, onViewLeaderboard, onMultiplayer }: ArenaLobbyProps) {
   const { startMatchmaking } = useArenaStore();
   const tier = getEloBadgeTier(stats.elo);
   const tierColor = TIER_COLORS[tier];
@@ -98,6 +99,16 @@ export function ArenaLobby({ playerName, stats, onViewLeaderboard }: ArenaLobbyP
           <p className="text-center text-xs text-muted-foreground mt-2">
             8 rounds | Same market events | Make strategic decisions
           </p>
+
+          {onMultiplayer && (
+            <button
+              onClick={onMultiplayer}
+              className="w-full mt-3 h-12 rounded-xl border-2 border-primary text-primary font-bold text-sm flex items-center justify-center gap-2 hover:bg-primary/5 transition-colors active:scale-[0.98]"
+            >
+              <Users size={18} />
+              Play vs Friend
+            </button>
+          )}
         </div>
 
         {/* How It Works */}
