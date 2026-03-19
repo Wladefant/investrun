@@ -2,7 +2,7 @@
 
 import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
-import { Home, Target, GraduationCap, User, Gamepad2, Sun, Moon } from "lucide-react";
+import { Home, Target, GraduationCap, Gamepad2, Swords, Sun, Moon } from "lucide-react";
 import { useTheme } from "@/lib/theme";
 
 interface LayoutProps {
@@ -139,12 +139,7 @@ export function BottomNav({
         active={activeTab === "solo"}
         onClick={() => onNavigate("solo")}
       />
-      <NavItem
-        icon={<User size={24} />}
-        label="Profile"
-        active={activeTab === "profile"}
-        onClick={() => onNavigate("profile")}
-      />
+      <NavItem icon={<Swords size={24} />} label="Arena" active={activeTab === "arena"} onClick={() => onNavigate("arena")} />
     </div>
   );
 }

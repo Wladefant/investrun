@@ -23,9 +23,11 @@ import {
 export function AcademyDashboard({
   progress,
   onStartMission,
+  onProfileClick,
 }: {
   progress: AcademyProgress;
   onStartMission: (id: number) => void;
+  onProfileClick?: () => void;
 }) {
   const rank = getCurrentRank(progress.xp);
   const nextRank = getNextRank(progress.xp);
@@ -51,9 +53,20 @@ export function AcademyDashboard({
               <div className="font-bold text-foreground">{progress.playerName}</div>
             </div>
           </div>
-          <div className="flex items-center gap-2 bg-primary/10 px-3 py-1.5 rounded-full border border-primary/20">
-            <Sparkles size={16} className="text-primary" />
-            <span className="font-bold text-primary text-sm">{progress.xp} XP</span>
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 bg-primary/10 px-3 py-1.5 rounded-full border border-primary/20">
+              <Sparkles size={16} className="text-primary" />
+              <span className="font-bold text-primary text-sm">{progress.xp} XP</span>
+            </div>
+            {onProfileClick && (
+              <button
+                onClick={onProfileClick}
+                className="w-8 h-8 rounded-full bg-primary/10 border-2 border-primary/30 flex items-center justify-center text-xs font-bold text-primary hover:bg-primary/20 transition-colors active:scale-95"
+                title="View Profile"
+              >
+                {progress.playerName.charAt(0).toUpperCase()}
+              </button>
+            )}
           </div>
         </div>
 
