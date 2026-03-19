@@ -11,22 +11,21 @@ export function simulateMarketReturns(
   eventType: 'bull' | 'crash' | 'recovery' | 'inflation' | 'sideways' | 'normal'
 ): number {
   const baseReturns: Record<AssetClass, number> = {
-    'global-equity': 0.08,
-    'swiss-equity': 0.07,
+    'tech-stocks': 0.12,
+    'blue-chip': 0.09,
+    'emerging-markets': 0.10,
     'bonds': 0.03,
     'gold': 0.04,
     'cash': 0.01,
-    'bitcoin': 0.15,
-    'tech-growth': 0.12,
   };
 
   const eventMultipliers: Record<typeof eventType, Record<AssetClass, number>> = {
-    normal: { 'global-equity': 1, 'swiss-equity': 1, 'bonds': 1, 'gold': 1, 'cash': 1, 'bitcoin': 1, 'tech-growth': 1 },
-    bull: { 'global-equity': 2.5, 'swiss-equity': 2.2, 'bonds': 0.8, 'gold': 0.5, 'cash': 1, 'bitcoin': 4, 'tech-growth': 3.5 },
-    crash: { 'global-equity': -3, 'swiss-equity': -2.5, 'bonds': 0.5, 'gold': 1.5, 'cash': 1, 'bitcoin': -5, 'tech-growth': -4 },
-    recovery: { 'global-equity': 2, 'swiss-equity': 1.8, 'bonds': 0.6, 'gold': 0.3, 'cash': 1, 'bitcoin': 3, 'tech-growth': 2.5 },
-    inflation: { 'global-equity': 0.3, 'swiss-equity': 0.4, 'bonds': -1, 'gold': 2, 'cash': 0.5, 'bitcoin': 1.5, 'tech-growth': 0 },
-    sideways: { 'global-equity': 0.3, 'swiss-equity': 0.4, 'bonds': 0.8, 'gold': 0.6, 'cash': 1, 'bitcoin': 0.5, 'tech-growth': 0.2 },
+    normal:    { 'tech-stocks': 1,    'blue-chip': 1,    'emerging-markets': 1,    'bonds': 1,    'gold': 1,    'cash': 1 },
+    bull:      { 'tech-stocks': 3.5,  'blue-chip': 2.2,  'emerging-markets': 2.8,  'bonds': 0.8,  'gold': 0.5,  'cash': 1 },
+    crash:     { 'tech-stocks': -4,   'blue-chip': -2.5, 'emerging-markets': -3.5, 'bonds': 0.5,  'gold': 1.5,  'cash': 1 },
+    recovery:  { 'tech-stocks': 2.5,  'blue-chip': 1.8,  'emerging-markets': 2.2,  'bonds': 0.6,  'gold': 0.3,  'cash': 1 },
+    inflation: { 'tech-stocks': 0,    'blue-chip': 0.3,  'emerging-markets': 0.5,  'bonds': -1,   'gold': 2,    'cash': 0.5 },
+    sideways:  { 'tech-stocks': 0.2,  'blue-chip': 0.4,  'emerging-markets': 0.3,  'bonds': 0.8,  'gold': 0.6,  'cash': 1 },
   };
 
   const baseReturn = baseReturns[assetClass];
@@ -55,10 +54,9 @@ export function calculateRiskScore(allocations: Allocation[]): number {
     'cash': 0,
     'bonds': 20,
     'gold': 40,
-    'swiss-equity': 60,
-    'global-equity': 60,
-    'tech-growth': 80,
-    'bitcoin': 100,
+    'blue-chip': 55,
+    'emerging-markets': 75,
+    'tech-stocks': 85,
   };
 
   const totalWeight = allocations.reduce((sum, a) => {
@@ -96,15 +94,9 @@ export function generateSimulationReport(
 
   for (const decision of decisions) {
     if (decision.wasGood === false) {
-      if (decision.type === 'sell') {
-        mistakes.push(`Sold during volatility in year ${decision.year} — missing potential recovery`);
-      }
+      mistakes.push(`Year ${decision.year}: ${decision.description} — may have missed opportunity`);
     } else if (decision.wasGood === true) {
-      if (decision.type === 'buy-dip') {
-        goodDecisions.push(`Bought the dip in year ${decision.year} — captured recovery gains`);
-      } else if (decision.type === 'hold') {
-        goodDecisions.push(`Stayed calm during year ${decision.year} market stress`);
-      }
+      goodDecisions.push(`Year ${decision.year}: ${decision.description}`);
     }
   }
 
@@ -134,22 +126,22 @@ export function getAllocationFromStrategy(strategyValue: number): {
   diversificationScore: number;
   label: string;
 } {
-  const equityBase = Math.min(20 + strategyValue * 0.6, 80);
-  const bondBase = Math.max(50 - strategyValue * 0.5, 5);
+  const blueChipBase = Math.min(15 + strategyValue * 0.35, 45);
+  const techBase = strategyValue > 30 ? (strategyValue - 30) * 0.45 : 0;
+  const emergingBase = strategyValue > 40 ? (strategyValue - 40) * 0.3 : 0;
+  const bondBase = Math.max(45 - strategyValue * 0.45, 5);
   const goldBase = Math.max(15 - strategyValue * 0.1, 5);
-  const cashBase = Math.max(15 - strategyValue * 0.15, 0);
-  const techBase = strategyValue > 50 ? (strategyValue - 50) * 0.4 : 0;
-  const bitcoinBase = strategyValue > 70 ? (strategyValue - 70) * 0.3 : 0;
+  const cashBase = Math.max(25 - strategyValue * 0.25, 0);
 
-  const total = equityBase + bondBase + goldBase + cashBase + techBase + bitcoinBase;
+  const total = blueChipBase + techBase + emergingBase + bondBase + goldBase + cashBase;
 
   const allocations = [
-    { assetClass: 'global-equity', percentage: Math.round((equityBase / total) * 100) },
+    { assetClass: 'blue-chip', percentage: Math.round((blueChipBase / total) * 100) },
+    { assetClass: 'tech-stocks', percentage: Math.round((techBase / total) * 100) },
+    { assetClass: 'emerging-markets', percentage: Math.round((emergingBase / total) * 100) },
     { assetClass: 'bonds', percentage: Math.round((bondBase / total) * 100) },
     { assetClass: 'gold', percentage: Math.round((goldBase / total) * 100) },
     { assetClass: 'cash', percentage: Math.round((cashBase / total) * 100) },
-    { assetClass: 'tech-growth', percentage: Math.round((techBase / total) * 100) },
-    { assetClass: 'bitcoin', percentage: Math.round((bitcoinBase / total) * 100) },
   ].filter(a => a.percentage > 0);
 
   const currentTotal = allocations.reduce((sum, a) => sum + a.percentage, 0);
@@ -158,7 +150,7 @@ export function getAllocationFromStrategy(strategyValue: number): {
   }
 
   const riskScore = Math.round(strategyValue);
-  const diversificationScore = allocations.length >= 4 ? 80 : allocations.length >= 3 ? 60 : 40;
+  const diversificationScore = allocations.length >= 5 ? 85 : allocations.length >= 4 ? 70 : allocations.length >= 3 ? 55 : 35;
 
   let label: string;
   if (strategyValue <= 25) label = 'Conservative';
