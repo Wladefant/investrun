@@ -207,7 +207,7 @@ export default function PitchPage() {
 
           {/* Onboarding */}
           {phase === "onboarding" && (
-            <motion.div key="onboarding" className="flex-1 overflow-y-auto" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <motion.div key="onboarding" className="flex-1 flex flex-col overflow-hidden" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               <OnboardingFlow onComplete={handleOnboardingComplete} />
             </motion.div>
           )}
