@@ -64,6 +64,7 @@ export function HistoricSimulatorScreen({
   const [allocation, setAllocation] = useState<Allocation>({
     ...DEFAULT_ALLOCATIONS.balanced,
   });
+  const [showCustomize, setShowCustomize] = useState(false);
 
   // -- Simulation state --
   const [phase, setPhase] = useState<Phase>("setup");
@@ -317,7 +318,6 @@ export function HistoricSimulatorScreen({
                     label: "Cautious",
                     desc: "Protect first, grow second",
                     color: "border-blue-400",
-                    breakdown: "25% Stocks · 40% Bonds · 20% Gold · 15% Cash",
                   },
                   {
                     id: "balanced" as RiskProfile,
@@ -325,7 +325,6 @@ export function HistoricSimulatorScreen({
                     label: "Balanced",
                     desc: "Growth with guardrails",
                     color: "border-[#FFC800]",
-                    breakdown: "50% Stocks · 25% Bonds · 15% Gold · 10% Cash",
                   },
                   {
                     id: "growth" as RiskProfile,
@@ -333,49 +332,99 @@ export function HistoricSimulatorScreen({
                     label: "Growth",
                     desc: "Maximum returns, bumpier ride",
                     color: "border-emerald-400",
-                    breakdown: "70% Stocks · 15% Bonds · 10% Gold · 5% Cash",
                   },
-                ]).map((strategy) => (
-                  <button
-                    key={strategy.id}
-                    onClick={() => handleProfileChange(strategy.id)}
-                    className={cn(
-                      "w-full bg-white rounded-2xl shadow-sm p-4 text-left transition-all active:scale-[0.98] border-2",
-                      riskProfile === strategy.id
-                        ? strategy.color + " bg-white"
-                        : "border-gray-100"
-                    )}
-                  >
-                    <div className="flex items-center gap-3 mb-2">
-                      <span className="text-2xl">{strategy.icon}</span>
-                      <div>
-                        <p className="font-bold text-[#333333] text-sm">{strategy.label}</p>
-                        <p className="text-[10px] text-[#767676]">{strategy.desc}</p>
-                      </div>
-                      {riskProfile === strategy.id && (
-                        <div className="ml-auto w-5 h-5 bg-[#FFC800] rounded-full flex items-center justify-center">
-                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#333" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                ]).map((strategy) => {
+                  const isSelected = riskProfile === strategy.id;
+                  const a = isSelected ? allocation : DEFAULT_ALLOCATIONS[strategy.id];
+                  const stocks = a.swiss_stocks + a.us_stocks + a.eu_stocks;
+
+                  return (
+                    <div key={strategy.id}>
+                      <button
+                        onClick={() => {
+                          handleProfileChange(strategy.id);
+                          setShowCustomize(false);
+                        }}
+                        className={cn(
+                          "w-full bg-white rounded-2xl shadow-sm p-4 text-left transition-all active:scale-[0.98] border-2",
+                          isSelected ? strategy.color : "border-gray-100"
+                        )}
+                      >
+                        <div className="flex items-center gap-3 mb-2">
+                          <span className="text-2xl">{strategy.icon}</span>
+                          <div className="flex-1">
+                            <p className="font-bold text-[#333333] text-sm">{strategy.label}</p>
+                            <p className="text-[10px] text-[#767676]">{strategy.desc}</p>
+                          </div>
+                          {isSelected && (
+                            <div className="flex items-center gap-2">
+                              <button
+                                onClick={(e) => { e.stopPropagation(); setShowCustomize(!showCustomize); }}
+                                className="text-[10px] font-bold text-[#FFC800] bg-[#FFC800]/10 px-2.5 py-1 rounded-full hover:bg-[#FFC800]/20 transition-colors"
+                              >
+                                {showCustomize ? "Done" : "Edit ✎"}
+                              </button>
+                              <div className="w-5 h-5 bg-[#FFC800] rounded-full flex items-center justify-center">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#333" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                        {/* Visual allocation bar */}
+                        <div className="flex h-2 rounded-full overflow-hidden">
+                          <div className="bg-[#FFC800]" style={{ width: `${stocks}%` }} />
+                          <div className="bg-blue-400" style={{ width: `${a.bonds}%` }} />
+                          <div className="bg-amber-400" style={{ width: `${a.gold}%` }} />
+                          <div className="bg-gray-300" style={{ width: `${a.cash}%` }} />
+                        </div>
+                        <p className="text-[9px] text-[#767676] mt-1.5">
+                          {stocks}% Stocks · {a.bonds}% Bonds · {a.gold}% Gold · {a.cash}% Cash
+                        </p>
+                      </button>
+
+                      {/* Inline customization when Edit is tapped */}
+                      {isSelected && showCustomize && (
+                        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 mt-2 space-y-3">
+                          <p className="text-[10px] font-bold text-[#767676] uppercase tracking-wider">Fine-tune your allocation</p>
+                          {([
+                            { key: "swiss_stocks" as keyof Allocation, icon: "🇨🇭", label: "Swiss Stocks" },
+                            { key: "us_stocks" as keyof Allocation, icon: "🇺🇸", label: "US Stocks" },
+                            { key: "eu_stocks" as keyof Allocation, icon: "🇪🇺", label: "EU Stocks" },
+                            { key: "bonds" as keyof Allocation, icon: "🛡️", label: "Bonds" },
+                            { key: "gold" as keyof Allocation, icon: "🥇", label: "Gold" },
+                            { key: "cash" as keyof Allocation, icon: "💵", label: "Cash" },
+                          ]).map(({ key, icon, label }) => (
+                            <div key={key}>
+                              <div className="flex items-center justify-between mb-1">
+                                <span className="text-xs text-[#333333]">{icon} {label}</span>
+                                <span className="text-xs font-bold text-[#333333]">{allocation[key]}%</span>
+                              </div>
+                              <input
+                                type="range"
+                                min={0}
+                                max={100}
+                                value={allocation[key]}
+                                onChange={(e) => setAllocation(prev => ({ ...prev, [key]: parseInt(e.target.value) }))}
+                                className="w-full h-1.5 rounded-full appearance-none cursor-pointer"
+                                style={{
+                                  background: `linear-gradient(to right, #FFC800 0%, #FFC800 ${allocation[key]}%, #e5e7eb ${allocation[key]}%, #e5e7eb 100%)`,
+                                }}
+                              />
+                            </div>
+                          ))}
+                          {(() => {
+                            const total = Object.values(allocation).reduce((a, b) => a + b, 0);
+                            return (
+                              <div className={cn("text-center text-xs font-bold py-1 rounded-lg", total === 100 ? "text-emerald-600 bg-emerald-50" : "text-red-500 bg-red-50")}>
+                                Total: {total}% {total !== 100 && `(needs ${100 - total > 0 ? "+" : ""}${100 - total}%)`}
+                              </div>
+                            );
+                          })()}
                         </div>
                       )}
                     </div>
-                    {/* Visual allocation bar */}
-                    <div className="flex h-2 rounded-full overflow-hidden">
-                      {(() => {
-                        const a = DEFAULT_ALLOCATIONS[strategy.id];
-                        const stocks = a.swiss_stocks + a.us_stocks + a.eu_stocks;
-                        return (
-                          <>
-                            <div className="bg-[#FFC800]" style={{ width: `${stocks}%` }} />
-                            <div className="bg-blue-400" style={{ width: `${a.bonds}%` }} />
-                            <div className="bg-amber-400" style={{ width: `${a.gold}%` }} />
-                            <div className="bg-gray-300" style={{ width: `${a.cash}%` }} />
-                          </>
-                        );
-                      })()}
-                    </div>
-                    <p className="text-[9px] text-[#767676] mt-1.5">{strategy.breakdown}</p>
-                  </button>
-                ))}
+                  );
+                })}
               </div>
 
               {/* Legend */}
@@ -394,10 +443,15 @@ export function HistoricSimulatorScreen({
                 </p>
               </div>
 
-              {/* Start Button — always enabled since allocation is always valid */}
-              <Button onClick={startSimulation} variant="secondary" size="lg">
-                Start Simulation →
-              </Button>
+              {/* Start Button */}
+              {(() => {
+                const total = Object.values(allocation).reduce((a, b) => a + b, 0);
+                return (
+                  <Button onClick={startSimulation} variant="secondary" size="lg" disabled={showCustomize && total !== 100}>
+                    Start Simulation →
+                  </Button>
+                );
+              })()}
             </>
           )}
         </div>
