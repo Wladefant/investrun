@@ -317,13 +317,13 @@ export function ArenaMultiplayer({ playerName, onBack }: ArenaMultiplayerProps) 
                     onChange={(e) => setJoinCode(e.target.value.toUpperCase().slice(0, 5))}
                     placeholder="XXXXX"
                     maxLength={5}
-                    className="flex-1 bg-muted rounded-xl px-4 py-3 text-center text-lg font-mono font-bold tracking-[0.3em] text-foreground outline-none focus:ring-2 focus:ring-primary placeholder:text-muted-foreground/40"
+                    className="min-w-0 flex-1 bg-muted rounded-xl px-3 py-3 text-center text-base font-mono font-bold tracking-widest text-foreground outline-none focus:ring-2 focus:ring-primary placeholder:text-muted-foreground/40"
                   />
                   <motion.button
                     whileTap={{ scale: 0.95 }}
                     onClick={handleJoin}
                     disabled={joinCode.length < 5}
-                    className="px-6 bg-primary text-primary-foreground rounded-xl font-bold disabled:opacity-40"
+                    className="shrink-0 px-4 bg-primary text-primary-foreground rounded-xl font-bold disabled:opacity-40"
                   >
                     Join
                   </motion.button>
