@@ -1,0 +1,64 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { AnimatePresence } from 'framer-motion';
+import { useArenaStore } from '@/lib/arena-store';
+import type { ArenaPhase } from '@/lib/arena-store';
+import { ArenaLobby } from './ArenaLobby';
+
+interface ArenaScreenProps {
+  playerName: string;
+  playerXp: number;
+  arenaStats: { elo: number; wins: number; losses: number; draws: number };
+  onStatsUpdate: (
+    stats: { elo: number; wins: number; losses: number; draws: number },
+    xpEarned: number
+  ) => void;
+}
+
+// Placeholder for phases that will be built in Tasks 6-10
+function PhasePlaceholder({ phase }: { phase: ArenaPhase }) {
+  return (
+    <div className="flex-1 flex items-center justify-center bg-background">
+      <p className="text-muted-foreground text-sm font-medium">
+        Phase: <span className="text-primary font-bold">{phase}</span>
+      </p>
+    </div>
+  );
+}
+
+export function ArenaScreen({
+  playerName,
+  playerXp,
+  arenaStats,
+  onStatsUpdate,
+}: ArenaScreenProps) {
+  const { phase, stats, initStats } = useArenaStore();
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
+
+  // Sync parent stats into the store on mount
+  useEffect(() => {
+    initStats(arenaStats);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return (
+    <div className="flex-1 flex flex-col overflow-hidden">
+      <AnimatePresence mode="wait">
+        {phase === 'lobby' && (
+          <ArenaLobby
+            key="lobby"
+            playerName={playerName}
+            stats={stats}
+            onViewLeaderboard={() => setShowLeaderboard(true)}
+          />
+        )}
+        {phase === 'matchmaking' && <PhasePlaceholder key="matchmaking" phase="matchmaking" />}
+        {phase === 'setup' && <PhasePlaceholder key="setup" phase="setup" />}
+        {phase === 'match' && <PhasePlaceholder key="match" phase="match" />}
+        {phase === 'reveal' && <PhasePlaceholder key="reveal" phase="reveal" />}
+        {phase === 'results' && <PhasePlaceholder key="results" phase="results" />}
+      </AnimatePresence>
+    </div>
+  );
+}
