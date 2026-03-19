@@ -18,6 +18,7 @@ import { DNAReportScreen } from "@/components/academy/DNAReport";
 import { ProfessorChat } from "@/components/academy/ProfessorChat";
 import { FutureEstimationScreen } from "@/components/academy/FutureEstimation";
 import { HistoricSimulatorScreen } from "@/components/academy/HistoricSimulator";
+import { SoloScreen } from "@/components/academy/SoloScreen";
 import {
   INITIAL_PROGRESS,
   getCurrentRank,
@@ -29,7 +30,7 @@ type Screen =
   | "enrollment"
   | "dashboard"
   | "missions"
-  | "learn"
+  | "solo"
   | "profile"
   | "mission"
   | "mission_result"
@@ -115,13 +116,13 @@ export default function AcademyApp() {
       ? "dashboard"
       : screen === "missions"
         ? "missions"
-        : screen === "learn"
-          ? "learn"
+        : screen === "solo"
+          ? "solo"
           : screen === "profile"
             ? "profile"
             : "dashboard";
 
-  const showNav = ["dashboard", "missions", "learn", "profile"].includes(screen);
+  const showNav = ["dashboard", "missions", "solo", "profile"].includes(screen);
 
   const renderMission = () => {
     switch (activeMissionId) {
@@ -247,52 +248,21 @@ export default function AcademyApp() {
         </div>
       )}
 
-      {screen === "learn" && (
-        <div className="flex-1 flex flex-col overflow-hidden overflow-y-auto bg-background">
-          <div className="px-4 pt-4 pb-2">
-            <h1 className="text-lg font-bold text-foreground">Learn & Explore</h1>
-            <p className="text-xs text-muted-foreground">Tools to understand investing</p>
-          </div>
-          <div className="px-4 space-y-3 pb-4">
-            <button
-              onClick={() => setScreen("simulator" as Screen)}
-              className="w-full bg-card rounded-2xl shadow-sm border border-border p-4 text-left active:scale-[0.98] transition-transform"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/90 rounded-xl flex items-center justify-center text-xl">📈</div>
-                <div className="flex-1">
-                  <p className="font-bold text-foreground text-sm">Historic Simulator</p>
-                  <p className="text-xs text-muted-foreground">20 years of real market data. Survive crashes, recessions, and booms.</p>
-                </div>
-                <span className="text-muted-foreground">→</span>
-              </div>
-            </button>
-            <button
-              onClick={() => setScreen("future" as Screen)}
-              className="w-full bg-card rounded-2xl shadow-sm border border-border p-4 text-left active:scale-[0.98] transition-transform"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-secondary to-secondary/80 rounded-xl flex items-center justify-center text-xl">✨</div>
-                <div className="flex-1">
-                  <p className="font-bold text-foreground text-sm">My Future</p>
-                  <p className="text-xs text-muted-foreground">See how investing gets you to your goals faster.</p>
-                </div>
-                <span className="text-muted-foreground">→</span>
-              </div>
-            </button>
-          </div>
+      {screen === "solo" && (
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <SoloScreen />
         </div>
       )}
 
       {screen === "simulator" && (
         <div className="flex-1 flex flex-col overflow-hidden">
-          <HistoricSimulatorScreen onBack={() => setScreen("learn")} />
+          <HistoricSimulatorScreen onBack={() => setScreen("dashboard")} />
         </div>
       )}
 
       {screen === "future" && (
         <div className="flex-1 flex flex-col overflow-hidden">
-          <FutureEstimationScreen onBack={() => setScreen("learn")} />
+          <FutureEstimationScreen onBack={() => setScreen("dashboard")} />
         </div>
       )}
 
