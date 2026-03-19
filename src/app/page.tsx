@@ -20,6 +20,7 @@ import { MissionResultScreen } from "@/components/academy/MissionResult";
 import { DNAReportScreen } from "@/components/academy/DNAReport";
 import { ProfessorChat } from "@/components/academy/ProfessorChat";
 import { FutureEstimationScreen } from "@/components/academy/FutureEstimation";
+import { FutureEngineScreen } from "@/components/academy/FutureEngineScreen";
 import { HistoricSimulatorScreen } from "@/components/academy/HistoricSimulator";
 import { SoloScreen } from "@/components/academy/SoloScreen";
 import {
@@ -33,6 +34,7 @@ type Screen =
   | "enrollment"
   | "dashboard"
   | "missions"
+  | "future_engine"
   | "solo"
   | "profile"
   | "mission"
@@ -46,6 +48,7 @@ export default function AcademyApp() {
   const [activeMissionId, setActiveMissionId] = useState<number>(0);
   const [progress, setProgress] = useState<AcademyProgress>(INITIAL_PROGRESS);
   const [showProfessor, setShowProfessor] = useState(false);
+  const [onboardingData, setOnboardingData] = useState<OnboardingResult | null>(null);
   const [lastMissionResult, setLastMissionResult] = useState<{
     missionId: number;
     grade: string;
@@ -67,7 +70,8 @@ export default function AcademyApp() {
         ? { riskProfile: riskMap[result.riskProfileId] ?? "balanced" }
         : {}),
     }));
-    setScreen("dashboard");
+    setOnboardingData(result);
+    setScreen("future_engine");
   };
 
   const handleStartMission = (id: number) => {
@@ -128,15 +132,17 @@ export default function AcademyApp() {
   const activeTab =
     screen === "dashboard"
       ? "dashboard"
-      : screen === "missions"
-        ? "missions"
-        : screen === "solo"
-          ? "solo"
-          : screen === "profile"
-            ? "profile"
-            : "dashboard";
+      : screen === "future_engine"
+        ? "future_engine"
+        : screen === "missions"
+          ? "missions"
+          : screen === "solo"
+            ? "solo"
+            : screen === "profile"
+              ? "profile"
+              : "dashboard";
 
-  const showNav = ["dashboard", "missions", "solo", "profile"].includes(screen);
+  const showNav = ["dashboard", "future_engine", "solo", "profile"].includes(screen);
 
   const renderMission = () => {
     switch (activeMissionId) {
@@ -218,6 +224,17 @@ export default function AcademyApp() {
           <AcademyDashboard
             progress={progress}
             onStartMission={handleStartMission}
+          />
+        </div>
+      )}
+
+      {screen === "future_engine" && (
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <FutureEngineScreen
+            age={onboardingData?.age}
+            initialContribution={onboardingData?.monthlyContribution}
+            initialGoal={onboardingData?.selectedGoal}
+            riskProfileId={onboardingData?.riskProfileId}
           />
         </div>
       )}

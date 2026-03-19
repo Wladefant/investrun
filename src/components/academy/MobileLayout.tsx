@@ -2,7 +2,7 @@
 
 import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
-import { Home, Target, GraduationCap, User, Gamepad2, Sun, Moon } from "lucide-react";
+import { Home, TrendingUp, GraduationCap, User, Gamepad2, Sun, Moon } from "lucide-react";
 import { useTheme } from "@/lib/theme";
 
 interface LayoutProps {
@@ -119,7 +119,7 @@ export function BottomNav({
   return (
     <div className="h-20 bg-card border-t border-border flex justify-around items-end pb-2 text-[10px] font-medium text-muted-foreground shrink-0 z-20 relative">
       <NavItem icon={<Home size={24} />} label="Home" active={activeTab === "dashboard"} onClick={() => onNavigate("dashboard")} />
-      <NavItem icon={<Target size={24} />} label="Missions" active={activeTab === "missions"} onClick={() => onNavigate("missions")} />
+      <NavItem icon={<TrendingUp size={24} />} label="Future" active={activeTab === "future_engine"} onClick={() => onNavigate("future_engine")} />
 
       {/* Central Professor Button */}
       <div className="relative -top-6">

@@ -17,7 +17,7 @@ import {
   Trophy,
 } from "lucide-react";
 
-const TOTAL_STEPS = 10;
+const TOTAL_STEPS = 9;
 
 const INTRO_SLIDES = [
   {
@@ -74,8 +74,6 @@ export function OnboardingFlow({
 
   const [name, setName] = useState("");
   const [age, setAge] = useState(22);
-  const [horizonYears, setHorizonYears] = useState(5);
-  const [horizonMonths, setHorizonMonths] = useState(0);
   const [monthlyContribution, setMonthlyContribution] = useState(300);
   const [selectedGoal, setSelectedGoal] = useState<Goal | null>(null);
   const [customGoalName, setCustomGoalName] = useState("");
@@ -83,17 +81,13 @@ export function OnboardingFlow({
   const [showCustomForm, setShowCustomForm] = useState(false);
   const [riskId, setRiskId] = useState<RiskProfile["id"] | null>(null);
 
-  const totalMonths = horizonYears * 12 + horizonMonths;
-
   const canProceed = (() => {
     switch (step) {
       case 4:
         return name.trim().length > 0;
       case 6:
-        return totalMonths >= 6;
-      case 7:
         return monthlyContribution >= 50;
-      case 8:
+      case 7:
         return selectedGoal !== null;
       default:
         return true;
@@ -108,7 +102,7 @@ export function OnboardingFlow({
       onComplete({
         name: name.trim(),
         age,
-        investmentHorizonMonths: totalMonths,
+        investmentHorizonMonths: 60,
         monthlyContribution,
         selectedGoal: selectedGoal!,
         riskProfileId: riskId,
@@ -133,11 +127,6 @@ export function OnboardingFlow({
       setCustomGoalName("");
       setCustomGoalAmount("");
     }
-  };
-
-  const handleHorizonSlider = (value: number) => {
-    setHorizonYears(Math.floor(value / 12));
-    setHorizonMonths(value % 12);
   };
 
   return (
@@ -198,20 +187,6 @@ export function OnboardingFlow({
         )}
 
         {step === 6 && (
-          <TimelineStep
-            key="timeline"
-            horizonYears={horizonYears}
-            horizonMonths={horizonMonths}
-            totalMonths={totalMonths}
-            onYearsChange={setHorizonYears}
-            onMonthsChange={setHorizonMonths}
-            onSliderChange={handleHorizonSlider}
-            canProceed={canProceed}
-            onNext={handleNext}
-          />
-        )}
-
-        {step === 7 && (
           <ContributionStep
             key="contribution"
             monthlyContribution={monthlyContribution}
@@ -220,7 +195,7 @@ export function OnboardingFlow({
           />
         )}
 
-        {step === 8 && (
+        {step === 7 && (
           <GoalStep
             key="goal"
             selectedGoal={selectedGoal}
@@ -244,7 +219,7 @@ export function OnboardingFlow({
           />
         )}
 
-        {step === 9 && (
+        {step === 8 && (
           <RiskStep
             key="risk"
             riskId={riskId}
@@ -522,131 +497,7 @@ function AgeStep({
   );
 }
 
-/* ─── Step 6: Investment Timeline ─── */
-
-function TimelineStep({
-  horizonYears,
-  horizonMonths,
-  totalMonths,
-  onYearsChange,
-  onMonthsChange,
-  onSliderChange,
-  canProceed,
-  onNext,
-}: {
-  horizonYears: number;
-  horizonMonths: number;
-  totalMonths: number;
-  onYearsChange: (v: number) => void;
-  onMonthsChange: (v: number) => void;
-  onSliderChange: (v: number) => void;
-  canProceed: boolean;
-  onNext: () => void;
-}) {
-  const tip =
-    totalMonths < 24
-      ? "Short-term \u2014 focus on lower-risk investments."
-      : totalMonths < 120
-        ? "Medium-term \u2014 a balanced approach works well."
-        : "Long-term \u2014 time is your greatest advantage.";
-
-  const sliderPct = Math.max(0, ((totalMonths - 6) / (360 - 6)) * 100);
-
-  return (
-    <motion.div {...slideIn} className="flex-1 flex flex-col px-6 pt-6">
-      <h2 className="text-2xl font-bold text-foreground mb-2">
-        Your investment horizon
-      </h2>
-      <p className="text-muted-foreground text-sm mb-6">
-        How long do you plan to invest? Longer horizons unlock higher potential.
-      </p>
-
-      <div className="bg-card rounded-2xl shadow-sm p-6 text-center mb-6 border border-border">
-        <motion.p
-          key={`${horizonYears}-${horizonMonths}`}
-          initial={{ scale: 0.95 }}
-          animate={{ scale: 1 }}
-          className="text-4xl font-bold text-foreground"
-        >
-          <span className="text-primary">{horizonYears}</span>
-          <span className="text-lg text-muted-foreground ml-1 mr-3">
-            yr{horizonYears !== 1 ? "s" : ""}
-          </span>
-          <span className="text-primary">{horizonMonths}</span>
-          <span className="text-lg text-muted-foreground ml-1">mo</span>
-        </motion.p>
-      </div>
-
-      <div className="flex gap-3 mb-6">
-        <div className="flex-1">
-          <label className="text-xs font-medium text-muted-foreground mb-1.5 block">
-            Years
-          </label>
-          <input
-            type="number"
-            min={0}
-            max={30}
-            value={horizonYears}
-            onChange={(e) =>
-              onYearsChange(
-                Math.max(0, Math.min(30, parseInt(e.target.value) || 0))
-              )
-            }
-            className="w-full bg-card border border-border rounded-xl px-4 py-3 text-foreground text-center text-lg font-semibold outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-all"
-          />
-        </div>
-        <div className="flex-1">
-          <label className="text-xs font-medium text-muted-foreground mb-1.5 block">
-            Months
-          </label>
-          <input
-            type="number"
-            min={0}
-            max={11}
-            value={horizonMonths}
-            onChange={(e) =>
-              onMonthsChange(
-                Math.max(0, Math.min(11, parseInt(e.target.value) || 0))
-              )
-            }
-            className="w-full bg-card border border-border rounded-xl px-4 py-3 text-foreground text-center text-lg font-semibold outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-all"
-          />
-        </div>
-      </div>
-
-      <div className="space-y-2 mb-4">
-        <input
-          type="range"
-          min={6}
-          max={360}
-          step={1}
-          value={totalMonths}
-          onChange={(e) => onSliderChange(Number(e.target.value))}
-          className="pf-slider"
-          style={{
-            background: `linear-gradient(to right, var(--primary) ${sliderPct}%, var(--border) ${sliderPct}%)`,
-          }}
-        />
-        <div className="flex justify-between text-xs text-muted-foreground">
-          <span>6 months</span>
-          <span>30 years</span>
-        </div>
-      </div>
-
-      <p className="text-center text-xs text-muted-foreground">{tip}</p>
-
-      <div className="flex-1" />
-
-      <div className="pb-6">
-        <Button size="lg" onClick={onNext} disabled={!canProceed}>
-          Continue
-        </Button>
-      </div>
-    </motion.div>
-  );
-}
-
-/* ─── Step 7: Monthly Investment Slider ─── */
+/* ─── Step 6: Monthly Investment Slider ─── */
 
 function ContributionStep({
   monthlyContribution,
@@ -738,7 +589,7 @@ function ContributionStep({
   );
 }
 
-/* ─── Step 8: Goal Selection ─── */
+/* ─── Step 7: Goal Selection ─── */
 
 function GoalStep({
   selectedGoal,
@@ -915,7 +766,7 @@ function GoalStep({
   );
 }
 
-/* ─── Step 9: Risk Personalization ─── */
+/* ─── Step 8: Risk Personalization ─── */
 
 function RiskStep({
   riskId,
