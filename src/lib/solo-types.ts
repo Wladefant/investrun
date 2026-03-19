@@ -1,20 +1,18 @@
 export type AssetClass =
-  | 'global-equity'
-  | 'swiss-equity'
+  | 'tech-stocks'
+  | 'blue-chip'
+  | 'emerging-markets'
   | 'bonds'
   | 'gold'
-  | 'cash'
-  | 'bitcoin'
-  | 'tech-growth';
+  | 'cash';
 
 export const ASSET_CLASSES: Record<AssetClass, { name: string; color: string; risk: number }> = {
-  'global-equity': { name: 'Global Equity', color: '#10b981', risk: 3 },
-  'swiss-equity': { name: 'Swiss Equity', color: '#3b82f6', risk: 3 },
+  'tech-stocks': { name: 'Tech Stocks', color: '#ec4899', risk: 4 },
+  'blue-chip': { name: 'Blue Chip Stocks', color: '#10b981', risk: 2 },
+  'emerging-markets': { name: 'Emerging Markets', color: '#f97316', risk: 4 },
   'bonds': { name: 'Bonds', color: '#8b5cf6', risk: 1 },
   'gold': { name: 'Gold', color: '#f59e0b', risk: 2 },
   'cash': { name: 'Cash', color: '#6b7280', risk: 0 },
-  'bitcoin': { name: 'Bitcoin', color: '#f97316', risk: 5 },
-  'tech-growth': { name: 'Tech Growth', color: '#ec4899', risk: 4 },
 };
 
 export interface Allocation {
@@ -35,6 +33,13 @@ export interface PortfolioSnapshot {
   quarter: number;
   totalValue: number;
   allocations: Allocation[];
+}
+
+export interface EventOption {
+  label: string;
+  description: string;
+  effect: Partial<Record<AssetClass, number>> | null;
+  sentiment: 'good' | 'bad' | 'neutral';
 }
 
 export interface SimulationState {
@@ -59,6 +64,7 @@ export interface SimulationEvent {
   title: string;
   description: string;
   impact: Record<AssetClass, number>;
+  options: EventOption[];
 }
 
 export type EventType = 'bull' | 'crash' | 'recovery' | 'inflation' | 'sideways' | 'news';
@@ -66,12 +72,10 @@ export type EventType = 'bull' | 'crash' | 'recovery' | 'inflation' | 'sideways'
 export interface Decision {
   year: number;
   quarter: number;
-  type: DecisionType;
+  type: string;
   description: string;
   wasGood: boolean | null;
 }
-
-export type DecisionType = 'rebalance' | 'increase-contribution' | 'sell' | 'buy-dip' | 'hold';
 
 export interface SimulationReport {
   finalValue: number;

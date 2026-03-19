@@ -9,7 +9,7 @@ import {
   type AssetClass,
   type SimulationEvent,
   type SimulationState,
-  type Decision,
+  type EventOption,
   ASSET_CLASSES,
 } from "@/lib/solo-types";
 import {
@@ -23,7 +23,7 @@ import {
   ALLOCATION_PRESETS,
   initializeSimulation,
   processQuarter,
-  applyDecision,
+  applyEventChoice,
 } from "@/lib/solo-simulation";
 import { getRandomScenario, type MarketScenario } from "@/data/solo-scenarios";
 import { getPostGameAnalysis } from "@/lib/solo-analysis";
@@ -47,9 +47,6 @@ import {
   TrendingDown,
   AlertTriangle,
   Sparkles,
-  Clock,
-  Target,
-  Zap,
   Shield,
   BarChart3,
   Newspaper,
@@ -59,28 +56,11 @@ type SimPhase = "setup" | "running" | "paused" | "checkpoint" | "complete";
 
 const SPEED_CONFIG = { slow: 1500, normal: 800, fast: 300 };
 
-const ACTION_CHOICES = [
-  { id: "hold", label: "Hold Position", description: "Stay the course", icon: Shield },
-  { id: "rebalance", label: "Rebalance", description: "Reset to target", icon: BarChart3 },
-  { id: "increase-contribution", label: "Boost Savings", description: "Increase by 25%", icon: TrendingUp },
-  { id: "buy-dip", label: "Buy the Dip", description: "Move cash to equities", icon: Zap },
-  { id: "decrease-risk", label: "Reduce Risk", description: "Shift to safer assets", icon: Shield },
-  { id: "increase-equities", label: "Go Aggressive", description: "More equity exposure", icon: TrendingUp },
-  { id: "move-to-gold", label: "Move to Gold", description: "Shift funds to gold", icon: Target },
-  { id: "raise-cash", label: "Raise Cash", description: "Build cash buffer", icon: Clock },
-];
-
-function getActionsForEvent(eventType: string): typeof ACTION_CHOICES {
-  const base = ["hold", "rebalance"];
-  const map: Record<string, string[]> = {
-    crash: [...base, "buy-dip", "decrease-risk", "raise-cash"],
-    bull: [...base, "increase-equities", "increase-contribution"],
-    inflation: [...base, "move-to-gold", "decrease-risk"],
-    recovery: [...base, "buy-dip", "increase-equities"],
-  };
-  const ids = map[eventType] || [...base, "increase-contribution", "decrease-risk"];
-  return ACTION_CHOICES.filter((a) => ids.includes(a.id));
-}
+const SENTIMENT_ICONS = {
+  good: TrendingUp,
+  bad: TrendingDown,
+  neutral: Shield,
+} as const;
 
 /* ── Inline sub-components ── */
 
@@ -195,7 +175,7 @@ export function SoloScreen() {
       const yearNum = newState.currentYear - simulation.startYear;
       setNewsFeed((prev) => [{ year: yearNum, text: event.title, type: event.type }, ...prev].slice(0, 8));
 
-      if (event.type === "crash" || event.type === "bull") {
+      if (event.options && event.options.length > 0) {
         setPhase("checkpoint");
         setShowCheckpoint(true);
       }
@@ -217,9 +197,9 @@ export function SoloScreen() {
     };
   }, [phase, speed, processTick]);
 
-  const handleDecision = (decision: Decision["type"]) => {
-    if (!simulation) return;
-    setSimulation(applyDecision(simulation, decision));
+  const handleDecision = (option: EventOption) => {
+    if (!simulation || !currentEvent) return;
+    setSimulation(applyEventChoice(simulation, option, currentEvent));
     setShowCheckpoint(false);
     setPhase("running");
   };
@@ -535,8 +515,6 @@ export function SoloScreen() {
   if (simulation) {
     const progress = ((simulation.currentYear - simulation.startYear) / (simulation.endYear - simulation.startYear)) * 100;
     const returns = ((simulation.portfolio.totalValue - 1000) / 1000) * 100;
-    const availableActions = currentEvent ? getActionsForEvent(currentEvent.type) : ACTION_CHOICES.slice(0, 4);
-
     return (
       <div className="flex-1 overflow-y-auto bg-[#F3F3F3]">
         <div className="px-4 pt-4 pb-6 space-y-3">
@@ -574,7 +552,9 @@ export function SoloScreen() {
                     "p-4 border-2",
                     currentEvent.type === "crash" && "border-red-400 bg-red-50",
                     currentEvent.type === "bull" && "border-[#FFC800] bg-[#FFC800]/5",
-                    currentEvent.type !== "crash" && currentEvent.type !== "bull" && "border-orange-400 bg-orange-50"
+                    currentEvent.type === "recovery" && "border-green-400 bg-green-50",
+                    currentEvent.type === "inflation" && "border-orange-400 bg-orange-50",
+                    !["crash", "bull", "recovery", "inflation"].includes(currentEvent.type) && "border-gray-300 bg-gray-50"
                   )}
                 >
                   <div className="flex items-start gap-3 mb-3">
@@ -583,13 +563,16 @@ export function SoloScreen() {
                         "w-9 h-9 rounded-xl flex items-center justify-center",
                         currentEvent.type === "crash" && "bg-red-100",
                         currentEvent.type === "bull" && "bg-[#FFC800]/20",
-                        currentEvent.type !== "crash" && currentEvent.type !== "bull" && "bg-orange-100"
+                        currentEvent.type === "recovery" && "bg-green-100",
+                        currentEvent.type === "inflation" && "bg-orange-100"
                       )}
                     >
                       {currentEvent.type === "crash" ? (
                         <TrendingDown className="w-4 h-4 text-red-500" />
                       ) : currentEvent.type === "bull" ? (
                         <TrendingUp className="w-4 h-4 text-[#FFC800]" />
+                      ) : currentEvent.type === "recovery" ? (
+                        <TrendingUp className="w-4 h-4 text-green-500" />
                       ) : (
                         <AlertTriangle className="w-4 h-4 text-orange-500" />
                       )}
@@ -602,20 +585,20 @@ export function SoloScreen() {
 
                   <p className="text-xs font-semibold text-[#333333] mb-2">What will you do?</p>
 
-                  <div className="grid grid-cols-2 gap-2">
-                    {availableActions.slice(0, 4).map((action) => {
-                      const Icon = action.icon;
+                  <div className="space-y-2">
+                    {currentEvent.options.map((option, idx) => {
+                      const Icon = SENTIMENT_ICONS[option.sentiment];
                       return (
                         <button
-                          key={action.id}
-                          onClick={() => handleDecision(action.id as Decision["type"])}
-                          className="p-2.5 rounded-xl bg-white border border-gray-200 hover:border-[#FFC800]/50 text-left transition-colors active:scale-[0.97]"
+                          key={idx}
+                          onClick={() => handleDecision(option)}
+                          className="w-full p-3 rounded-xl bg-white border border-gray-200 hover:border-[#FFC800]/50 text-left transition-colors active:scale-[0.98]"
                         >
-                          <div className="flex items-center gap-1.5 mb-0.5">
-                            <Icon className="w-3.5 h-3.5 text-[#FFC800]" />
-                            <span className="text-[11px] font-semibold text-[#333333]">{action.label}</span>
+                          <div className="flex items-center gap-2 mb-0.5">
+                            <Icon className="w-4 h-4 text-[#FFC800] shrink-0" />
+                            <span className="text-[12px] font-semibold text-[#333333]">{option.label}</span>
                           </div>
-                          <p className="text-[10px] text-[#767676]">{action.description}</p>
+                          <p className="text-[10px] text-[#767676] ml-6">{option.description}</p>
                         </button>
                       );
                     })}
