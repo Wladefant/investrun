@@ -128,7 +128,12 @@ export interface AcademyProgress {
   diversificationScore?: number;
   longTermScore?: number;
   assetKnowledgeScore?: number;
-  arenaScore?: number;
+  arenaStats?: {
+    elo: number;
+    wins: number;
+    losses: number;
+    draws: number;
+  };
 }
 
 export const INITIAL_PROGRESS: AcademyProgress = {
@@ -137,6 +142,7 @@ export const INITIAL_PROGRESS: AcademyProgress = {
   currentRank: "cadet",
   completedMissions: [],
   missionScores: {},
+  arenaStats: { elo: 1000, wins: 0, losses: 0, draws: 0 },
 };
 
 export function getCurrentRank(xp: number): Rank {
