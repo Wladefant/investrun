@@ -39,7 +39,7 @@ export function ArenaScreen({
   arenaStats,
   onStatsUpdate,
 }: ArenaScreenProps) {
-  const { phase, stats, opponent, initStats } = useArenaStore();
+  const { phase, stats, opponent, currentRound, initStats } = useArenaStore();
   const opponentName = opponent ? OPPONENTS[opponent].name : 'Opponent';
   const [showLeaderboard, setShowLeaderboard] = useState(false);
 
@@ -85,7 +85,7 @@ export function ArenaScreen({
           />
         )}
         {phase === 'reveal' && (
-          <ArenaRoundReveal key="reveal" opponentName={opponentName} />
+          <ArenaRoundReveal key={`reveal-${currentRound}`} opponentName={opponentName} />
         )}
         {phase === 'results' && (
           <ArenaResults
