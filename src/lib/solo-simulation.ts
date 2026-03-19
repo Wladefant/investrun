@@ -9,7 +9,7 @@ import type {
   PortfolioSnapshot,
   Decision,
 } from './solo-types';
-import { simulateMarketReturns } from './solo-calculations';
+import { simulateMarketReturns, type MarketCondition } from './solo-calculations';
 
 export const TURNS_PER_GAME = 5;
 
@@ -134,7 +134,8 @@ const DECISION_EVENT_POOL: EventTemplate[] = [
     description: 'Markets drop 25% on economic uncertainty. Panic is spreading.',
     options: [
       { label: 'Buy the Dip', description: '+15% Blue Chip, −15% Cash', effect: { 'blue-chip': 15, cash: -15 }, sentiment: 'good' },
-      { label: 'Flee to Safety', description: '−10% Tech, −5% Emerging → +10% Bonds, +5% Gold', effect: { 'tech-stocks': -10, 'emerging-markets': -5, bonds: 10, gold: 5 }, sentiment: 'bad' },
+      { label: 'Go Aggressive', description: '+25% Tech, +15% Emerging, −25% Bonds, −15% Cash', effect: { 'tech-stocks': 25, 'emerging-markets': 15, bonds: -25, cash: -15 }, sentiment: 'bad' },
+      { label: 'Panic Sell', description: 'Dump equities → all Cash', effect: { 'tech-stocks': -30, 'blue-chip': -30, 'emerging-markets': -20, cash: 80 }, sentiment: 'bad' },
       { label: 'Hold and Wait', description: 'Trust the long-term plan', effect: null, sentiment: 'good' },
     ],
   },
@@ -153,6 +154,7 @@ const DECISION_EVENT_POOL: EventTemplate[] = [
     description: 'Banking concerns trigger a severe sell-off across sectors.',
     options: [
       { label: 'Bargain Hunt', description: '+10% Blue Chip, +5% Tech, −15% Cash', effect: { 'blue-chip': 10, 'tech-stocks': 5, cash: -15 }, sentiment: 'good' },
+      { label: 'Double Down', description: '+20% Tech, −10% Bonds, −10% Gold', effect: { 'tech-stocks': 20, bonds: -10, gold: -10 }, sentiment: 'bad' },
       { label: 'Raise Cash', description: '−10% Blue Chip, −5% Emerging → +15% Cash', effect: { 'blue-chip': -10, 'emerging-markets': -5, cash: 15 }, sentiment: 'bad' },
       { label: 'Hold Position', description: 'Ride out the storm', effect: null, sentiment: 'good' },
     ],
@@ -173,6 +175,7 @@ const DECISION_EVENT_POOL: EventTemplate[] = [
     options: [
       { label: 'Buy Tech on Sale', description: '+15% Tech, −10% Cash, −5% Gold', effect: { 'tech-stocks': 15, cash: -10, gold: -5 }, sentiment: 'good' },
       { label: 'Go Defensive', description: '−10% Tech, −5% Emerging → +10% Gold, +5% Cash', effect: { 'tech-stocks': -10, 'emerging-markets': -5, gold: 10, cash: 5 }, sentiment: 'bad' },
+      { label: 'Sell Everything', description: 'Move all risk assets to Cash', effect: { 'tech-stocks': -25, 'blue-chip': -25, 'emerging-markets': -15, cash: 65 }, sentiment: 'bad' },
       { label: 'Hold Steady', description: 'Don\'t make emotional decisions', effect: null, sentiment: 'good' },
     ],
   },
@@ -324,10 +327,10 @@ const SIDEWAYS_POOL = [
 
 function generateEventImpact(type: EventType): Record<AssetClass, number> {
   const impacts: Record<EventType, Record<AssetClass, number>> = {
-    bull:      { 'tech-stocks': 0.30, 'blue-chip': 0.18, 'emerging-markets': 0.25, 'bonds': 0.02, 'gold': -0.05, 'cash': 0.01, 'cryptocurrency': 0.45, 'real-estate': 0.12 },
-    crash:     { 'tech-stocks': -0.40, 'blue-chip': -0.25, 'emerging-markets': -0.35, 'bonds': 0.05, 'gold': 0.15, 'cash': 0.01, 'cryptocurrency': -0.55, 'real-estate': -0.20 },
-    recovery:  { 'tech-stocks': 0.30, 'blue-chip': 0.20, 'emerging-markets': 0.25, 'bonds': 0.02, 'gold': -0.05, 'cash': 0.01, 'cryptocurrency': 0.35, 'real-estate': 0.15 },
-    inflation: { 'tech-stocks': -0.05, 'blue-chip': 0.02, 'emerging-markets': 0.05, 'bonds': -0.10, 'gold': 0.20, 'cash': -0.02, 'cryptocurrency': 0.10, 'real-estate': 0.12 },
+    bull:      { 'tech-stocks': 0.35, 'blue-chip': 0.20, 'emerging-markets': 0.30, 'bonds': 0.02, 'gold': -0.05, 'cash': 0.01, 'cryptocurrency': 0.50, 'real-estate': 0.15 },
+    crash:     { 'tech-stocks': -0.50, 'blue-chip': -0.30, 'emerging-markets': -0.45, 'bonds': 0.05, 'gold': 0.18, 'cash': 0.01, 'cryptocurrency': -0.65, 'real-estate': -0.25 },
+    recovery:  { 'tech-stocks': 0.35, 'blue-chip': 0.22, 'emerging-markets': 0.28, 'bonds': 0.02, 'gold': -0.05, 'cash': 0.01, 'cryptocurrency': 0.40, 'real-estate': 0.18 },
+    inflation: { 'tech-stocks': -0.08, 'blue-chip': 0.02, 'emerging-markets': 0.05, 'bonds': -0.15, 'gold': 0.25, 'cash': -0.04, 'cryptocurrency': 0.10, 'real-estate': 0.15 },
     sideways:  { 'tech-stocks': 0.02, 'blue-chip': 0.04, 'emerging-markets': 0.03, 'bonds': 0.03, 'gold': 0.02, 'cash': 0.01, 'cryptocurrency': 0.03, 'real-estate': 0.04 },
     news:      { 'tech-stocks': 0, 'blue-chip': 0, 'emerging-markets': 0, 'bonds': 0, 'gold': 0, 'cash': 0, 'cryptocurrency': 0, 'real-estate': 0 },
   };
@@ -432,15 +435,33 @@ export function processQuarter(
   state: SimulationState,
   currentQuarter: number
 ): { newState: SimulationState; event: SimulationEvent | null } {
-  const { portfolio, currentYear, events } = state;
+  const { portfolio, currentYear, events, startYear } = state;
 
   const event = events.find(e => e.year === currentYear && e.quarter === currentQuarter) || null;
-  const rawType = event?.type || 'normal';
-  const eventType = rawType === 'news' ? 'normal' as const : rawType;
+
+  let effectiveType: MarketCondition = 'normal';
+  let dampened = false;
+
+  if (event) {
+    effectiveType = event.type === 'news' ? 'normal' : event.type;
+  } else {
+    const currentQIdx = (currentYear - startYear) * 4 + (currentQuarter - 1);
+    let closestDiff = Infinity;
+    for (const e of events) {
+      const eQIdx = (e.year - startYear) * 4 + (e.quarter - 1);
+      const diff = currentQIdx - eQIdx;
+      if (diff > 0 && diff <= 3 && diff < closestDiff) {
+        closestDiff = diff;
+        effectiveType = e.type === 'news' ? 'normal' : e.type;
+        dampened = true;
+      }
+    }
+  }
 
   const newAllocations: Allocation[] = portfolio.allocations.map(allocation => {
-    const quarterlyReturn = simulateMarketReturns(allocation.assetClass, eventType) / 4;
-    return { ...allocation, value: allocation.value * (1 + quarterlyReturn) };
+    const quarterlyReturn = simulateMarketReturns(allocation.assetClass, effectiveType, dampened);
+    const newValue = Math.max(0, allocation.value * (1 + quarterlyReturn));
+    return { ...allocation, value: newValue };
   });
 
   const quarterlyContribution = portfolio.monthlyContribution * 3;
@@ -450,7 +471,7 @@ export function processQuarter(
 
   const newTotalValue = newAllocations.reduce((sum, a) => sum + a.value, 0);
   newAllocations.forEach(allocation => {
-    allocation.percentage = (allocation.value / newTotalValue) * 100;
+    allocation.percentage = newTotalValue > 0 ? (allocation.value / newTotalValue) * 100 : 0;
   });
 
   const snapshot: PortfolioSnapshot = {

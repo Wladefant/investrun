@@ -6,35 +6,72 @@ import type {
   SimulationReport,
 } from './solo-types';
 
+function gaussianRandom(): number {
+  const u1 = Math.max(Math.random(), 1e-10);
+  const u2 = Math.random();
+  return Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+}
+
+export type MarketCondition = 'bull' | 'crash' | 'recovery' | 'inflation' | 'sideways' | 'normal';
+
+/**
+ * Returns a QUARTERLY return for one asset under given market conditions.
+ * Uses Gaussian noise so returns are realistically volatile — assets can
+ * lose value even in "normal" quarters if they're high-risk.
+ */
 export function simulateMarketReturns(
   assetClass: AssetClass,
-  eventType: 'bull' | 'crash' | 'recovery' | 'inflation' | 'sideways' | 'normal'
+  eventType: MarketCondition,
+  dampened = false
 ): number {
-  const baseReturns: Record<AssetClass, number> = {
-    'tech-stocks': 0.12,
-    'blue-chip': 0.09,
-    'emerging-markets': 0.10,
+  const baseAnnualReturns: Record<AssetClass, number> = {
+    'tech-stocks': 0.10,
+    'blue-chip': 0.08,
+    'emerging-markets': 0.09,
     'bonds': 0.03,
     'gold': 0.04,
     'cash': 0.01,
-    'cryptocurrency': 0.20,
-    'real-estate': 0.07,
+    'cryptocurrency': 0.15,
+    'real-estate': 0.06,
   };
 
-  const eventMultipliers: Record<typeof eventType, Record<AssetClass, number>> = {
+  const quarterlyVolatility: Record<AssetClass, number> = {
+    'tech-stocks': 0.10,
+    'blue-chip': 0.06,
+    'emerging-markets': 0.09,
+    'bonds': 0.025,
+    'gold': 0.055,
+    'cash': 0.003,
+    'cryptocurrency': 0.22,
+    'real-estate': 0.04,
+  };
+
+  const eventReturnMultipliers: Record<MarketCondition, Record<AssetClass, number>> = {
     normal:    { 'tech-stocks': 1,    'blue-chip': 1,    'emerging-markets': 1,    'bonds': 1,    'gold': 1,    'cash': 1,   'cryptocurrency': 1,    'real-estate': 1 },
-    bull:      { 'tech-stocks': 3.5,  'blue-chip': 2.2,  'emerging-markets': 2.8,  'bonds': 0.8,  'gold': 0.5,  'cash': 1,   'cryptocurrency': 5,    'real-estate': 1.8 },
+    bull:      { 'tech-stocks': 3,    'blue-chip': 2,    'emerging-markets': 2.5,  'bonds': 0.8,  'gold': 0.5,  'cash': 1,   'cryptocurrency': 4,    'real-estate': 1.8 },
     crash:     { 'tech-stocks': -4,   'blue-chip': -2.5, 'emerging-markets': -3.5, 'bonds': 0.5,  'gold': 1.5,  'cash': 1,   'cryptocurrency': -6,   'real-estate': -2 },
-    recovery:  { 'tech-stocks': 2.5,  'blue-chip': 1.8,  'emerging-markets': 2.2,  'bonds': 0.6,  'gold': 0.3,  'cash': 1,   'cryptocurrency': 3.5,  'real-estate': 1.5 },
-    inflation: { 'tech-stocks': 0,    'blue-chip': 0.3,  'emerging-markets': 0.5,  'bonds': -1,   'gold': 2,    'cash': 0.5, 'cryptocurrency': 1.2,  'real-estate': 1.5 },
-    sideways:  { 'tech-stocks': 0.2,  'blue-chip': 0.4,  'emerging-markets': 0.3,  'bonds': 0.8,  'gold': 0.6,  'cash': 1,   'cryptocurrency': 0.3,  'real-estate': 0.7 },
+    recovery:  { 'tech-stocks': 2.5,  'blue-chip': 1.8,  'emerging-markets': 2,    'bonds': 0.6,  'gold': 0.3,  'cash': 1,   'cryptocurrency': 3,    'real-estate': 1.5 },
+    inflation: { 'tech-stocks': -0.5, 'blue-chip': 0.3,  'emerging-markets': 0.5,  'bonds': -1.5, 'gold': 2.5,  'cash': -0.5,'cryptocurrency': 1,    'real-estate': 1.8 },
+    sideways:  { 'tech-stocks': 0.3,  'blue-chip': 0.5,  'emerging-markets': 0.3,  'bonds': 0.8,  'gold': 0.6,  'cash': 1,   'cryptocurrency': 0.3,  'real-estate': 0.7 },
   };
 
-  const baseReturn = baseReturns[assetClass];
-  const multiplier = eventMultipliers[eventType][assetClass];
-  const randomFactor = 0.8 + Math.random() * 0.4;
+  const eventVolMultipliers: Record<MarketCondition, number> = {
+    normal: 1.0,
+    bull: 1.3,
+    crash: 1.8,
+    recovery: 1.4,
+    inflation: 1.3,
+    sideways: 0.7,
+  };
 
-  return baseReturn * multiplier * randomFactor;
+  const dampenFactor = dampened ? 0.5 : 1.0;
+  const multiplier = eventReturnMultipliers[eventType][assetClass];
+  const quarterlyExpected = (baseAnnualReturns[assetClass] * multiplier * dampenFactor) / 4;
+
+  const vol = quarterlyVolatility[assetClass];
+  const volScale = eventVolMultipliers[eventType] * (dampened ? 0.7 : 1.0);
+
+  return Math.max(-0.5, quarterlyExpected + vol * volScale * gaussianRandom());
 }
 
 export function calculateDiversificationScore(allocations: Allocation[]): number {
