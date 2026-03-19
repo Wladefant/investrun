@@ -6,7 +6,10 @@ import { MobileLayout, BottomNav, ScreenHeader } from "@/components/academy/Mobi
 import { ArenaScreen } from "@/components/academy/arena/ArenaScreen";
 import { AcademyDashboard } from "@/components/academy/Dashboard";
 import { MissionsScreen } from "@/components/academy/MissionsScreen";
-import { EnrollmentScreen } from "@/components/academy/EnrollmentScreen";
+import {
+  OnboardingFlow,
+  type OnboardingResult,
+} from "@/components/academy/OnboardingFlow";
 import { Mission1Screen } from "@/components/academy/missions/Mission1";
 import { Mission2Screen } from "@/components/academy/missions/Mission2";
 import { Mission3Screen } from "@/components/academy/missions/Mission3";
@@ -53,8 +56,19 @@ export default function AcademyApp() {
     debrief: string;
   } | null>(null);
 
-  const handleEnroll = (name: string) => {
-    setProgress((p) => ({ ...p, playerName: name }));
+  const handleOnboardingComplete = (result: OnboardingResult) => {
+    const riskMap: Record<string, RiskArchetype> = {
+      cautious: "conservative",
+      balanced: "balanced",
+      growth: "aggressive",
+    };
+    setProgress((p) => ({
+      ...p,
+      playerName: result.name,
+      ...(result.riskProfileId
+        ? { riskProfile: riskMap[result.riskProfileId] ?? "balanced" }
+        : {}),
+    }));
     setScreen("dashboard");
   };
 
@@ -193,7 +207,7 @@ export default function AcademyApp() {
     <MobileLayout>
       {screen === "enrollment" && (
         <div className="flex-1 flex flex-col overflow-hidden">
-          <EnrollmentScreen onEnroll={handleEnroll} />
+          <OnboardingFlow onComplete={handleOnboardingComplete} />
         </div>
       )}
 
