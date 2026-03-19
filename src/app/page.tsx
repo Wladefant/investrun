@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
-import { MobileLayout, BottomNav } from "@/components/academy/MobileLayout";
+import { MobileLayout, BottomNav, ScreenHeader } from "@/components/academy/MobileLayout";
+import { ArenaScreen } from "@/components/academy/arena/ArenaScreen";
 import { AcademyDashboard } from "@/components/academy/Dashboard";
 import { MissionsScreen } from "@/components/academy/MissionsScreen";
 import { EnrollmentScreen } from "@/components/academy/EnrollmentScreen";
@@ -31,6 +32,7 @@ type Screen =
   | "missions"
   | "learn"
   | "profile"
+  | "arena"
   | "mission"
   | "mission_result"
   | "dna_report"
@@ -111,17 +113,13 @@ export default function AcademyApp() {
   };
 
   const activeTab =
-    screen === "dashboard"
-      ? "dashboard"
-      : screen === "missions"
-        ? "missions"
-        : screen === "learn"
-          ? "learn"
-          : screen === "profile"
-            ? "profile"
-            : "dashboard";
+    screen === "dashboard" ? "dashboard"
+    : screen === "missions" ? "missions"
+    : screen === "learn" ? "learn"
+    : screen === "arena" ? "arena"
+    : "dashboard";
 
-  const showNav = ["dashboard", "missions", "learn", "profile"].includes(screen);
+  const showNav = ["dashboard", "missions", "learn", "arena"].includes(screen);
 
   const renderMission = () => {
     switch (activeMissionId) {
@@ -203,6 +201,7 @@ export default function AcademyApp() {
           <AcademyDashboard
             progress={progress}
             onStartMission={handleStartMission}
+            onProfileClick={() => setScreen("profile")}
           />
         </div>
       )}
@@ -298,6 +297,7 @@ export default function AcademyApp() {
 
       {screen === "profile" && (
         <div className="flex-1 flex flex-col overflow-hidden">
+          <ScreenHeader title="Profile" onBack={() => setScreen("dashboard")} />
           <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
             <span className="text-4xl mb-3">👤</span>
             <h2 className="text-lg font-bold text-foreground mb-1">
@@ -310,6 +310,24 @@ export default function AcademyApp() {
               {progress.completedMissions.length} of 7 missions completed
             </p>
           </div>
+        </div>
+      )}
+
+      {screen === "arena" && (
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <ArenaScreen
+            playerName={progress.playerName}
+            playerXp={progress.xp}
+            arenaStats={progress.arenaStats || { elo: 1000, wins: 0, losses: 0, draws: 0 }}
+            onStatsUpdate={(stats, xpEarned) => {
+              setProgress(p => ({
+                ...p,
+                arenaStats: stats,
+                xp: p.xp + xpEarned,
+                currentRank: getCurrentRank(p.xp + xpEarned).id,
+              }));
+            }}
+          />
         </div>
       )}
 

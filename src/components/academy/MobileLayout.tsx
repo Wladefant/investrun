@@ -2,7 +2,7 @@
 
 import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
-import { Home, Target, GraduationCap, User, BookOpen, Sun, Moon } from "lucide-react";
+import { Home, Target, GraduationCap, Swords, BookOpen, Sun, Moon } from "lucide-react";
 import { useTheme } from "@/lib/theme";
 
 interface LayoutProps {
@@ -134,7 +134,7 @@ export function BottomNav({
       </div>
 
       <NavItem icon={<BookOpen size={24} />} label="Learn" active={activeTab === "learn"} onClick={() => onNavigate("learn")} />
-      <NavItem icon={<User size={24} />} label="Profile" active={activeTab === "profile"} onClick={() => onNavigate("profile")} />
+      <NavItem icon={<Swords size={24} />} label="Arena" active={activeTab === "arena"} onClick={() => onNavigate("arena")} />
     </div>
   );
 }
