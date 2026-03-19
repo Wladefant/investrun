@@ -27,6 +27,7 @@ import {
   getReturnPercentage,
 } from "@/lib/arena-engine";
 import type { ArenaRoom } from "@/lib/arena-rooms";
+import type { ArenaAssetClass } from "@/data/arena-scenarios";
 import { fetchArenaAI, buildMultiplayerRoundContext, buildMultiplayerMatchContext } from "@/lib/arena-ai";
 import { useTypewriter } from "@/hooks/useTypewriter";
 
@@ -35,6 +36,16 @@ type PitchPhase = "onboarding" | "matchmaking" | "countdown" | "match" | "waitin
 const STARTING_CAPITAL = 10000;
 const TOTAL_ROUNDS = 5;
 const ROUND_TIMER = 15;
+
+const ASSET_META: Record<ArenaAssetClass, { label: string; color: string }> = {
+  "global-equity": { label: "Equity", color: "bg-blue-500" },
+  "swiss-equity":  { label: "CH Eq", color: "bg-sky-500" },
+  "bonds":         { label: "Bonds", color: "bg-emerald-500" },
+  "cash":          { label: "Cash", color: "bg-slate-400" },
+  "gold":          { label: "Gold", color: "bg-yellow-500" },
+  "bitcoin":       { label: "BTC", color: "bg-orange-500" },
+  "tech-growth":   { label: "Tech", color: "bg-purple-500" },
+};
 
 function getEventStyle(type: string) {
   if (type === "crash" || type === "crisis") return { border: "border-red-500/30", bg: "bg-red-500/5", dotColor: "bg-red-500", icon: "text-red-500" };
@@ -360,11 +371,33 @@ export default function PitchPage() {
                   </span>
                 </div>
                 <input type="range" min={0} max={100} step={5} value={playerRisk} disabled={hasSubmitted} onChange={(e) => setPlayerRisk(Number(e.target.value))} className="w-full h-2 rounded-full appearance-none cursor-pointer disabled:opacity-50" style={{ background: "linear-gradient(to right, #10b981 0%, #f59e0b 50%, #ef4444 100%)" }} />
-                <div className="flex justify-between mt-1">
+                <div className="flex justify-between mt-1 mb-3">
                   <span className="text-[10px] text-muted-foreground">Conservative</span>
                   <span className="text-[10px] text-muted-foreground">Balanced</span>
                   <span className="text-[10px] text-muted-foreground">Aggressive</span>
                 </div>
+
+                {/* Allocation bar */}
+                {(() => {
+                  const alloc = getAllocationFromRisk(playerRisk);
+                  return (
+                    <>
+                      <div className="h-4 rounded-full overflow-hidden flex">
+                        {(Object.entries(alloc) as [ArenaAssetClass, number][]).filter(([, pct]) => pct > 0).map(([asset, pct]) => (
+                          <div key={asset} className={cn("transition-all duration-200", ASSET_META[asset].color)} style={{ width: `${pct}%` }} />
+                        ))}
+                      </div>
+                      <div className="flex flex-wrap gap-x-3 gap-y-1 mt-2">
+                        {(Object.entries(alloc) as [ArenaAssetClass, number][]).filter(([, pct]) => pct > 0).map(([asset, pct]) => (
+                          <div key={asset} className="flex items-center gap-1">
+                            <div className={cn("w-2 h-2 rounded-sm shrink-0", ASSET_META[asset].color)} />
+                            <span className="text-[10px] text-muted-foreground">{ASSET_META[asset].label} {Math.round(pct)}%</span>
+                          </div>
+                        ))}
+                      </div>
+                    </>
+                  );
+                })()}
               </div>
 
               <button onClick={handleSubmit} disabled={hasSubmitted} className={cn("w-full h-12 rounded-xl font-bold text-sm flex items-center justify-center gap-2 bg-primary text-primary-foreground", hasSubmitted && "opacity-50 cursor-not-allowed")}>
