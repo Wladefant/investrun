@@ -18,31 +18,36 @@ export default function SimulationChart({ ticks }: Props) {
   if (ticks.length === 0) return null;
 
   // Sample every Nth tick for performance (max ~200 points on chart)
-  const sampleRate = Math.max(1, Math.floor(ticks.length / 200));
-  const chartData = ticks
-    .filter((_, i) => i % sampleRate === 0 || i === ticks.length - 1)
-    .map((tick) => ({
-      date: tick.date,
-      year: tick.year,
-      portfolio: tick.portfolioReturn,
-      benchmark: tick.benchmarkReturn,
-    }));
+  const step = Math.max(1, Math.floor(ticks.length / 200));
+  const sampled = ticks.filter(
+    (_, i) => i % step === 0 || i === ticks.length - 1
+  );
+
+  const chartData = sampled.map((tick) => ({
+    date: tick.date,
+    year: tick.year,
+    portfolio: tick.portfolioReturn,
+    benchmark: tick.benchmarkReturn,
+  }));
 
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <LineChart data={chartData} margin={{ top: 5, right: 10, left: -15, bottom: 5 }}>
+      <LineChart
+        data={chartData}
+        margin={{ top: 5, right: 10, left: -15, bottom: 5 }}
+      >
         <XAxis
           dataKey="year"
           tick={{ fontSize: 10, fill: "#737373" }}
           tickLine={false}
           axisLine={{ stroke: "#404040" }}
-          interval="preserveStartEnd"
+          allowDuplicatedCategory={false}
         />
         <YAxis
           tick={{ fontSize: 10, fill: "#737373" }}
           tickLine={false}
           axisLine={false}
-          tickFormatter={(v) => `${v}%`}
+          tickFormatter={(v: number) => `${v}%`}
           domain={["auto", "auto"]}
         />
         <ReferenceLine y={0} stroke="#404040" strokeDasharray="3 3" />

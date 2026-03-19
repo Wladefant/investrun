@@ -17,6 +17,7 @@ import { MissionResultScreen } from "@/components/academy/MissionResult";
 import { DNAReportScreen } from "@/components/academy/DNAReport";
 import { ProfessorChat } from "@/components/academy/ProfessorChat";
 import { FutureEstimationScreen } from "@/components/academy/FutureEstimation";
+import { HistoricSimulatorScreen } from "@/components/academy/HistoricSimulator";
 import {
   INITIAL_PROGRESS,
   getCurrentRank,
@@ -32,7 +33,8 @@ type Screen =
   | "profile"
   | "mission"
   | "mission_result"
-  | "dna_report";
+  | "dna_report"
+  | "simulator";
 
 export default function AcademyApp() {
   const [screen, setScreen] = useState<Screen>("enrollment");
@@ -245,8 +247,49 @@ export default function AcademyApp() {
       )}
 
       {screen === "learn" && (
+        <div className="flex-1 flex flex-col overflow-hidden overflow-y-auto bg-[#F3F3F3]">
+          <div className="px-4 pt-4 pb-2">
+            <h1 className="text-lg font-bold text-[#333333]">Learn & Explore</h1>
+            <p className="text-xs text-[#767676]">Tools to understand investing</p>
+          </div>
+          <div className="px-4 space-y-3 pb-4">
+            <button
+              onClick={() => setScreen("simulator" as Screen)}
+              className="w-full bg-white rounded-2xl shadow-sm border border-gray-100 p-4 text-left active:scale-[0.98] transition-transform"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-gradient-to-br from-[#FFC800] to-[#E6B400] rounded-xl flex items-center justify-center text-xl">📈</div>
+                <div className="flex-1">
+                  <p className="font-bold text-[#333333] text-sm">Historic Simulator</p>
+                  <p className="text-xs text-[#767676]">20 years of real market data. Survive crashes, recessions, and booms.</p>
+                </div>
+                <span className="text-[#767676]">→</span>
+              </div>
+            </button>
+            <button
+              onClick={() => {
+                // Temporarily swap to estimation - we'll use a sub-state
+                setScreen("learn" as Screen);
+                setActiveMissionId(-1); // flag for estimation
+              }}
+              className="w-full bg-white rounded-2xl shadow-sm border border-gray-100 p-4 text-left active:scale-[0.98] transition-transform"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-gradient-to-br from-[#33307E] to-[#282668] rounded-xl flex items-center justify-center text-xl">✨</div>
+                <div className="flex-1">
+                  <p className="font-bold text-[#333333] text-sm">My Future</p>
+                  <p className="text-xs text-[#767676]">See how investing gets you to your goals faster.</p>
+                </div>
+                <span className="text-[#767676]">→</span>
+              </div>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {screen === "simulator" && (
         <div className="flex-1 flex flex-col overflow-hidden">
-          <FutureEstimationScreen onBack={() => setScreen("dashboard")} />
+          <HistoricSimulatorScreen onBack={() => setScreen("learn")} />
         </div>
       )}
 
