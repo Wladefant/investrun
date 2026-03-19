@@ -201,10 +201,11 @@ export default function PitchPage() {
   const opponentName = role === "host" ? room?.guestName : room?.hostName;
   const currentEvent = room?.rounds[(room?.currentRound ?? 1) - 1];
 
-  // After match, render the full app experience
+  // After match, render the full app starting at dashboard
   if (phase === "full_app") {
-    return <AcademyAppInner initialScreen="dashboard" initialName={playerName} />;
+    return <AcademyAppInner initialScreen="dashboard" initialName={playerName} key="full-app" />;
   }
+
 
   // Onboarding renders directly without AnimatePresence wrapper to avoid flex layout issues
   if (phase === "onboarding") {
@@ -424,8 +425,8 @@ export default function PitchPage() {
                         </p>
                       </div>
                     </div>
-                    <button onClick={() => { stopPolling(); setPhase("full_app"); }} className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-bold">
-                      Explore the Academy
+                    <button onClick={() => { stopPolling(); setPhase("full_app"); }} className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-bold text-sm">
+                      Continue
                     </button>
                   </>
                 );
