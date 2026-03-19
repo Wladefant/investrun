@@ -8,6 +8,7 @@ import {
   type OnboardingResult,
 } from "@/components/academy/OnboardingFlow";
 import { ArenaMultiplayer } from "@/components/academy/arena/ArenaMultiplayer";
+import { AcademyAppInner } from "@/components/academy/AcademyAppInner";
 import {
   Loader2,
   Users,
@@ -26,7 +27,7 @@ import {
 } from "@/lib/arena-engine";
 import type { ArenaRoom } from "@/lib/arena-rooms";
 
-type PitchPhase = "onboarding" | "matchmaking" | "countdown" | "match" | "waiting" | "reveal" | "results";
+type PitchPhase = "onboarding" | "matchmaking" | "countdown" | "match" | "waiting" | "reveal" | "results" | "full_app";
 
 const STARTING_CAPITAL = 10000;
 const TOTAL_ROUNDS = 8;
@@ -199,6 +200,11 @@ export default function PitchPage() {
   const oppDecisions = role === "host" ? room?.guestDecisions : room?.hostDecisions;
   const opponentName = role === "host" ? room?.guestName : room?.hostName;
   const currentEvent = room?.rounds[(room?.currentRound ?? 1) - 1];
+
+  // After match, render the full app experience
+  if (phase === "full_app") {
+    return <AcademyAppInner initialScreen="dashboard" initialName={playerName} />;
+  }
 
   return (
     <MobileLayout>
@@ -414,8 +420,8 @@ export default function PitchPage() {
                         </p>
                       </div>
                     </div>
-                    <button onClick={() => window.location.reload()} className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-bold">
-                      Play Again
+                    <button onClick={() => { stopPolling(); setPhase("full_app"); }} className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-bold">
+                      Explore the Academy
                     </button>
                   </>
                 );
