@@ -6,6 +6,8 @@ import { useArenaStore } from '@/lib/arena-store';
 import type { ArenaPhase } from '@/lib/arena-store';
 import { ArenaLobby } from './ArenaLobby';
 import { ArenaMatchSetup } from './ArenaMatchSetup';
+import { ArenaMatch } from './ArenaMatch';
+import { OPPONENTS } from '@/lib/arena-opponents';
 
 interface ArenaScreenProps {
   playerName: string;
@@ -34,7 +36,8 @@ export function ArenaScreen({
   arenaStats,
   onStatsUpdate,
 }: ArenaScreenProps) {
-  const { phase, stats, initStats } = useArenaStore();
+  const { phase, stats, opponent, initStats } = useArenaStore();
+  const opponentName = opponent ? OPPONENTS[opponent].name : 'Opponent';
   const [showLeaderboard, setShowLeaderboard] = useState(false);
 
   // Sync parent stats into the store on mount
@@ -61,7 +64,13 @@ export function ArenaScreen({
             playerElo={arenaStats.elo}
           />
         )}
-        {phase === 'match' && <PhasePlaceholder key="match" phase="match" />}
+        {phase === 'match' && (
+          <ArenaMatch
+            key="match"
+            playerName={playerName}
+            opponentName={opponentName}
+          />
+        )}
         {phase === 'reveal' && <PhasePlaceholder key="reveal" phase="reveal" />}
         {phase === 'results' && <PhasePlaceholder key="results" phase="results" />}
       </AnimatePresence>
