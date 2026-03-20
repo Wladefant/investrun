@@ -172,17 +172,30 @@ Drop this in a workshop with 50 customers, and you have instant engagement, inst
 
 ## 8. Business Case + PostFinance Integration (3:50–4:20)
 
-"Let's talk about what this means for PostFinance."
+"Now — what does this mean for PostFinance?"
 
-"**Customer Acquisition**: Every user who sees their future projection — 'CHF 247,000 by retirement' — is one step closer to opening an account."
+[Pause]
 
-"**Behavioral Data**: The app captures risk profiles, crash responses, diversification habits. PostFinance learns who their customers are *before they invest a single franc*."
+"When a 22-year-old sees 'CHF 247,000 by retirement' with their own name on it —
+that's not a lesson anymore. That's a reason to open an account."
 
-"**Retention**: Missions, XP, ELO ratings, leaderboards — users come back. Not because they have to, but because they want to."
+"And while they're learning, we're learning about *them*.
+Their risk tolerance. How they react to crashes. Whether they panic or hold.
+PostFinance gets behavioral data on customers *before they invest a single franc*."
 
-"**Compliance**: We score discipline, not returns. This actively discourages gambling behavior — exactly what regulators want."
+"And they keep coming back.
+Not because they have to — but because missions, XP, leaderboards, and Arena make them *want to*."
 
-"**Scalability**: This is a web app. No app store. No download. Works on any phone, any browser. Deploy tomorrow."
+"And here's the part regulators love:
+We don't reward returns. We reward *discipline*.
+That's not just education — that's compliance by design."
+
+[Pause]
+
+"Oh, and one more thing.
+This is a web app. No app store approval. No download.
+Works on any phone, any browser.
+You could deploy this *tomorrow*."
 
 ---
 
