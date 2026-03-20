@@ -114,7 +114,7 @@ Mission 3: The COVID crash hits — do you hold or panic sell? You feel the pres
 
 [Show Professor Fortuna chat with quiz widget]
 
-"Meet Professor Fortuna — your personal AI investment coach, powered by GPT-5.2."
+"Meet Professor Fortuna — your personal AI investment coach
 
 "Ask any question about investing and get a personalized, context-aware answer.
 Say 'quiz me' — and an interactive quiz appears right in the chat, with scoring, explanations, and XP rewards."
