@@ -1,19 +1,16 @@
-# FutureMe — 5 Minute Hackathon Pitch
-
-> PostFinance START Hack 2026 | Gamified Investment Education
-> Team: [Your Team Name]
+# **FutureMe — Hackathon Pitch**
 
 ---
 
-## 1. Opening — HOOK + PROBLEM (0:00–0:30)
+## **1. Opening (0:00–0:20) — HOOK + PROBLEM**
 
 "Gen Z doesn't have an attention problem.
 They have a *reward problem*."
 
-[Pause]
+Pause.
 
 "If you don't capture their attention in 15 seconds — you've already lost them.
-And that's exactly why **50% of young people never start investing**."
+And that's exactly why 50% of people never start investing."
 
 "Not because they don't care.
 But because everything about investing feels slow, abstract… and boring."
@@ -21,231 +18,177 @@ But because everything about investing feels slow, abstract… and boring."
 "And worse — most people see investing like a casino.
 Risky. Random. Easy to lose."
 
-[Pause]
+Pause.
 
 "But in reality?
-Smart investing has always recovered — even after the biggest crises.
-The S&P 500 recovered from 2008. From COVID. From every crash in history."
+Smart investing has always recovered — even after the biggest crises."
 
 "The problem is — people never *experience* that."
 
 "So the real question is:
-**How do you make long-term thinking feel instantly rewarding?**"
+How do you make long-term thinking feel instantly rewarding?"
 
-[Transition]
+→ Transition
 
 "That's what we built — *FutureMe*."
 
 ---
 
-## 2. Onboarding + Future Engine (0:30–1:10)
+## **2. Onboarding + Future (0:20–0:50)**
 
-[Show app — onboarding flow]
+(Video playing)
 
-"FutureMe starts like a real PostFinance app — fast, personal, frictionless.
-In under 30 seconds, you tell us your name, your age, your goals, your risk comfort."
+"FutureMe starts like a real banking app — fast, personal, frictionless.
+In under 30 seconds, you define your goal, your monthly contribution, your risk."
 
 "And immediately — you see your future."
 
-[Show Future Engine screen]
+"Not charts. Not theory.
+Your *life outcome — generated and explained by AI*."
 
-"Not abstract charts. Not theory.
-Your *life outcome*, in CHF, with your actual contribution.
-AI explains what these numbers mean for *you* personally."
+"We turn investing into something emotional — not analytical."
 
-"'If you invest CHF 300 per month starting today, you'll have CHF 247,000 by retirement.'
-'Waiting just 3 years costs you CHF 47,000 in lost growth.'"
+👉 Dopamine link:
 
-"We even show you a message from your future self — thanking you for starting today."
-
-**Why this matters**: We turn investing from an abstract concept into a personal, emotional experience. This is the conversion moment — where curiosity becomes action.
+"Instant feedback. Instant projection. Instant meaning."
 
 ---
 
-## 3. Missions — Learn By Doing (1:10–1:40)
+## **3. Solo Mode (0:50–1:20)**
 
-[Show dashboard with missions]
+(Video playing)
 
-"The Academy has 7 missions — each teaching one core investing concept through *doing*, not reading."
+"Then we drop you into Solo Mode — a fast-paced simulation of the market."
 
-[Quick montage or click-through]
+"You're not reading about investing —
+you're *feeling it*."
 
-"Mission 1: Discover your risk personality through crisis scenarios.
-Mission 2: Build a diversified portfolio and watch it survive a market crash.
-Mission 3: The COVID crash hits — do you hold or panic sell? You feel the pressure, and we show you in CHF what panic-selling actually costs."
+"Markets crash. News hits. You decide: panic… or hold?"
 
-"Every mission gives XP, letter grades, and feeds into your personal Investment DNA — a behavioral profile that shows who you truly are as an investor."
+"Every decision gives immediate feedback — with AI explaining what you did right or wrong."
 
-**Why this matters**: We don't score returns — we **score discipline**. This directly addresses PostFinance's goal of discouraging gambling behavior and promoting responsible investing.
+👉 Dopamine:
+
+"It's fast, reactive, and addictive — like a game.
+But every action builds real investing intuition."
 
 ---
 
-## 4. Arena Mode — Competition + AI (1:40–2:20)
+## **4. Competitive Mode — Arena (1:20–1:45)**
 
-[Show Arena lobby → match]
+(Video playing)
 
 "And then — we turn investing into a competition."
 
-"In Arena Mode, you face opponents under time pressure.
-15 seconds to decide. Same market event. Different strategies."
+"In Arena Mode, you face real opponents under time pressure."
 
-[Show round reveal with AI commentary]
+"15 seconds to decide. Same market. Same conditions. AI evaluates your strategy and gives you real-time feedback after every round."
 
-"After every round, GPT-5.2 delivers a live analysis:
-'Your risk-50 stance cost you 13% this round, while The Owl's conservative approach only lost 7%. But over a 20-year horizon, your higher risk could pay off if the market recovers.'"
+"Now it's not just learning — it's *winning*."
 
-"This isn't just a game — **every round is a lesson**, explained by AI in real time."
+👉 Dopamine:
 
-[Show results screen with post-match analysis]
-
-"At the end, AI delivers a full post-match breakdown: why you won or lost, which round was pivotal, what you did well, and what to improve."
-
-**The killer feature**: At the end of this pitch, you can scan a QR code, do a quick onboarding, and **play Arena against someone sitting next to you** — right now, live, in this room.
+"Competition creates urgency, emotion, and engagement.
+This is where learning becomes *stickiness*."
 
 ---
 
-## 5. AI Coach — The Core Engine (2:20–2:50)
+## **5. AI Coach — Core Engine (1:45–2:05)**
 
-"But the real core of FutureMe isn't any single feature."
+"But the real core of FutureMe isn't just the features."
 
-[Pause]
+Pause.
 
-"It's the **AI layer** that powers *every part* of the experience."
+"It's the AI layer that powers *every single part of the experience*."
 
-[Show Professor Fortuna chat with quiz widget]
+"In onboarding — it personalizes your journey based on your goals and risk."
 
-"Meet Professor Fortuna — your personal AI investment coach
+"In simulations — it analyzes your decisions in real time."
 
-"Ask any question about investing and get a personalized, context-aware answer.
-Say 'quiz me' — and an interactive quiz appears right in the chat, with scoring, explanations, and XP rewards."
+"In crashes — it explains your emotions and mistakes."
 
-"In onboarding — AI personalizes your journey.
-In simulations — AI analyzes your decisions in real time.
-In crashes — AI explains your emotions and mistakes.
-In Arena — AI commentates every round like a sports analyst."
+"And at any moment, you can ask:
+'What should I do right now?'"
 
-"**Every action becomes instant, personalized feedback.**
-That's how we turn experience into real learning."
+"And the answer isn't generic."
 
----
+"It's based on *you* — your behavior, your portfolio, your past decisions."
 
-## 6. Time Machine — Learn From History (2:50–3:20)
+"So every action becomes instant, personalized feedback."
 
-[Show Time Machine timeline → select 2008 crisis]
-
-"Our most powerful feature: the **Time Machine**."
-
-"Users relive the most dramatic financial crises of the past 20 years.
-The 2008 crash. COVID. The European debt crisis."
-
-"You see the real headlines. The real market data. The real events — week by week."
-
-[Show narrator typewriter animation]
-
-"'It's October 2007. The Dow Jones just hit an all-time high. Real estate agents are buying second homes. Banks are lending to anyone with a pulse...'"
-
-"And then it all falls apart. You feel the panic. And AI turns historical events into personalized lessons."
-
-**Why this matters**: Nobody learns to invest from a lecture. They learn by living through a crisis and surviving it. The Time Machine makes that possible — without risking a single franc.
+"That's how we turn experience into real learning."
 
 ---
 
-## 7. Multiplayer + Live Demo (3:20–3:50)
+## **6. Next Mission (2:05–2:20)**
 
-[Show QR code on screen]
+(Video playing)
 
-"Everything we've shown works today. Not a prototype — a production-ready app."
+"Back on the home screen, we guide users with 'Next Mission'."
 
-"And right now, you can try it."
+"No overwhelming theory. Just the next small step."
 
-"Scan this QR code. Do a 30-second onboarding. And you'll be matched with someone in this room for a live Arena battle."
+👉 Dopamine:
 
-"5 rounds. 15 seconds per decision. Real AI commentary after each round.
-At the end — the full app is yours to explore."
-
-[Show /pitch URL QR code]
-
-"**This is the engagement model PostFinance needs.**
-Drop this in a workshop with 50 customers, and you have instant engagement, instant education, and instant data on their behavioral tendencies."
+"Clear progression. Constant rewards."
 
 ---
 
-## 8. Business Case + PostFinance Integration (3:50–4:20)
+## **7. Time Machine (2:20–2:35)**
 
-"Now — what does this mean for PostFinance?"
+(Video playing)
 
-[Pause]
+"And then — our most powerful feature: Time Machine."
 
-"When a 22-year-old sees 'CHF 247,000 by retirement' with their own name on it —
-that's not a lesson anymore. That's a reason to open an account."
+"Users relive real market crashes — like 2008 or COVID."
 
-"And while they're learning, we're learning about *them*.
-Their risk tolerance. How they react to crashes. Whether they panic or hold.
-PostFinance gets behavioral data on customers *before they invest a single franc*."
+"You go into that exact moment. You see the headlines, the events — week by week."
 
-"And they keep coming back.
-Not because they have to — but because missions, XP, leaderboards, and Arena make them *want to*."
+"You feel the panic. And AI turns historical events into personalized lessons explaining what *you* should have done in that moment."
 
-"And here's the part regulators love:
-We don't reward returns. We reward *discipline*.
-That's not just education — that's compliance by design."
+👉 Dopamine:
 
-[Pause]
-
-"Oh, and one more thing.
-This is a web app. No app store approval. No download.
-Works on any phone, any browser.
-You could deploy this *tomorrow*."
+"It's cinematic. Emotional. Memorable.
+This is how behavior actually changes."
 
 ---
 
-## 9. Closing (4:20–4:50) — STRONG CALLBACK
+## **8. Closing (2:40–3:00) — STRONG CALLBACK**
 
 "So we don't just teach investing."
 
 "We solve the real problem:
-**Making long-term thinking feel rewarding *right now*.**"
+making long-term thinking feel rewarding *right now*."
 
-"FutureMe turns discipline into dopamine."
-
-[Pause]
-
-"7 interactive missions. Real-time AI coaching. Live multiplayer. Historical time travel.
-All built in a weekend. All production-ready."
+"Our production-ready app FutureMe turns discipline into dopamine."
 
 "And that's how you finally get Gen Z to invest."
 
-[Pause]
+Pause.
 
 "Not by telling them what to do.
-But by letting them **experience their future**."
-
-[Hold for applause]
+But by letting them *experience their future*."
 
 ---
 
-## Appendix: Feature Checklist for Judges
+## **BONUS SLIDE — Business Case (if Q&A or extra time)**
 
-| PostFinance Requirement | How FutureMe Addresses It |
-|------------------------|--------------------------|
-| Engage young investors | Gamification: XP, ranks, leaderboards, achievements |
-| Teach investing basics | 7 missions covering risk, diversification, crashes, compound growth |
-| Discourage gambling | Behavioral scoring: discipline > returns. Panic-sell penalty in CHF |
-| Use real market data | PostFinance CSV data powers Historic Simulator + Time Machine |
-| AI integration | 3 GPT-5.2 endpoints: Professor coach, Arena commentator, Time Machine narrator |
-| Mobile-first | Responsive design: iPhone frame on desktop, full-screen on mobile |
-| Interactive learning | Quiz widgets in chat, decision points in simulations, risk slider in Arena |
-| Social/competitive | Arena mode: ELO, leaderboards, live multiplayer via QR code |
-| Personalization | Onboarding data drives Future Engine projections, AI coaching, DNA Report |
-| Production readiness | Next.js 15, TypeScript, deployed web app — no prototype |
+"What does this mean for PostFinance?"
 
----
+Pause.
 
-## Presentation Tips
+"When a 22-year-old sees 'CHF 247,000 by retirement' with their own name on it —
+that's not a lesson anymore. That's a reason to open an account."
 
-1. **Open with the hook** — "Gen Z doesn't have an attention problem" — deliver it slowly, confidently
-2. **Show, don't tell** — have the app running live on screen during the entire pitch
-3. **The QR moment** — save it for section 7. Let the audience anticipate it. When you show it, say "Right now. Scan it."
-4. **Practice the pauses** — the pitch has deliberate pauses. They create drama. Don't rush past them.
-5. **End strong** — "Not by telling them what to do. But by letting them experience their future." — hold eye contact, don't rush off stage.
-6. **Backup plan** — if WiFi fails, have screen recordings ready. The pitch structure works with pre-recorded video too.
+"While they're learning, we're learning about *them*.
+Their risk tolerance. How they react to crashes. Whether they panic or hold.
+Behavioral data on customers *before they invest a single franc*."
+
+"And they keep coming back —
+because missions, XP, and Arena make them *want to*."
+
+"We don't reward returns. We reward *discipline*.
+That's not just education — that's compliance by design."
+
+"And this is a web app. No app store. No download.
+You could deploy this tomorrow."
