@@ -135,7 +135,7 @@ function SetupView({ playerName, playerElo, onStart }: SetupViewProps) {
 
           {opponentData && (
             <p className="text-center text-xs text-muted-foreground mt-3 italic">
-              "{opponentData.description}"
+              &quot;{opponentData.description}&quot;
             </p>
           )}
         </div>
