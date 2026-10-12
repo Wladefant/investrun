@@ -1,7 +1,3 @@
 [submodule "ing-app"]
 	path = ing-app
 	url = https://github.com/Wladefant/ing-app.git
-
-[submodule "time-machine"]
-	path = .claude/worktrees/time-machine
-	url = https://github.com/Wladefant/investrun.git

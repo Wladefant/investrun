@@ -6,4 +6,5 @@ node_modules/
 *.tsbuildinfo
 next-env.d.ts
 ing-app/
+.claude/worktrees/
 .worktrees
